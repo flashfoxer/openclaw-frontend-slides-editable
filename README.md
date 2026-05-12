@@ -27,6 +27,9 @@ This release bumps the editable runtime and authoring workflow to **2.0**: stron
 - **预设与构建（Presets & build）**：`STYLE_PRESETS.md` 与 `scripts/build-preset-decks.py` 同步扩展，`examples/generated/presets/` 可由脚本从 `editable-deck-reference.html` 派生自检用整页样例。  
   **Presets & build**: expanded `STYLE_PRESETS.md` + `scripts/build-preset-decks.py`; `examples/generated/presets/` are mechanical smoke-test decks sliced from `examples/editable-deck-reference.html`.
 
+- **与 beautiful-html-templates 已同步的 presets**：自 [beautiful-html-templates](https://github.com/zarazhangrui/beautiful-html-templates) 引入、并在本仓库 **`STYLE_PRESETS.md` §13–19** 落规格且 **`build-preset-decks.py` 可生成样例** 的共 **7** 套为：**Soft Editorial**、**Signal**、**Studio**、**Monochrome**、**Neo-Grid Bold**、**Vellum**、**Cobalt Grid**（对应 `examples/generated/presets/` 下 `soft-editorial.html`、`signal-gold.html`、`studio-volt.html`、`monochrome-ledger.html`、`neo-grid-yellow.html`、`vellum-navy.html`、`cobalt-grid.html`）。气质与上游模板名对齐；版式与 token 以本仓库文档为准，并非逐文件拷贝 HTML。上游库中**其余**模板尚未在本 skill 内写成预设与构建项。  
+  **beautiful-html-templates presets synced here**: **seven** themes from [beautiful-html-templates](https://github.com/zarazhangrui/beautiful-html-templates) are first-class in **`STYLE_PRESETS.md` §13–19** and ship as built samples: **Soft Editorial**, **Signal**, **Studio**, **Monochrome**, **Neo-Grid Bold**, **Vellum**, **Cobalt Grid** → `soft-editorial.html`, `signal-gold.html`, `studio-volt.html`, `monochrome-ledger.html`, `neo-grid-yellow.html`, `vellum-navy.html`, `cobalt-grid.html` under `examples/generated/presets/`. Vibes align with upstream template names; layout and tokens are **specified in this repo**, not byte-for-byte copies of upstream HTML. **Other** upstream templates are **not** yet ported as presets here.
+
 参考实现仍以单文件 **`examples/editable-deck-reference.html`** 为契约；生成新 deck 时请继续遵循本仓库 `SKILL.md` 与 `editor-runtime.md`。  
 The reference contract remains the single file **`examples/editable-deck-reference.html`**; follow `SKILL.md` and `editor-runtime.md` when generating new decks.
 
@@ -269,6 +272,24 @@ Generated decks include:
 - **Neo-Grid Bold** - 新粗野网格 + 酸黄 / Neo-brutalist grid, acid yellow
 - **Vellum** - 学者风深蓝 + 灰青 / Scholarly navy, dusty teal
 - **Cobalt Grid** - 钴蓝网格纸 / Cobalt graph-paper analytical
+
+### 扩展画廊自检 · Extended gallery audit
+
+- **三处一致**：`STYLE_PRESETS.md` 中 **19** 套预设（含 §13–19）与 `scripts/build-preset-decks.py` 的 `PRESETS` 数组、`examples/generated/presets/*.html` **一一对应**；改主题或参考 HTML 后请执行 `python3 scripts/build-preset-decks.py` 再打开样例验收。  
+- **Triple alignment**: all **19** presets in `STYLE_PRESETS.md` (including §13–19) match the `PRESETS` array and **`examples/generated/presets/*.html`**; rerun **`python3 scripts/build-preset-decks.py`** after theme/reference edits before reviewing samples.
+
+- **与上游覆盖范围**：[beautiful-html-templates](https://github.com/zarazhangrui/beautiful-html-templates) 公开库体量更大（常见描述为 **30+** 套独立 HTML 模板）；本仓库扩展轮次已把 **7** 套写入规格并接入构建（下表）。其余名称（如 *Editorial Tri-Tone*、*BlockFrame*、*Capsule* 等）可作为 **下一轮** 候选，每套需补全 `STYLE_PRESETS.md` 条目 + `Preset(...)` 主题块 + 再跑构建。  
+- **Upstream coverage**: [beautiful-html-templates](https://github.com/zarazhangrui/beautiful-html-templates) ships a **larger** public set (often cited as **30+** templates). This repo’s wave has **fully specified and built** the **seven** below; additional names remain **future** candidates (each needs a `STYLE_PRESETS` spec, a `Preset(...)` block, and a rebuild).
+
+| 扩展画廊名 / Preset title | 样例文件 / Sample slug |
+|---------------------------|-------------------------|
+| Soft Editorial | `soft-editorial.html` |
+| Signal | `signal-gold.html` |
+| Studio | `studio-volt.html` |
+| Monochrome | `monochrome-ledger.html` |
+| Neo-Grid Bold | `neo-grid-yellow.html` |
+| Vellum | `vellum-navy.html` |
+| Cobalt Grid | `cobalt-grid.html` |
 
 ## 文档结构 / Documentation Map
 

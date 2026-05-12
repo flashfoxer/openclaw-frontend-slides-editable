@@ -302,6 +302,8 @@ Curated visual styles for Frontend Slides. Each preset is inspired by real desig
 
 Additional curated presets ship as first-class `STYLE_PRESETS` entries and matching `examples/generated/presets/*.html` smoke decks.
 
+**Build slugs (§13–19):** `soft-editorial`, `signal-gold`, `studio-volt`, `monochrome-ledger`, `neo-grid-yellow`, `vellum-navy`, `cobalt-grid` — see README §「扩展画廊自检」for the display-name ↔ filename map. The upstream template library lists more themes than are wired here; new ports need a full spec in this file plus a `Preset(...)` entry in `scripts/build-preset-decks.py`.
+
 ### 13. Soft Editorial
 
 **Vibe:** Warm paper, sage and blush accents, quiet editorial calm
