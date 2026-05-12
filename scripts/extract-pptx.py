@@ -12,7 +12,6 @@ Requires: pip install python-pptx
 import json
 import os
 import sys
-from pptx import Presentation
 
 
 def extract_pptx(file_path, output_dir="."):
@@ -20,6 +19,15 @@ def extract_pptx(file_path, output_dir="."):
     Extract all content from a PowerPoint file.
     Returns a list of slide data dicts with text, images, and notes.
     """
+    try:
+        from pptx import Presentation
+    except ModuleNotFoundError as exc:
+        if exc.name != "pptx":
+            raise
+        raise RuntimeError(
+            "Missing dependency: python-pptx. Install it with: pip install python-pptx"
+        ) from exc
+
     prs = Presentation(file_path)
     slides_data = []
 
@@ -83,7 +91,11 @@ if __name__ == "__main__":
     input_file = sys.argv[1]
     output_dir = sys.argv[2] if len(sys.argv) > 2 else "."
 
-    slides = extract_pptx(input_file, output_dir)
+    try:
+        slides = extract_pptx(input_file, output_dir)
+    except RuntimeError as exc:
+        print(str(exc), file=sys.stderr)
+        sys.exit(2)
 
     # Write extracted data as JSON
     output_path = os.path.join(output_dir, "extracted-slides.json")

@@ -298,6 +298,94 @@ Curated visual styles for Frontend Slides. Each preset is inspired by real desig
 
 ---
 
+## Extended gallery (inspired by [beautiful-html-templates](https://github.com/zarazhangrui/beautiful-html-templates))
+
+Additional curated presets ship as first-class `STYLE_PRESETS` entries and matching `examples/generated/presets/*.html` smoke decks.
+
+### 13. Soft Editorial
+
+**Vibe:** Warm paper, sage and blush accents, quiet editorial calm
+
+**Layout:** Large serif headline with soft gradient paper field; abstract circular wash (CSS only).
+
+**Typography:** `Cormorant Garamond` + `Nunito Sans`
+
+**Signature:** Muted sage accent bar, italic hero treatment, gentle panel shadows
+
+---
+
+### 14. Signal
+
+**Vibe:** Institutional, authoritative, restrained gold on deep navy
+
+**Layout:** Strong vertical accent spine; hero panel with radial gold wash.
+
+**Typography:** `Libre Baskerville` + `Source Sans 3`
+
+**Signature:** Gold vertical rule, section numbers in accent, deep layered navy
+
+---
+
+### 15. Studio
+
+**Vibe:** High-voltage design studio — black field, electric yellow type
+
+**Layout:** Horizontal scan-line texture; bold display strip as graphic anchor.
+
+**Typography:** `Bebas Neue` + `Barlow`
+
+**Signature:** Yellow-on-black typography, subtle grid lines, neon-edge panels
+
+---
+
+### 16. Monochrome
+
+**Vibe:** Ivory ledger, all structure in black ink — no chroma
+
+**Layout:** Fine graph-paper grid; diagonal stripe graphic.
+
+**Typography:** `Lora` + `Jost`
+
+**Signature:** Strict black/ivory only, striped hero block, zero decorative color
+
+---
+
+### 17. Neo-Grid Bold
+
+**Vibe:** Editorial neo-brutalism — off-white, thick rules, single acid yellow punch
+
+**Layout:** Offset shadow cards; hard rectangular hero.
+
+**Typography:** `Archivo Black` + `DM Sans`
+
+**Signature:** Yellow marker bar with hard shadow, black borders on cards
+
+---
+
+### 18. Vellum
+
+**Vibe:** Scholarly dark canvas, dusty teal accent, warm cream type
+
+**Layout:** Italic serif hero; horizontal teal hairline; soft vignette panel.
+
+**Typography:** `Cormorant` (italic) + `Literata`
+
+**Signature:** Italic display, teal gradient rules, deep blue-green atmosphere
+
+---
+
+### 19. Cobalt Grid
+
+**Vibe:** Graph-paper studio — cobalt italic serif, cool analytical light background
+
+**Layout:** Blue grid field; diagonal micro-stripes in hero graphic.
+
+**Typography:** `Fraunces` (italic) + `IBM Plex Sans`
+
+**Signature:** Cobalt grid, italic navy headlines, crisp white panels
+
+---
+
 ## Font Pairing Quick Reference
 
 | Preset | Display Font | Body Font | Source |
@@ -311,7 +399,16 @@ Curated visual styles for Frontend Slides. Each preset is inspired by real desig
 | Split Pastel | Outfit | Outfit | Google |
 | Vintage Editorial | Fraunces | Work Sans | Google |
 | Neon Cyber | Clash Display | Satoshi | Fontshare |
-| Terminal Green | JetBrains Mono | JetBrains Mono | JetBrains |
+| Terminal Green | JetBrains Mono | JetBrains Mono | Google |
+| Swiss Modern | Archivo | Nunito | Google |
+| Paper & Ink | Cormorant Garamond | Source Serif 4 | Google |
+| Soft Editorial | Cormorant Garamond | Nunito Sans | Google |
+| Signal | Libre Baskerville | Source Sans 3 | Google |
+| Studio | Bebas Neue | Barlow | Google |
+| Monochrome | Lora | Jost | Google |
+| Neo-Grid Bold | Archivo Black | DM Sans | Google |
+| Vellum | Cormorant | Literata | Google |
+| Cobalt Grid | Fraunces | IBM Plex Sans | Google |
 
 ---
 

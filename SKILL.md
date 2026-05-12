@@ -3,13 +3,16 @@ name: frontend-slides-editable
 description: Use when the user wants a single-file HTML presentation that stays editable in the browser after generation, or needs object-level layout editing, slide reordering, local save/export, or PPT-to-web conversion with continued editing.
 ---
 
-# Frontend Slides (Editable)
+<objective>
+Frontend Slides (Editable)
 
 Create zero-dependency, animation-rich HTML presentations that run entirely in the browser **with a built-in editor**: move objects, multi-select with **Ctrl+click**, alignment snapping, simple text formatting with **font family + size controls**, **undo/redo**, a **Pages** sidebar (slide thumbnails, drag to reorder, delete), **Ctrl+S** persistence, and **export HTML**.
 
 This skill is a **copy of the `frontend-slides` skill** extended with the editable deck runtime. For read-only decks without editor weight, use the original **`frontend-slides`** skill instead (same skills directory layout).
+</objective>
 
-## Parity with parent `frontend-slides` (style flexibility)
+<preset_fidelity>
+Parity with parent `frontend-slides` (style flexibility)
 
 **Adding edit mode must not replace preset authoring.** The parent skill treats each choice in [STYLE_PRESETS.md](STYLE_PRESETS.md) as a **spec**: per preset you implement its **Layout** prose, **Signature Elements**, typography, and colors — title slides and content slides **differ across presets** (e.g. Bold Signal’s card + big numerals vs. Notebook Tabs’ paper + edge tabs vs. Swiss Modern’s grid + red bar).
 
@@ -21,8 +24,10 @@ This skill is a **copy of the `frontend-slides` skill** extended with the editab
 4. **Static chrome** (decorations that should not be draggable) may live outside `.slide-edit-layer` (e.g. background pseudo-elements, fixed nav chrome) per preset; **movable** copy and blocks stay as `[data-slide-object]` inside the layer.
 
 If runtime constraints ever conflict with a signature element, **adapt the element** (e.g. implement the same visual with CSS, or split into multiple objects) — do **not** drop preset identity for the sake of a single template.
+</preset_fidelity>
 
-## Discovery gate (do not skip)
+<discovery_gate>
+Discovery gate (do not skip)
 
 Models often jump straight to generating HTML. **For Mode A (new deck) and Mode B (PPT) after extraction, you must run discovery before Phase 3** — unless the user explicitly opts out with a **complete brief** in one message (purpose, length, content or full outline, style direction, image situation, and either explicit confirmation they want the editable runtime or direct invocation of this skill).
 
@@ -34,15 +39,19 @@ Models often jump straight to generating HTML. **For Mode A (new deck) and Mode 
 4. **Mode C** — If they gave a precise change list ("add one bullet", "fix overflow on slide 3"), you may apply it without re-running Phase 1–2; if the request is vague ("make it better"), ask 1–2 clarifying questions first.
 
 Skipping discovery to "save turns" is a failure mode for this skill.
+</discovery_gate>
 
-## Core Principles
+<core_principles>
+Core Principles
 
 1. **Zero Dependencies** — Single HTML files with inline CSS/JS. No npm, no build tools.
 2. **Show, Don't Tell** — Generate visual previews, not abstract choices. People discover what they want by seeing it.
 3. **Distinctive Design** — No generic "AI slop." Every presentation must feel custom-crafted.
 4. **Viewport Fitting (NON-NEGOTIABLE)** — Every slide MUST fit exactly within 100vh. No scrolling within slides, ever. Content overflows? Split into multiple slides.
+</core_principles>
 
-## Design Aesthetics
+<design_aesthetics>
+Design Aesthetics
 
 You tend to converge toward generic, "on distribution" outputs. In frontend design, this creates what users call the "AI slop" aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight.
 
@@ -59,8 +68,10 @@ Avoid generic AI-generated aesthetics:
 - Cookie-cutter design that lacks context-specific character
 
 Interpret creatively and make unexpected choices that feel genuinely designed for the context. Vary between light and dark themes, different fonts, different aesthetics. You still tend to converge on common choices (Space Grotesk, for example) across generations. Avoid this: it is critical that you think outside the box!
+</design_aesthetics>
 
-## Viewport Fitting Rules
+<viewport_fitting_rules>
+Viewport Fitting Rules
 
 These invariants apply to EVERY slide in EVERY presentation:
 
@@ -74,7 +85,7 @@ These invariants apply to EVERY slide in EVERY presentation:
 
 **When generating, read `viewport-base.css` and include its full contents in every presentation.**
 
-### Content Density Limits Per Slide
+Content Density Limits Per Slide
 
 | Slide Type | Maximum Content |
 |------------|-----------------|
@@ -86,18 +97,21 @@ These invariants apply to EVERY slide in EVERY presentation:
 | Image slide | 1 heading + 1 image (max 60vh height) |
 
 **Content exceeds limits? Split into multiple slides. Never cram, never scroll.**
+</viewport_fitting_rules>
 
----
-
-## Phase 0: Detect Mode
+<quick_start>
+<mode_detection>
+Phase 0: Detect Mode
 
 Determine what the user wants:
 
 - **Mode A: New Presentation** — Create from scratch. Go to Phase 1.
 - **Mode B: PPT Conversion** — Convert a .pptx file. Go to Phase 4.
 - **Mode C: Enhancement** — Improve an existing HTML presentation. Read it, understand it, enhance. **Follow Mode C modification rules below.**
+</mode_detection>
 
-### Mode C: Modification Rules
+<mode_c_modification_rules>
+Mode C: Modification Rules
 
 When enhancing existing presentations, viewport fitting is the biggest risk:
 
@@ -108,10 +122,10 @@ When enhancing existing presentations, viewport fitting is the biggest risk:
 5. **Proactively reorganize:** If modifications will cause overflow, automatically split content and inform the user. Don't wait to be asked
 
 **When adding images to existing slides:** Move image to new slide or reduce other content first. Never add images without checking if existing content already fills the viewport.
+</mode_c_modification_rules>
 
----
-
-## Phase 1: Content Discovery (New Presentations)
+<phase_1_content_discovery>
+Phase 1: Content Discovery (New Presentations)
 
 **Ask ALL discovery questions (1–6 below) in one grouped interaction** so the user can answer them together. Use a structured question tool when available; otherwise ask them in one concise message instead of splitting them across many turns:
 
@@ -141,7 +155,8 @@ Will this deck use image files you will provide (folder, uploads, or links)? Opt
 
 If the user has draft content (bullets, doc, outline), ask them to **paste or attach** it in the same turn or immediately after Phase 1.
 
-### Step 1.2: Image Evaluation (if images provided)
+<image_evaluation>
+Step 1.2: Image Evaluation (if images provided)
 
 If **Question 6** was **No images** or the user has not supplied any image files yet → skip to Phase 2 (you may still ask them to add images later before Phase 3 if they change their mind).
 
@@ -153,14 +168,16 @@ If user provides an image folder:
 5. **Confirm the outline in one grouped follow-up** (structured question UI when available): "Does this slide outline and image selection look right?" Options: Looks good / Adjust images / Adjust outline
 
 **Logo in previews:** If a usable logo was identified, embed it (base64) into each style preview in Phase 2 — the user sees their brand styled three different ways.
+</image_evaluation>
+</phase_1_content_discovery>
 
----
-
-## Phase 2: Style Discovery
+<phase_2_style_discovery>
+Phase 2: Style Discovery
 
 **This is the "show, don't tell" phase.** Most people can't articulate design preferences in words.
 
-### Step 2.0: Style Preference First
+<style_preference_first>
+Step 2.0: Style Preference First
 
 Start from the **style preference captured in Phase 1**. Before asking the user how they want to choose, give a short recommendation list of **2-4 presets** that best match their preference, audience, and content.
 
@@ -178,8 +195,10 @@ Use this mapping as the starting point:
 Explain the recommendation briefly in concrete terms, for example: audience fit, energy level, brand tone, or content density.
 
 If the user already chose **"I already know the preset"** in Phase 1, skip Step 2.1 and go straight to the preset picker.
+</style_preference_first>
 
-### Step 2.1: Style Path
+<style_path>
+Step 2.1: Style Path
 
 Ask how they want to choose (header: "Style"):
 - "Pick from recommendations" (recommended) — Choose directly from the suggested presets
@@ -187,8 +206,10 @@ Ask how they want to choose (header: "Style"):
 - "I know what I want" — Pick from the full preset list directly
 
 **If direct selection:** Show preset picker and skip to Phase 3. Available presets are defined in [STYLE_PRESETS.md](STYLE_PRESETS.md).
+</style_path>
 
-### Step 2.2: Mood Selection (Guided Discovery)
+<mood_selection>
+Step 2.2: Mood Selection (Guided Discovery)
 
 Ask (header: "Vibe", multiSelect: true, max 2):
 What feeling should the audience have? Options:
@@ -198,8 +219,10 @@ What feeling should the audience have? Options:
 - Inspired/Moved — Emotional, memorable
 
 Use the user's style preference and recommended preset cluster to steer this question. If the preference already strongly determines the direction, keep the previews within that neighborhood instead of scattering across unrelated aesthetics.
+</mood_selection>
 
-### Step 2.3: Generate 3 Style Previews
+<style_previews>
+Step 2.3: Generate 3 Style Previews
 
 Based on mood **and the earlier style preference**, generate 3 distinct single-slide HTML previews showing typography, colors, animation, and overall aesthetic. Read [STYLE_PRESETS.md](STYLE_PRESETS.md) for available presets and their specifications.
 
@@ -215,17 +238,20 @@ Save previews under a **project-local** scratch folder (e.g. `.claude-design-sli
 Open each preview in the default browser when possible: **macOS** `open path/to/file.html`; **Linux** `xdg-open path/to/file.html`; **Windows** `start path\to\file.html`.
 
 When possible, keep at least **2 of the 3 previews** within the recommended preset family so the user sees relevant variations before they see outliers.
+</style_previews>
 
-### Step 2.4: User Picks
+<user_picks>
+Step 2.4: User Picks
 
 Ask (header: "Style"):
 Which style preview do you prefer? Options: Style A: [Name] / Style B: [Name] / Style C: [Name] / Mix elements
 
 If "Mix elements", ask for specifics.
+</user_picks>
+</phase_2_style_discovery>
 
----
-
-## Phase 3: Generate Presentation
+<phase_3_generate_presentation>
+Phase 3: Generate Presentation
 
 Generate the full presentation using content from Phase 1 (text, or text + curated images) and style from Phase 2.
 
@@ -241,7 +267,7 @@ If images were provided, the slide outline already incorporates them from Step 1
 
 **Key requirements:**
 - Single self-contained HTML file, all CSS/JS inline
-- Include the FULL contents of viewport-base.css in the `<style>` block
+- Include the FULL contents of viewport-base.css in the `&lt;style&gt;` block
 - **Preset fidelity:** Implement **Layout** and **Signature Elements** from [STYLE_PRESETS.md](STYLE_PRESETS.md) for the selected style. Vary structure slide-to-slide and preset-to-preset; avoid a **single repeated title-slide prototype** across all aesthetics (parent skill does not do that).
 - **Every slide** `section.slide` must have a stable `id`; movable content lives in `.slide-edit-layer` as `[data-slide-object][data-oid]` per [editor-runtime.md](editor-runtime.md)
 - **Deck slide list:** Never use a global `querySelectorAll('section.slide')` when a filmstrip clones slides — use only slides under the deck wrapper (e.g. `.slides-offset` + `:scope > section.slide`). See [html-template.md](html-template.md) §Regression guard.
@@ -249,21 +275,22 @@ If images were provided, the slide outline already incorporates them from Step 1
 - Use fonts from Fontshare or Google Fonts — never system fonts
 - Add detailed comments explaining each section
 - Every section needs a clear `/* === SECTION NAME === */` comment block
+</phase_3_generate_presentation>
 
----
-
-## Phase 4: PPT Conversion
+<phase_4_ppt_conversion>
+Phase 4: PPT Conversion
 
 When converting PowerPoint files:
 
-1. **Extract content** — Run `python3 scripts/extract-pptx.py <input.pptx> <output_dir>` (install python-pptx if needed: `pip install python-pptx`)
+1. **Extract content** — Run `python3 scripts/extract-pptx.py &lt;input.pptx&gt; &lt;output_dir&gt;` (install python-pptx if needed: `pip install python-pptx`)
 2. **Confirm with user** — Present extracted slide titles, content summaries, and image counts
 3. **Style selection** — Proceed to Phase 2 for style discovery
 4. **Generate HTML** — Convert to chosen style, preserving all text, images (from assets/), slide order, and speaker notes (as HTML comments)
+</phase_4_ppt_conversion>
+</quick_start>
 
----
-
-## Phase 5: Delivery
+<success_criteria>
+Phase 5: Delivery
 
 1. **Clean up** — Delete the temporary slide-previews folder (see Phase 2) if it exists
 2. **Smoke check (quick)** — Before handing off: open the file once; confirm **no in-slide scrolling** at ~1280×720; in edit mode, open **Pages**, reorder one slide and refresh — **no duplicate slides** (regression guard); **Export HTML** opens and runs standalone
@@ -273,23 +300,25 @@ When converting PowerPoint files:
    - Navigation: Arrow keys, Space, scroll/wheel (wheel disabled while edit mode on), click nav dots
    - **Edit mode:** `E` enters edit mode. **Hover the top-left** to reveal **Edit**, **Pages**, and (while editing) **Undo** / **Redo** / **Done**; controls hide after the pointer leaves (~400ms). **Done** (same cluster) exits edit mode — the **Edit** button label stays **Edit**. **Esc** blurs text first, then exits edit mode when not typing in a text box
    - **Pages** sidebar for thumbnails, reorder (drag rows), delete slides
-   - **Objects:** drag **⠿** to move; drag **corner resize** on selected objects to change width/height (text reflows); **Ctrl+click** multi-select (macOS: **Control** key); **Delete/Backspace** removes selection (confirm if 2+)
+   - **Objects:** drag **⠿** to move; hover **×** on an object or use **Delete/Backspace** to remove (multi-select confirms in English); drag **corner resize** on selected objects to change width/height (text reflows); **Ctrl+click** multi-select (macOS: **Control** key)
+   - **Add element:** **Add element** (top-left with Edit/Pages in edit mode) opens a menu: **Text**, **Image** (URL or placeholder), **Video** (URL + controls)
    - **Snap:** aligns to **slide center** and **other objects** — not to the outer slide edges
-   - **Text:** click text to type; floating toolbar for bold/italic/**font**/**size** (visible with caret, no need to select a range); **Ctrl+Z** / **Ctrl+Y** or **Ctrl+Shift+Z**; **Cmd+Z** / **Cmd+Y** / **Cmd+Shift+Z** on macOS when not typing in `contenteditable`
+   - **Text:** click text to type; floating toolbar: **B/I** plus **Font** · **Scale** · **Px** drawers (click to expand cards for families, scale steps, px presets + custom); **Ctrl+Z** / **Ctrl+Y** or **Ctrl+Shift+Z**; **Cmd+Z** / **Cmd+Y** / **Cmd+Shift+Z** on macOS when not typing in `contenteditable`
    - **Save** (`#btnSave`, top-left next to **Edit** / **Pages** when editing — same hover reveal) or **Ctrl+S** / **Cmd+S** saves the full deck structure to localStorage; **Export HTML** remains in the Pages sidebar and should strip transient edit state
    - How to customize: slide theme `:root` variables, **`--deck-chrome-*`** for edit UI (see [STYLE_PRESETS.md](STYLE_PRESETS.md) §Deck chrome tokens), font link, `.reveal` animations; keep `data-oid` unique when adding objects
+</success_criteria>
 
----
-
-## Supporting Files
+<supporting_files>
+Supporting Files
 
 | File | Purpose | When to Read |
 |------|---------|-------------|
 | [editor-runtime.md](editor-runtime.md) | DOM contract, undo types, snap rules, generator checklist | Phase 3 (before codegen) |
 | [examples/editable-deck-reference.html](examples/editable-deck-reference.html) | Working reference: full runtime in one file | Phase 3 (copy/adapt JS/CSS) |
-| [STYLE_PRESETS.md](STYLE_PRESETS.md) | 12 curated visual presets with colors, fonts, and signature elements | Phase 2 (style selection) |
+| [STYLE_PRESETS.md](STYLE_PRESETS.md) | 19 curated visual presets with colors, fonts, and signature elements | Phase 2 (style selection) |
 | [viewport-base.css](viewport-base.css) | Mandatory responsive CSS — copy into every presentation | Phase 3 (generation) |
 | [html-template.md](html-template.md) | HTML structure, integration with editable runtime | Phase 3 (generation) |
 | [animation-patterns.md](animation-patterns.md) | CSS/JS animation snippets and effect-to-feeling guide | Phase 3 (generation) |
 | [scripts/extract-pptx.py](scripts/extract-pptx.py) | Python script for PPT content extraction | Phase 4 (conversion) |
 | [README.md](README.md) | Bilingual extended overview, comparison table, troubleshooting | Optional (users / maintainers) |
+</supporting_files>

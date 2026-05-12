@@ -303,6 +303,7 @@ class SlideBuilder:
         self.objects.append(
             f'''    <div class="slide-object reveal {cls}" data-slide-object data-oid="{oid}" data-object-type="text" style="{style}">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false">{html}</div>
     </div>'''
@@ -314,6 +315,7 @@ class SlideBuilder:
         self.objects.append(
             f'''    <div class="slide-object reveal {cls}" data-slide-object data-oid="{oid}" data-object-type="graphic" style="{style}">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
+      <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-graphic">{inner}</div>
     </div>'''
@@ -1390,6 +1392,325 @@ PRESETS = [
     }
 """,
         google_url="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Source+Serif+4:wght@400;600&display=swap",
+    ),
+    Preset(
+        slug="soft-editorial",
+        title="Soft Editorial",
+        family="soft",
+        light_chrome=True,
+        accent="#7d9b76",
+        root_lines="""      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Nunito Sans', sans-serif;
+      --slide-bg-deep: #f4f0e8;
+      --slide-bg-gradient: linear-gradient(165deg, #f4f0e8 0%, #ebe4d6 55%, #f7f4ec 100%);
+      --text-primary: #2d2822;
+      --text-secondary: #4f4a42;
+      --text-muted: #7a7268;
+      --text-on-accent: #f4f0e8;
+      --accent: #7d9b76;
+      --surface: rgba(255, 255, 255, 0.78);
+      --surface-strong: rgba(125, 155, 118, 0.1);
+      --line: rgba(45, 40, 34, 0.1);
+      --panel-shadow: 0 14px 36px rgba(45, 40, 34, 0.08);
+""",
+        theme_css="""
+    .slide { background: var(--slide-bg-gradient); }
+    .slide::before {
+      content: "";
+      position: absolute;
+      right: 10%;
+      top: 12%;
+      width: 32%;
+      height: 48%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,180,184,0.38), transparent 70%);
+      z-index: 0;
+    }
+    .slide::after {
+      content: "";
+      position: absolute;
+      left: 8%;
+      bottom: 16%;
+      width: 24%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), rgba(237, 220, 140, 0.9));
+      z-index: 0;
+    }
+    .hero-graphic .slide-object-graphic {
+      background: linear-gradient(135deg, rgba(125,155,118,0.22), rgba(237,220,140,0.16));
+      border: 1px solid rgba(45, 40, 34, 0.08);
+    }
+    .hero-title .slide-object-text { font-style: italic; }
+""",
+        google_url="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Nunito+Sans:wght@400;600&display=swap",
+    ),
+    Preset(
+        slug="signal-gold",
+        title="Signal",
+        family="bold",
+        light_chrome=False,
+        accent="#c9a227",
+        root_lines="""      --font-display: 'Libre Baskerville', serif;
+      --font-body: 'Source Sans 3', sans-serif;
+      --slide-bg-deep: #0b1220;
+      --slide-bg-gradient: linear-gradient(155deg, #0f172a 0%, #0b1220 50%, #111827 100%);
+      --text-primary: #e8e4dc;
+      --text-secondary: #b8b4ac;
+      --text-muted: #8a8680;
+      --text-on-accent: #0b1220;
+      --accent: #c9a227;
+      --surface: rgba(15, 23, 42, 0.72);
+      --surface-strong: rgba(201, 162, 39, 0.1);
+      --line: rgba(232, 228, 220, 0.12);
+      --panel-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+""",
+        theme_css="""
+    .slide { background: var(--slide-bg-gradient); }
+    .slide::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--accent), transparent);
+      z-index: 1;
+      opacity: 0.85;
+    }
+    .hero-graphic .slide-object-graphic {
+      background:
+        radial-gradient(circle at 40% 35%, rgba(201,162,39,0.2), transparent 55%),
+        linear-gradient(135deg, rgba(15,23,42,0.9), rgba(11,18,32,0.95));
+      border: 1px solid rgba(201, 162, 39, 0.25);
+    }
+    .section-number .slide-object-text { color: var(--accent); }
+""",
+        google_url="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Source+Sans+3:wght@400;600&display=swap",
+    ),
+    Preset(
+        slug="studio-volt",
+        title="Studio",
+        family="cyber",
+        light_chrome=False,
+        accent="#f5e000",
+        root_lines="""      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+      --slide-bg-deep: #050505;
+      --slide-bg-gradient: #050505;
+      --text-primary: #f5e000;
+      --text-secondary: #e8e088;
+      --text-muted: #a39e5c;
+      --text-on-accent: #050505;
+      --accent: #f5e000;
+      --surface: rgba(12, 12, 12, 0.88);
+      --surface-strong: rgba(245, 224, 0, 0.08);
+      --line: rgba(245, 224, 0, 0.2);
+      --panel-shadow: 0 0 40px rgba(245, 224, 0, 0.06);
+""",
+        theme_css="""
+    .slide { background: var(--slide-bg-gradient); }
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(245,224,0,0.04) 1px, transparent 1px);
+      background-size: 100% clamp(28px, 4vh, 44px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero-graphic .slide-object-graphic {
+      background: linear-gradient(135deg, rgba(245,224,0,0.95), rgba(245,224,0,0.15));
+      border: 2px solid rgba(245, 224, 0, 0.5);
+      box-shadow: 0 0 30px rgba(245, 224, 0, 0.15);
+    }
+    .hero-title .slide-object-text { letter-spacing: 0.02em; }
+""",
+        google_url="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600&family=Bebas+Neue&display=swap",
+    ),
+    Preset(
+        slug="monochrome-ledger",
+        title="Monochrome",
+        family="minimal",
+        light_chrome=True,
+        accent="#111111",
+        root_lines="""      --font-display: 'Lora', serif;
+      --font-body: 'Jost', sans-serif;
+      --slide-bg-deep: #f5f3eb;
+      --slide-bg-gradient: #f5f3eb;
+      --text-primary: #111111;
+      --text-secondary: #3a3a3a;
+      --text-muted: #6b6b6b;
+      --text-on-accent: #f5f3eb;
+      --accent: #111111;
+      --surface: rgba(255, 255, 255, 0.85);
+      --surface-strong: rgba(17, 17, 17, 0.04);
+      --line: rgba(17, 17, 17, 0.12);
+      --panel-shadow: 0 12px 28px rgba(17, 17, 17, 0.06);
+""",
+        theme_css="""
+    .slide { background: var(--slide-bg-gradient); }
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(17,17,17,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(17,17,17,0.04) 1px, transparent 1px);
+      background-size: clamp(24px, 3vw, 40px) clamp(24px, 3vw, 40px);
+      z-index: 0;
+      opacity: 0.5;
+    }
+    .hero-graphic .slide-object-graphic {
+      background: repeating-linear-gradient(
+        -45deg,
+        #111,
+        #111 2px,
+        #f5f3eb 2px,
+        #f5f3eb 6px
+      );
+      border: 2px solid #111;
+    }
+""",
+        google_url="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Lora:wght@500;700&display=swap",
+    ),
+    Preset(
+        slug="neo-grid-yellow",
+        title="Neo-Grid Bold",
+        family="minimal",
+        light_chrome=True,
+        accent="#d4e817",
+        root_lines="""      --font-display: 'Archivo Black', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --slide-bg-deep: #f7f5f0;
+      --slide-bg-gradient: #f7f5f0;
+      --text-primary: #0f0f0f;
+      --text-secondary: #2d2d2d;
+      --text-muted: #5c5c5c;
+      --text-on-accent: #0f0f0f;
+      --accent: #d4e817;
+      --surface: rgba(255, 255, 255, 0.92);
+      --surface-strong: rgba(212, 232, 23, 0.2);
+      --line: rgba(15, 15, 15, 0.14);
+      --panel-shadow: 8px 8px 0 rgba(15, 15, 15, 0.12);
+""",
+        theme_css="""
+    .slide { background: var(--slide-bg-gradient); }
+    .slide::after {
+      content: "";
+      position: absolute;
+      right: 8%;
+      top: 10%;
+      width: 18%;
+      height: 8px;
+      background: var(--accent);
+      z-index: 1;
+      box-shadow: 6px 6px 0 #0f0f0f;
+    }
+    .panel-card .slide-object-text,
+    .workflow-card .slide-object-text,
+    .arch-card .slide-object-text,
+    .metric-box .slide-object-text {
+      border: 2px solid #0f0f0f;
+      border-radius: 0;
+      box-shadow: 6px 6px 0 rgba(15, 15, 15, 0.1);
+    }
+    .hero-graphic .slide-object-graphic {
+      background: linear-gradient(135deg, var(--accent), rgba(212,232,23,0.35));
+      border: 3px solid #0f0f0f;
+      border-radius: 0;
+    }
+""",
+        google_url="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:wght@400;500&display=swap",
+    ),
+    Preset(
+        slug="vellum-navy",
+        title="Vellum",
+        family="editorial",
+        light_chrome=False,
+        accent="#5b8f96",
+        root_lines="""      --font-display: 'Cormorant', serif;
+      --font-body: 'Literata', serif;
+      --slide-bg-deep: #0c1526;
+      --slide-bg-gradient: linear-gradient(160deg, #0f1c2e 0%, #0c1526 55%, #0a1220 100%);
+      --text-primary: #e6e2d8;
+      --text-secondary: #c4bfb4;
+      --text-muted: #8f8a80;
+      --text-on-accent: #0c1526;
+      --accent: #5b8f96;
+      --surface: rgba(18, 32, 52, 0.75);
+      --surface-strong: rgba(91, 143, 150, 0.12);
+      --line: rgba(230, 226, 216, 0.12);
+      --panel-shadow: 0 20px 44px rgba(0, 0, 0, 0.35);
+""",
+        theme_css="""
+    .slide { background: var(--slide-bg-gradient); }
+    .slide::before {
+      content: "";
+      position: absolute;
+      right: 14%;
+      bottom: 12%;
+      width: 36%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      z-index: 0;
+    }
+    .hero-title .slide-object-text { font-style: italic; color: #f0ead8; }
+    .hero-graphic .slide-object-graphic {
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(91,143,150,0.25), transparent 60%),
+        linear-gradient(145deg, rgba(12,21,38,0.95), rgba(15,28,46,0.85));
+      border: 1px solid rgba(91, 143, 150, 0.35);
+    }
+""",
+        google_url="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,600;1,400&family=Literata:wght@400;600&display=swap",
+    ),
+    Preset(
+        slug="cobalt-grid",
+        title="Cobalt Grid",
+        family="cyber",
+        light_chrome=True,
+        accent="#2563eb",
+        root_lines="""      --font-display: 'Fraunces', serif;
+      --font-body: 'IBM Plex Sans', sans-serif;
+      --slide-bg-deep: #f0f4fa;
+      --slide-bg-gradient: linear-gradient(180deg, #f8fafc 0%, #e8f0fc 100%);
+      --text-primary: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --text-on-accent: #f8fafc;
+      --accent: #2563eb;
+      --surface: rgba(255, 255, 255, 0.88);
+      --surface-strong: rgba(37, 99, 235, 0.08);
+      --line: rgba(15, 23, 42, 0.1);
+      --panel-shadow: 0 14px 32px rgba(37, 99, 235, 0.08);
+""",
+        theme_css="""
+    .slide { background: var(--slide-bg-gradient); }
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(37,99,235,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(37,99,235,0.07) 1px, transparent 1px);
+      background-size: clamp(22px, 3vw, 36px) clamp(22px, 3vw, 36px);
+      z-index: 0;
+    }
+    .hero-title .slide-object-text { font-style: italic; color: #1e3a8a; }
+    .hero-graphic .slide-object-graphic {
+      background:
+        linear-gradient(135deg, rgba(37,99,235,0.12), rgba(59,130,246,0.06)),
+        repeating-linear-gradient(
+          -12deg,
+          transparent,
+          transparent 8px,
+          rgba(37,99,235,0.06) 8px,
+          rgba(37,99,235,0.06) 9px
+        );
+      border: 1px solid rgba(37, 99, 235, 0.25);
+    }
+""",
+        google_url="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;600&display=swap",
     ),
 ]
 

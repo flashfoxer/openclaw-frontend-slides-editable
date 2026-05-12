@@ -24,7 +24,7 @@ Fixed UI (progress bar, nav dots, **edit top bar**, sidebar, RTE, object handles
 
 Slide **content** theme uses separate tokens (e.g. `--slide-bg-deep`, `--slide-bg-gradient`, `--text-primary` in the reference). **Phase 3 merge order:** `viewport-base.css` → preset `:root` (slide theme) → map or define `--deck-chrome-*` → runtime chrome CSS (using `var(--deck-chrome-*)` only).
 
-**Surfaces that must not steal object clicks:** Mark chrome containers with `data-deck-chrome-surface` where focus/click routing matters; the reference uses it on `#rteToolbar` and `#deckEditChrome` for documentation and optional scripting.
+**Surfaces that must not steal object clicks:** Mark chrome containers with `data-deck-chrome-surface` where focus/click routing matters; the reference uses it on `#rteToolbar`, `#deckEditChrome`, and `#deckAddElementMenu` for documentation and optional scripting. `#btnAddElement` is excluded from slide-object hit testing via `isDeckChromeNode()`.
 
 ## DOM contract
 
@@ -47,7 +47,7 @@ Slide **content** theme uses separate tokens (e.g. `--slide-bg-deep`, `--slide-b
 
 ### Slide objects (`data-slide-object`)
 
-Every independently movable / selectable block **must** include a move handle and a resize handle (reference injects resize if missing via `ensureResizeHandles` on load / edit-on).
+Every independently movable / selectable block **must** include a move handle and a resize handle. The reference injects missing controls via **`ensureObjectControls()`** on load, when entering edit mode, after undo restores objects, and after loading from `localStorage`. That helper adds **`.slide-object-resize`** and **`.slide-object-delete`** (×) when absent.
 
 ```html
 <div
@@ -58,6 +58,7 @@ Every independently movable / selectable block **must** include a move handle an
   style="position:absolute;left:8%;top:15%;width:80%;min-height:1em;"
 >
   <button type="button" class="slide-object-move" aria-label="Move object" title="Drag to move">⠿</button>
+  <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
   <button type="button" class="slide-object-resize" aria-label="Resize"></button>
   <div class="slide-object-text" contenteditable="false">Editable text</div>
 </div>
@@ -67,7 +68,7 @@ Every independently movable / selectable block **must** include a move handle an
 |-----------|----------|---------|
 | `data-slide-object` | yes | Marker for editor |
 | `data-oid` | yes | Unique string in the **whole document** (e.g. `s2-o1`) |
-| `data-object-type` | recommended | `text` (inner `.slide-object-text`) or `graphic` (no rich text; whole box draggable) |
+| `data-object-type` | recommended | `text` (inner `.slide-object-text`), `graphic` (CSS/decorative box), `image` (`.slide-object-graphic` with `<img>` — click on media selects only; drag via ⠿), or `video` (`.slide-object-graphic` with `<video controls>` — same interaction) |
 
 **Text reflow:** `.slide-object-text` should use `width: 100%`, `box-sizing: border-box`, `overflow-wrap: anywhere` (and/or `word-break`) so changing the object’s width via resize updates line breaks without inner scroll.
 
@@ -77,6 +78,7 @@ Every independently movable / selectable block **must** include a move handle an
 <div class="slide-object" data-slide-object data-oid="s0-o2" data-object-type="graphic"
      style="position:absolute;left:50%;top:40%;width:200px;height:120px;">
   <button type="button" class="slide-object-move" aria-label="Move object">⠿</button>
+  <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
   <button type="button" class="slide-object-resize" aria-label="Resize"></button>
   <div class="slide-object-graphic">
     <img src="assets/x.png" alt="" style="max-height:min(40vh,300px);width:100%;object-fit:contain;pointer-events:none;">
@@ -93,6 +95,7 @@ The snippet uses fixed `px` for brevity; when **generating** new decks, prefer *
 Controls are grouped in a **fixed top-left** container. **Opacity / pointer-events:** **Edit**, **Pages**, and (in edit mode) **#deckEditChrome** (Undo / Redo / Done) use the same **hover-reveal** pattern: moving the pointer into `#deckLeftHover` adds a `.show` class; `mouseleave` + ~400ms delay removes it (including while edit mode is on), matching the original “corner to reveal” behavior.
 
 - **Edit** — enters edit mode only (label stays **Edit**; do not duplicate **Done** on this button).
+- **Add element** — `#btnAddElement` (same hover-reveal row as **Save** in edit mode). Opens `#deckAddElementMenu` to insert **Text**, **Image** (URL prompt or empty placeholder), or **Video** (URL + `controls`) on the **current** slide with undo support.
 - **Done** — only on `#deckEditChrome`; exits edit mode.
 - **Undo** / **Redo** — icon buttons, `disabled` when stack empty; `HistoryStack` notifies via `onChange` callback.
 
@@ -105,7 +108,7 @@ Controls are grouped in a **fixed top-left** container. **Opacity / pointer-even
 ### Edit mode CSS hooks
 
 - `body.deck-edit-mode` — editor active; reference shows handles, sidebar, disables wheel navigation.
-- `.slide-object.is-selected` — selected object (multi-select: multiple elements have this class). **Resize handle** is visible only when selected (`body.deck-edit-mode .slide-object.is-selected .slide-object-resize`).
+- `.slide-object.is-selected` — selected object (multi-select: multiple elements have this class). **Resize handle** is visible only when selected (`body.deck-edit-mode .slide-object.is-selected .slide-object-resize`). **Delete (×)** shows on hover or when selected (`body.deck-edit-mode .slide-object:hover .slide-object-delete` and `.is-selected`).
 - `body.deck-sidebar-open` — reserve `padding-right` on slides container for the filmstrip.
 
 ## History command types (undo / redo)
@@ -129,10 +132,11 @@ The reference implementation uses a **command stack** with `undo()` / `redo()` a
 
 ## RTE (rich text toolbar)
 
+- The always-visible row is compact: **Bold**, **Italic**, and three **drawer triggers** (**Font** / **Scale** / **Px**) that expand a **card** below with the detailed buttons. Only one drawer open at a time; click the trigger again to close, **Escape** (when not typing in text) to close drawers, or pointerdown outside `#rteToolbar` to collapse. Triggers show a subtle **hint** outline when the current selection matches an option inside that drawer.
 - Toolbar `#rteToolbar` is shown when a `.slide-object-text[contenteditable="true"]` is **focused** or when the selection/caret is inside such an element (including **collapsed** caret — user can bold / change size without pre-selecting text).
-- **Font + size controls** use toolbar **buttons**, not a native `<select>`, so `mousedown` can `preventDefault()` and keep the text field focused while formatting applies.
-- **Inline styling** uses `_applyInlineStyle()` to wrap the current selection (or insert a styled zero-width span at a collapsed caret). `_applyFontSizeFactor()` writes `font-size: clamp(...)`; `_applyFontFamily()` writes `font-family: var(--font-body|--font-display)`.
-- **Bold / italic** state: toggle `.is-active` via `document.queryCommandState(...)` on `selectionchange` / after commands.
+- **Font + size controls** use toolbar **buttons**, not a native `<select>`, so `mousedown` can `preventDefault()` and keep the text field focused while formatting applies. Presets: **Body**, **Display**, plus **Serif** / **Sans** / **Mono** stacks; **Scale S–M–L–XL** uses wide-spaced factors and `clamp(...rem ...vw ...rem)` for viewport-safe body copy; **Px** applies fixed **`font-size` in px** (24 / 36 / 48 / 72 / 96); **Custom…** toggles an inline **number input (8–400) + Apply/Cancel** in the Px drawer (no `prompt()`, works in embedded browsers).
+- **Inline styling** uses `_applyInlineStyle()` to wrap the current selection (or insert a styled zero-width span at a collapsed caret). If the DOM selection is missing or outside the active text box, the reference **re-anchors** a collapsed range at the **end** of the text field so font/size always applies. `_applyFontSizeFactor()` writes `font-size: clamp(...)`; `_applyFontSizePx()` writes `font-size: Npx`; `_applyFontFamily()` writes `font-family: ...`.
+- **Bold / italic** state: toggle `.is-active` via `document.queryCommandState(...)` on `selectionchange` / after commands. Font / size buttons also toggle `.is-active` using computed `font-family` / `font-size` heuristics at the caret.
 - **Focus handoff:** `focusout` should not commit/close editing when focus moves into `#rteToolbar`; check `activeElement` / `relatedTarget` against the toolbar before setting `contenteditable="false"`.
 
 ## Keyboard & interaction summary
@@ -144,11 +148,15 @@ The reference implementation uses a **command stack** with `undo()` / `redo()` a
 | Multi-select toggle | `Ctrl` + click object (macOS: **Control** key, not Cmd) |
 | Single select | Click object without Ctrl |
 | Clear selection | Click slide background (empty area) |
+| Delete object (button) | **×** on object (hover or when selected); single-object delete, undoable |
+| Delete / Backspace | Removes selected objects (confirm if 2+); not while typing in `contenteditable` |
+| Add element | **Add element** (edit mode, top-left row) → Text / Image / Video on current slide |
 | Undo / Redo | **Buttons** in `#deckEditChrome` (hover top-left cluster); or `Ctrl+Z` / **`Ctrl+Y` or `Ctrl+Shift+Z`** when edit mode and not typing in `contenteditable`; macOS **`Cmd+Z`**, **`Cmd+Shift+Z`**, **`Cmd+Y`** |
 | Save | **Save** button in `#deckLeftHover` (row with Edit/Pages, edit mode only, hover-revealed) or `Ctrl+S` / **Cmd+S** |
 | Bold / italic / font / size | Floating `#rteToolbar` when text is focused |
 | Save to localStorage | `Ctrl+S` saves the full `.slides-offset` structure, not just per-slide inner HTML |
 | Export HTML | Sidebar button in reference; export should strip edit-mode / selected-state classes |
+| Delete slide | Pages filmstrip **×** — confirms with `Delete slide?`; at least one slide must remain (`Keep at least one slide.`) |
 
 ## Text editing `focusout` / history
 
@@ -159,7 +167,7 @@ The reference implementation uses a **command stack** with `undo()` / `redo()` a
 
 1. Every slide has unique `id="slide-N"`.
 2. Movable content sits in `.slide-edit-layer` as `.slide-object` with unique `data-oid`.
-3. Text objects: `.slide-object-move` + `.slide-object-resize` + `.slide-object-text` with `contenteditable="false"` until focused.
+3. Text objects: `.slide-object-move` + `.slide-object-delete` + `.slide-object-resize` + `.slide-object-text` with `contenteditable="false"` until focused (or rely on `ensureObjectControls()` to inject missing chrome controls).
 4. Include full `viewport-base.css` in `<style>`.
 5. Define **slide theme** and **`--deck-chrome-*`** on `:root`; chrome CSS uses variables only.
 6. Copy **deck runtime** from `examples/editable-deck-reference.html` (CSS + JS) or inline equivalent — keep `STORAGE_KEY` / deck id meta consistent if user needs multiple files.

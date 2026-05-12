@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-Hans" data-deck-id="preset-pastel-geometry">
+<html lang="zh-Hans" data-deck-id="preset-monochrome-ledger">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pastel Geometry · README Preset Deck</title>
+  <title>Monochrome · README Preset Deck</title>
   <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
   <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,700&f[]=clash-display@600&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&family=Lora:wght@500;700&display=swap" rel="stylesheet">
   <style>
     /* === viewport-base.css (full) === */
     /* ===========================================
@@ -61,25 +61,25 @@
       --slide-padding: clamp(1rem, 4vw, 4rem);
       --content-gap: clamp(0.5rem, 2vw, 2rem);
       --element-gap: clamp(0.25rem, 1vw, 1rem);
-      --font-display: 'Plus Jakarta Sans', sans-serif;
-      --font-body: 'Plus Jakarta Sans', sans-serif;
-      --slide-bg-deep: #c8d9e6;
-      --slide-bg-gradient: #c8d9e6;
-      --text-primary: #1a1a1a;
-      --text-secondary: #4f5961;
-      --text-muted: #6f7d88;
-      --text-on-accent: #ffffff;
-      --accent: #7c6aad;
-      --surface: rgba(250, 249, 247, 0.92);
-      --surface-strong: rgba(124, 106, 173, 0.08);
-      --line: rgba(26, 26, 26, 0.1);
-      --panel-shadow: 0 18px 40px rgba(38, 53, 67, 0.12);
+      --font-display: 'Lora', serif;
+      --font-body: 'Jost', sans-serif;
+      --slide-bg-deep: #f5f3eb;
+      --slide-bg-gradient: #f5f3eb;
+      --text-primary: #111111;
+      --text-secondary: #3a3a3a;
+      --text-muted: #6b6b6b;
+      --text-on-accent: #f5f3eb;
+      --accent: #111111;
+      --surface: rgba(255, 255, 255, 0.85);
+      --surface-strong: rgba(17, 17, 17, 0.04);
+      --line: rgba(17, 17, 17, 0.12);
+      --panel-shadow: 0 12px 28px rgba(17, 17, 17, 0.06);
 
       --deck-chrome-bg: rgba(255, 255, 255, 0.92);
       --deck-chrome-border: rgba(15, 23, 42, 0.12);
       --deck-chrome-text: #0f172a;
       --deck-chrome-muted: #64748b;
-      --deck-chrome-accent: #7c6aad;
+      --deck-chrome-accent: #111111;
       --deck-chrome-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
       --deck-chrome-surface: rgba(241, 245, 249, 0.95);
     }
@@ -165,7 +165,7 @@
       html { scroll-behavior: auto; }
     }
 
-    /* === theme (Pastel Geometry) === */
+    /* === theme (Monochrome) === */
 
     .slide > .slide-bg {
       position: absolute;
@@ -358,37 +358,27 @@
       }
     }
 
-    .slide { background: #c8d9e6; }
+    .slide { background: var(--slide-bg-gradient); }
     .slide::before {
       content: "";
       position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: min(78vw, 960px);
-      height: min(78vh, 640px);
-      background: #faf9f7;
-      border-radius: 28px;
-      box-shadow: 0 18px 48px rgba(38, 53, 67, 0.12);
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(17,17,17,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(17,17,17,0.04) 1px, transparent 1px);
+      background-size: clamp(24px, 3vw, 40px) clamp(24px, 3vw, 40px);
       z-index: 0;
-    }
-    .slide::after {
-      content: "";
-      position: absolute;
-      right: calc(50% - min(78vw, 960px) / 2 + 16px);
-      top: 50%;
-      transform: translateY(-50%);
-      width: clamp(16px, 2vw, 24px);
-      height: min(52vh, 420px);
-      border-radius: 999px;
-      background:
-        linear-gradient(180deg, #f0b4d4 0%, #f0b4d4 16%, transparent 16%, transparent 22%, #a8d4c4 22%, #a8d4c4 46%, transparent 46%, transparent 54%, #7c6aad 54%, #7c6aad 100%);
-      z-index: 1;
+      opacity: 0.5;
     }
     .hero-graphic .slide-object-graphic {
-      background: linear-gradient(180deg, rgba(124,106,173,0.16), rgba(168,212,196,0.12));
-      border: 1px solid rgba(26,26,26,0.08);
-      border-radius: 28px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #111,
+        #111 2px,
+        #f5f3eb 2px,
+        #f5f3eb 6px
+      );
+      border: 2px solid #111;
     }
 
     body {
@@ -925,31 +915,31 @@
 <section class="slide slide-cover" id="slide-0">
   <div class="slide-bg" aria-hidden="true"></div>
   <div class="slide-edit-layer">
-    <div class="slide-object reveal eyebrow" data-slide-object data-oid="s0-o0" data-object-type="text" style="left:12%;top:12%;width:24%;">
+    <div class="slide-object reveal eyebrow" data-slide-object data-oid="s0-o0" data-object-type="text" style="left:11%;top:11%;width:24%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
-      <div class="slide-object-text" contenteditable="false">Pastel Geometry / README deck</div>
+      <div class="slide-object-text" contenteditable="false">Monochrome / README deck</div>
     </div>
-    <div class="slide-object reveal hero-title" data-slide-object data-oid="s0-o1" data-object-type="text" style="left:12%;top:19%;width:32%;">
+    <div class="slide-object reveal hero-title" data-slide-object data-oid="s0-o1" data-object-type="text" style="left:11%;top:18%;width:30%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false">Frontend Slides<br>Editable</div>
     </div>
-    <div class="slide-object reveal hero-subtitle" data-slide-object data-oid="s0-o2" data-object-type="text" style="left:12%;top:53%;width:24%;">
+    <div class="slide-object reveal hero-subtitle" data-slide-object data-oid="s0-o2" data-object-type="text" style="left:11%;top:54%;width:22%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false">中文为主，英文做轻量标签。可编辑 runtime 保留在单文件 HTML 里。</div>
     </div>
-    <div class="slide-object reveal metric-box" data-slide-object data-oid="s0-o3" data-object-type="text" style="left:12%;top:73%;width:40%;height:14%;">
+    <div class="slide-object reveal metric-box" data-slide-object data-oid="s0-o3" data-object-type="text" style="left:11%;top:73%;width:38%;height:14%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><div class="metric-grid"><div class="metric"><span class="metric-value">Preset</span><span class="metric-note">每套版式都保留自己的布局和签名元素</span></div><div class="metric"><span class="metric-value">Edit</span><span class="metric-note">拖拽 缩放 多选 Pages Undo / Redo</span></div><div class="metric"><span class="metric-value">Ship</span><span class="metric-note">Ctrl+S 保存结构，Export HTML 清理导出</span></div></div></div>
     </div>
-    <div class="slide-object reveal hero-graphic" data-slide-object data-oid="s0-o4" data-object-type="graphic" style="left:70%;top:18%;width:10%;height:56%;">
+    <div class="slide-object reveal hero-graphic" data-slide-object data-oid="s0-o4" data-object-type="graphic" style="left:63%;top:18%;width:14%;height:52%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
@@ -960,43 +950,43 @@
 <section class="slide slide-value" id="slide-1">
   <div class="slide-bg" aria-hidden="true"></div>
   <div class="slide-edit-layer">
-    <div class="slide-object reveal section-number" data-slide-object data-oid="s1-o0" data-object-type="text" style="left:12%;top:12%;width:20%;">
+    <div class="slide-object reveal section-number" data-slide-object data-oid="s1-o0" data-object-type="text" style="left:11%;top:11%;width:18%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false">01 / Fork logic</div>
     </div>
-    <div class="slide-object reveal section-title" data-slide-object data-oid="s1-o1" data-object-type="text" style="left:12%;top:19%;width:28%;">
+    <div class="slide-object reveal section-title" data-slide-object data-oid="s1-o1" data-object-type="text" style="left:11%;top:18%;width:26%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false">区别不在能不能生成，而在生成后还要不要继续改</div>
     </div>
-    <div class="slide-object reveal section-copy" data-slide-object data-oid="s1-o2" data-object-type="text" style="left:12%;top:45%;width:24%;">
+    <div class="slide-object reveal section-copy" data-slide-object data-oid="s1-o2" data-object-type="text" style="left:11%;top:44%;width:22%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false">README 把它定义成 <strong>frontend-slides</strong> 的可编辑分支：保留 style discovery、viewport discipline 与 PPT conversion，同时加入完整浏览器编辑 runtime。</div>
     </div>
-    <div class="slide-object reveal panel-card accent-card" data-slide-object data-oid="s1-o3" data-object-type="text" style="left:47%;top:19%;width:16%;height:21%;">
+    <div class="slide-object reveal panel-card accent-card" data-slide-object data-oid="s1-o3" data-object-type="text" style="left:50%;top:18%;width:15%;height:20%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="label">Parent</span><span class="title">只读更轻</span><span class="body">接近定稿、体积敏感、只需要展示时，更适合父 skill。</span></div>
     </div>
-    <div class="slide-object reveal panel-card" data-slide-object data-oid="s1-o4" data-object-type="text" style="left:66%;top:19%;width:16%;height:21%;">
+    <div class="slide-object reveal panel-card" data-slide-object data-oid="s1-o4" data-object-type="text" style="left:68%;top:18%;width:15%;height:20%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="label">Editable</span><span class="title">继续改布局</span><span class="body">客户反馈、团队评审、内容常变时，更适合这个分支。</span></div>
     </div>
-    <div class="slide-object reveal panel-card" data-slide-object data-oid="s1-o5" data-object-type="text" style="left:47%;top:46%;width:16%;height:21%;">
+    <div class="slide-object reveal panel-card" data-slide-object data-oid="s1-o5" data-object-type="text" style="left:50%;top:44%;width:15%;height:20%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="label">Runtime</span><span class="title">对象级编辑</span><span class="body">拖拽、缩放、富文本、Pages、历史记录都保留在文件里。</span></div>
     </div>
-    <div class="slide-object reveal panel-card" data-slide-object data-oid="s1-o6" data-object-type="text" style="left:66%;top:46%;width:16%;height:21%;">
+    <div class="slide-object reveal panel-card" data-slide-object data-oid="s1-o6" data-object-type="text" style="left:68%;top:44%;width:15%;height:20%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
@@ -1007,43 +997,43 @@
 <section class="slide slide-workflow" id="slide-2">
   <div class="slide-bg" aria-hidden="true"></div>
   <div class="slide-edit-layer">
-    <div class="slide-object reveal section-number" data-slide-object data-oid="s2-o0" data-object-type="text" style="left:12%;top:12%;width:20%;">
+    <div class="slide-object reveal section-number" data-slide-object data-oid="s2-o0" data-object-type="text" style="left:11%;top:11%;width:18%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false">02 / Workflow</div>
     </div>
-    <div class="slide-object reveal section-title" data-slide-object data-oid="s2-o1" data-object-type="text" style="left:12%;top:19%;width:30%;">
+    <div class="slide-object reveal section-title" data-slide-object data-oid="s2-o1" data-object-type="text" style="left:11%;top:18%;width:28%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false">先做 discovery，再选 preset，再把最后一轮修改留给浏览器</div>
     </div>
-    <div class="slide-object reveal workflow-card" data-slide-object data-oid="s2-o2" data-object-type="text" style="left:47%;top:19%;width:16%;height:16%;">
+    <div class="slide-object reveal workflow-card" data-slide-object data-oid="s2-o2" data-object-type="text" style="left:50%;top:18%;width:15%;height:15%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="step-index">01</span><span class="title">成组 discovery</span><span class="body">目标、页数、内容、风格、编辑范围、图片素材一次问清。</span></div>
     </div>
-    <div class="slide-object reveal workflow-card" data-slide-object data-oid="s2-o3" data-object-type="text" style="left:66%;top:19%;width:16%;height:16%;">
+    <div class="slide-object reveal workflow-card" data-slide-object data-oid="s2-o3" data-object-type="text" style="left:68%;top:18%;width:15%;height:15%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="step-index">02</span><span class="title">先缩小风格范围</span><span class="body">根据 style preference、受众和内容先收敛 2-4 个 preset。</span></div>
     </div>
-    <div class="slide-object reveal workflow-card" data-slide-object data-oid="s2-o4" data-object-type="text" style="left:47%;top:40%;width:16%;height:16%;">
+    <div class="slide-object reveal workflow-card" data-slide-object data-oid="s2-o4" data-object-type="text" style="left:50%;top:38%;width:15%;height:15%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="step-index">03</span><span class="title">直选或看预览</span><span class="body">可以直接挑 preset，也可以先看预览再决定。</span></div>
     </div>
-    <div class="slide-object reveal workflow-card" data-slide-object data-oid="s2-o5" data-object-type="text" style="left:66%;top:40%;width:16%;height:16%;">
+    <div class="slide-object reveal workflow-card" data-slide-object data-oid="s2-o5" data-object-type="text" style="left:68%;top:38%;width:15%;height:15%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="step-index">04</span><span class="title">生成可编辑 deck</span><span class="body">单文件 HTML 交付时仍然保留 Pages、save/export 与 history。</span></div>
     </div>
-    <div class="slide-object reveal note-card accent-card" data-slide-object data-oid="s2-o6" data-object-type="text" style="left:47%;top:64%;width:35%;height:14%;">
+    <div class="slide-object reveal note-card accent-card" data-slide-object data-oid="s2-o6" data-object-type="text" style="left:50%;top:62%;width:33%;height:14%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
@@ -1054,47 +1044,47 @@
 <section class="slide slide-architecture" id="slide-3">
   <div class="slide-bg" aria-hidden="true"></div>
   <div class="slide-edit-layer">
-    <div class="slide-object reveal section-number" data-slide-object data-oid="s3-o0" data-object-type="text" style="left:12%;top:12%;width:22%;">
+    <div class="slide-object reveal section-number" data-slide-object data-oid="s3-o0" data-object-type="text" style="left:11%;top:11%;width:20%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false">03 / Runtime contract</div>
     </div>
-    <div class="slide-object reveal section-title" data-slide-object data-oid="s3-o1" data-object-type="text" style="left:12%;top:19%;width:30%;">
+    <div class="slide-object reveal section-title" data-slide-object data-oid="s3-o1" data-object-type="text" style="left:11%;top:18%;width:28%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false">真正不能丢的是结构契约、视口纪律和 preset identity</div>
     </div>
-    <div class="slide-object reveal arch-card" data-slide-object data-oid="s3-o2" data-object-type="text" style="left:47%;top:18%;width:16%;height:18%;">
+    <div class="slide-object reveal arch-card" data-slide-object data-oid="s3-o2" data-object-type="text" style="left:50%;top:18%;width:15%;height:18%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="label">DOM</span><span class="title">运行时契约</span><span class="body">`section.slide#id`、`.slide-edit-layer`、`[data-slide-object][data-oid]` 需要稳定。</span></div>
     </div>
-    <div class="slide-object reveal arch-card" data-slide-object data-oid="s3-o3" data-object-type="text" style="left:66%;top:18%;width:16%;height:18%;">
+    <div class="slide-object reveal arch-card" data-slide-object data-oid="s3-o3" data-object-type="text" style="left:68%;top:18%;width:15%;height:18%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="label">Deck root</span><span class="title">只枚举真实 slides</span><span class="body">查 slide 时必须限定 deck root，不能把 filmstrip clones 算进去。</span></div>
     </div>
-    <div class="slide-object reveal arch-card" data-slide-object data-oid="s3-o4" data-object-type="text" style="left:47%;top:41%;width:16%;height:18%;">
+    <div class="slide-object reveal arch-card" data-slide-object data-oid="s3-o4" data-object-type="text" style="left:50%;top:40%;width:15%;height:18%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="label">Viewport</span><span class="title">不滚动，放不下就拆页</span><span class="body">`100vh / 100dvh`、`clamp()`、内容过密就分拆到新 slide。</span></div>
     </div>
-    <div class="slide-object reveal arch-card" data-slide-object data-oid="s3-o5" data-object-type="text" style="left:66%;top:41%;width:16%;height:18%;">
+    <div class="slide-object reveal arch-card" data-slide-object data-oid="s3-o5" data-object-type="text" style="left:68%;top:40%;width:15%;height:18%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
       <div class="slide-object-text" contenteditable="false"><span class="label">Docs</span><span class="title">支撑文件按需读取</span><span class="body">`SKILL.md`、`STYLE_PRESETS.md`、`editor-runtime.md`、`html-template.md`。</span></div>
     </div>
-    <div class="slide-object reveal closing-note" data-slide-object data-oid="s3-o6" data-object-type="text" style="left:12%;top:69%;width:70%;height:12%;">
+    <div class="slide-object reveal closing-note" data-slide-object data-oid="s3-o6" data-object-type="text" style="left:11%;top:69%;width:72%;height:12%;">
       <button type="button" class="slide-object-move" aria-label="Move">⠿</button>
       <button type="button" class="slide-object-delete" aria-label="Delete object">×</button>
       <button type="button" class="slide-object-resize" aria-label="Resize"></button>
-      <div class="slide-object-text" contenteditable="false"><span class="title">Remember / 记住</span><span class="body">可编辑 runtime 是附加层，不是把所有 preset 压成一种模板。当前文件展示的是 <strong>Pastel Geometry</strong> 版本的 README deck，按 <strong>E</strong> 可继续编辑。</span></div>
+      <div class="slide-object-text" contenteditable="false"><span class="title">Remember / 记住</span><span class="body">可编辑 runtime 是附加层，不是把所有 preset 压成一种模板。当前文件展示的是 <strong>Monochrome</strong> 版本的 README deck，按 <strong>E</strong> 可继续编辑。</span></div>
     </div>
   </div>
 </section>
