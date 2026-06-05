@@ -24,8 +24,9 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+REFERENCE = ROOT / "examples" / "editable-deck-reference.html"
 SAMPLES = [
-    ROOT / "examples" / "editable-deck-reference.html",
+    REFERENCE,
     ROOT / "examples" / "generated" / "presets" / "bold-signal.html",
     ROOT / "examples" / "generated" / "presets" / "soft-editorial.html",
     ROOT / "examples" / "generated" / "presets" / "monochrome-ledger.html",
@@ -79,9 +80,11 @@ def sample_paths() -> list[Path]:
             ROOT / "examples" / "generated" / "presets" / "soft-editorial.html",
             ROOT / "examples" / "generated" / "presets" / "monochrome-ledger.html",
         ]
+    if matrix == "bounds":
+        return sorted((ROOT / "examples" / "generated" / "presets").glob("*.html"))
     if matrix == "all":
         return sorted((ROOT / "examples" / "generated" / "presets").glob("*.html"))
-    raise SystemExit("SMOKE_PRESET_MATRIX must be empty, 'ported', 'components', or 'all'")
+    raise SystemExit("SMOKE_PRESET_MATRIX must be empty, 'ported', 'components', 'bounds', or 'all'")
 
 
 def chrome_eval(chrome: str, html_path: Path, width: int, height: int, script: str) -> dict:
@@ -350,6 +353,422 @@ return {ok: hasComponentObjects && uniqueOids && selectedOrPresent && undoEnable
   beforeObjects, afterObjects, restoredObjects, restoredComponentized, undoDisabledAfter, undoAriaAfter, hasComponentObjects, uniqueOids, selectedOrPresent, undoEnabled, restored};
 """
 
+UNDO_REDO_CHAIN_SCRIPT = r"""
+window.confirm = () => true;
+const root = document.querySelector('.slides-offset');
+if (!root) throw new Error('missing slides root');
+const edit = document.getElementById('editToggle');
+if (!edit) throw new Error('missing Edit button');
+const undo = document.getElementById('btnUndo');
+const redo = document.getElementById('btnRedo');
+if (!undo || !redo) throw new Error('missing undo/redo buttons');
+const storageKey = 'editable-deck:' + (document.documentElement.getAttribute('data-deck-id') || 'default');
+localStorage.removeItem(storageKey);
+/* Enter edit mode */
+if (!document.body.classList.contains('deck-edit-mode')) {
+  edit.click();
+  await new Promise(r => setTimeout(r, 40));
+}
+const initialSlideCount = root.querySelectorAll(':scope > section.slide').length;
+const initialObjectCount = root.querySelectorAll('[data-slide-object]').length;
+const historyOps = [];
+const pointer = (target, type, x, y) => {
+  const EventCtor = window.PointerEvent || window.MouseEvent;
+  const event = new EventCtor(type, {
+    pointerId: 1,
+    pointerType: 'mouse',
+    isPrimary: true,
+    clientX: x,
+    clientY: y,
+    bubbles: true,
+    cancelable: true,
+    buttons: type === 'pointerup' ? 0 : 1,
+    button: 0
+  });
+  target.dispatchEvent(event);
+};
+/* Op 1: New page */
+const btnNew = document.getElementById('btnNewPage');
+if (!btnNew) throw new Error('missing New Page button');
+btnNew.click();
+await new Promise(r => setTimeout(r, 60));
+const afterNew = root.querySelectorAll(':scope > section.slide').length;
+const newPageAdded = afterNew === initialSlideCount + 1;
+if (newPageAdded) historyOps.push('newPage');
+/* Op 2: Copy first slide */
+const copyBtn = document.querySelector('[data-filmstrip-action="copy"]');
+if (!copyBtn) throw new Error('missing copy button');
+copyBtn.click();
+await new Promise(r => setTimeout(r, 60));
+const afterAdds = root.querySelectorAll(':scope > section.slide').length;
+const copyAdded = afterAdds === initialSlideCount + 2;
+if (copyAdded) historyOps.push('copy');
+/* Op 3: Move an object if one exists */
+const firstObj = root.querySelector('[data-slide-object]');
+let moveChanged = false;
+if (!firstObj) throw new Error('missing slide object for move test');
+const moveHandle = firstObj.querySelector('.slide-object-move');
+if (!moveHandle) throw new Error('missing move handle for move test');
+{
+  const r = firstObj.getBoundingClientRect();
+  const beforeLeft = firstObj.style.left;
+  const beforeTop = firstObj.style.top;
+  const startX = r.left + Math.min(12, Math.max(4, r.width / 2));
+  const startY = r.top + Math.min(12, Math.max(4, r.height / 2));
+  pointer(moveHandle, 'pointerdown', startX, startY);
+  await new Promise(r => setTimeout(r, 20));
+  pointer(document, 'pointermove', startX + 36, startY + 24);
+  await new Promise(r => setTimeout(r, 20));
+  pointer(document, 'pointerup', startX + 36, startY + 24);
+  await new Promise(r => setTimeout(r, 80));
+  moveChanged = firstObj.style.left !== beforeLeft || firstObj.style.top !== beforeTop;
+  if (moveChanged) historyOps.push('move');
+}
+/* Op 4: Delete the moved object with Backspace */
+const deleteBefore = root.querySelectorAll('[data-slide-object]').length;
+const selectRect = firstObj.getBoundingClientRect();
+pointer(firstObj, 'pointerdown', selectRect.left + selectRect.width / 2, selectRect.top + Math.min(10, Math.max(4, selectRect.height / 2)));
+await new Promise(r => setTimeout(r, 40));
+const objectSelectedForDelete = firstObj.classList.contains('is-selected');
+document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Backspace', bubbles: true, cancelable: true}));
+await new Promise(r => setTimeout(r, 80));
+const deleteAfter = root.querySelectorAll('[data-slide-object]').length;
+const deleteChanged = deleteAfter === deleteBefore - 1;
+if (deleteChanged) historyOps.push('delete');
+const afterOps = root.querySelectorAll(':scope > section.slide').length;
+const afterOpsObjectCount = root.querySelectorAll('[data-slide-object]').length;
+/* Now undo until the structural state returns, with a small allowance for
+   incidental text/history records generated by focus handoff. */
+const undoStepsExpected = historyOps.length;
+let undoStepsRun = 0;
+for (let i = 0; i < 8; i++) {
+  const slideCountNow = root.querySelectorAll(':scope > section.slide').length;
+  const objectCountNow = root.querySelectorAll('[data-slide-object]').length;
+  if (slideCountNow === initialSlideCount && objectCountNow === initialObjectCount) break;
+  if (undo.disabled) break;
+  undo.click();
+  undoStepsRun += 1;
+  await new Promise(r => setTimeout(r, 40));
+}
+const afterUndoAll = root.querySelectorAll(':scope > section.slide').length;
+const afterUndoObjectCount = root.querySelectorAll('[data-slide-object]').length;
+const undoRestored = afterUndoAll === initialSlideCount && afterUndoObjectCount === initialObjectCount;
+/* Now redo until the post-operation state returns. */
+let redoStepsRun = 0;
+for (let i = 0; i < 8; i++) {
+  const slideCountNow = root.querySelectorAll(':scope > section.slide').length;
+  const objectCountNow = root.querySelectorAll('[data-slide-object]').length;
+  if (slideCountNow === afterOps && objectCountNow === afterOpsObjectCount) break;
+  if (redo.disabled) break;
+  redo.click();
+  redoStepsRun += 1;
+  await new Promise(r => setTimeout(r, 40));
+}
+const afterRedoAll = root.querySelectorAll(':scope > section.slide').length;
+const afterRedoObjectCount = root.querySelectorAll('[data-slide-object]').length;
+const redoMatches = afterRedoAll === afterOps && afterRedoObjectCount === afterOpsObjectCount;
+/* Verify IDs are still unique after redo */
+const ids = Array.from(root.querySelectorAll(':scope > section.slide')).map(s => s.id);
+const oids = Array.from(root.querySelectorAll('[data-oid]')).map(o => o.getAttribute('data-oid'));
+const uniqueIds = new Set(ids).size === ids.length;
+const uniqueOids = new Set(oids).size === oids.length;
+return {
+  ok: newPageAdded && copyAdded && moveChanged && objectSelectedForDelete && deleteChanged && undoRestored && redoMatches && uniqueIds && uniqueOids,
+  initialSlideCount, initialObjectCount, afterNew, afterAdds, afterOps, afterOpsObjectCount,
+  afterUndoAll, afterUndoObjectCount, afterRedoAll, afterRedoObjectCount,
+  newPageAdded, copyAdded, moveChanged, objectSelectedForDelete, deleteChanged,
+  undoRestored, redoMatches, uniqueIds, uniqueOids,
+  historyOps, undoStepsExpected, undoStepsRun, redoStepsRun
+};
+"""
+
+EXPORT_INTEGRITY_SCRIPT = r"""
+const root = document.querySelector('.slides-offset');
+if (!root) throw new Error('missing slides root');
+const edit = document.getElementById('editToggle');
+if (!edit) throw new Error('missing Edit button');
+const storageKey = 'editable-deck:' + (document.documentElement.getAttribute('data-deck-id') || 'default');
+localStorage.removeItem(storageKey);
+/* Enter edit mode and select an object */
+if (!document.body.classList.contains('deck-edit-mode')) {
+  edit.click();
+  await new Promise(r => setTimeout(r, 40));
+}
+const obj = root.querySelector('[data-slide-object]');
+if (obj) {
+  obj.click();
+  await new Promise(r => setTimeout(r, 40));
+}
+/* Save */
+const save = document.getElementById('btnSave');
+if (!save) throw new Error('missing Save button');
+save.click();
+const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
+/* Export */
+let exportedHtml = '';
+let blobReceived = false;
+const origCreate = URL.createObjectURL;
+URL.createObjectURL = (blob) => {
+  blobReceived = true;
+  /* Store blob for synchronous read after click */
+  window.__exportedBlob = blob;
+  return 'blob:export-integrity';
+};
+URL.revokeObjectURL = () => {};
+const origClick = HTMLAnchorElement.prototype.click;
+HTMLAnchorElement.prototype.click = function () {};
+const exportBtn = document.getElementById('btnExport');
+if (!exportBtn) throw new Error('missing Export button');
+exportBtn.click();
+await new Promise(r => setTimeout(r, 100));
+/* Read the captured blob */
+if (window.__exportedBlob) {
+  try {
+    exportedHtml = await window.__exportedBlob.text();
+  } catch(e) {
+    /* fallback: try arrayBuffer */
+    try {
+      const buf = await window.__exportedBlob.arrayBuffer();
+      exportedHtml = new TextDecoder().decode(buf);
+    } catch(e2) {}
+  }
+}
+URL.createObjectURL = origCreate;
+HTMLAnchorElement.prototype.click = origClick;
+if (!exportedHtml) return {ok: false, error: 'export produced no HTML', blobReceived};
+const exportedDoc = new DOMParser().parseFromString(exportedHtml, 'text/html');
+const slideCount = exportedDoc.querySelectorAll('section.slide').length;
+const originalCount = root.querySelectorAll(':scope > section.slide').length;
+const checks = {
+  hasDoctype: exportedHtml.includes('<!DOCTYPE html>'),
+  noEditMode: !exportedDoc.body.classList.contains('deck-edit-mode'),
+  noSidebarOpen: !exportedDoc.body.classList.contains('deck-sidebar-open'),
+  noSelected: !exportedDoc.querySelector('.slide-object.is-selected'),
+  noFileInput: !exportedDoc.querySelector('input[type="file"]'),
+  noFilmstripClones: !exportedDoc.querySelector('#filmstripList') || exportedDoc.querySelector('#filmstripList').children.length === 0,
+  hasAllSlides: slideCount === originalCount,
+  noEditableTrue: !exportedDoc.querySelector('[contenteditable="true"]'),
+  savedHasContent: typeof saved.deckHtml === 'string' && saved.deckHtml.length > 100,
+};
+const allPass = Object.values(checks).every(Boolean);
+return {ok: allPass, slideCount, originalCount, checks};
+"""
+
+RTE_SMOKE_SCRIPT = r"""
+/* B1: Bold/italic toggle, B2: Font family, B3: Font size,
+   B6: Backspace delete, B7: Add text element */
+const root = document.querySelector('.slides-offset');
+if (!root) throw new Error('missing slides root');
+const edit = document.getElementById('editToggle');
+if (!edit) throw new Error('missing Edit button');
+const undo = document.getElementById('btnUndo');
+if (!undo) throw new Error('missing undo button');
+const results = {};
+const pointer = (target, type, x, y) => {
+  const EventCtor = window.PointerEvent || window.MouseEvent;
+  target.dispatchEvent(new EventCtor(type, {
+    pointerId: 1,
+    pointerType: 'mouse',
+    isPrimary: true,
+    clientX: x,
+    clientY: y,
+    bubbles: true,
+    cancelable: true,
+    buttons: type === 'pointerup' ? 0 : 1,
+    button: 0
+  }));
+};
+const selectNodeContents = (el) => {
+  const range = document.createRange();
+  range.selectNodeContents(el);
+  const sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+};
+
+/* Enter edit mode */
+if (!document.body.classList.contains('deck-edit-mode')) {
+  edit.click();
+  await new Promise(r => setTimeout(r, 60));
+}
+
+/* B7: Add text element */
+const addBtn = document.getElementById('btnAddElement');
+const addMenu = document.getElementById('deckAddElementMenu');
+if (!addBtn || !addMenu) throw new Error('missing Add element UI');
+const objectCountBeforeAdd = root.querySelectorAll('[data-slide-object]').length;
+addBtn.click();
+await new Promise(r => setTimeout(r, 60));
+const textOption = addMenu.querySelector('[data-add-kind="text"]');
+if (!textOption) throw new Error('missing Add element text option');
+textOption.click();
+await new Promise(r => setTimeout(r, 80));
+const textObjects = Array.from(root.querySelectorAll('.slide-object[data-object-type="text"]'));
+const newObj = textObjects[textObjects.length - 1];
+const objectCountAfterAdd = root.querySelectorAll('[data-slide-object]').length;
+results.addElementText = !!newObj && objectCountAfterAdd === objectCountBeforeAdd + 1;
+if (!newObj) throw new Error('text object was not added');
+const textEl = newObj.querySelector('.slide-object-text');
+if (!textEl) throw new Error('added text object missing .slide-object-text');
+
+/* Focus text and show RTE toolbar */
+{
+  const tr = textEl.getBoundingClientRect();
+  pointer(textEl, 'pointerdown', tr.left + tr.width / 2, tr.top + Math.min(12, Math.max(4, tr.height / 2)));
+}
+await new Promise(r => setTimeout(r, 80));
+results.textBecameEditable = textEl.getAttribute('contenteditable') === 'true' || textEl.isContentEditable;
+if (!results.textBecameEditable) throw new Error('added text did not become contenteditable');
+textEl.textContent = 'Smoke RTE text';
+selectNodeContents(textEl);
+await new Promise(r => setTimeout(r, 20));
+
+/* Check RTE toolbar exists and has expected controls */
+const rteToolbar = document.getElementById('rteToolbar');
+results.rteToolbarExists = !!rteToolbar;
+if (!rteToolbar) throw new Error('missing RTE toolbar');
+const boldBtn = rteToolbar.querySelector('button[data-cmd="bold"]');
+const italicBtn = rteToolbar.querySelector('button[data-cmd="italic"]');
+const fontDrawer = rteToolbar.querySelector('.rte-drawer-trigger[data-rte-drawer="font"]');
+const pxDrawer = rteToolbar.querySelector('.rte-drawer-trigger[data-rte-drawer="px"]');
+results.hasBoldBtn = !!boldBtn;
+results.hasItalicBtn = !!italicBtn;
+results.hasFontDrawer = !!fontDrawer;
+results.hasSizeDrawer = !!pxDrawer;
+if (!boldBtn || !italicBtn || !fontDrawer || !pxDrawer) throw new Error('missing expected RTE controls');
+
+/* B1: Bold toggle through the toolbar button */
+const beforeBoldHtml = textEl.innerHTML;
+boldBtn.click();
+await new Promise(r => setTimeout(r, 60));
+results.boldApplied = textEl.innerHTML !== beforeBoldHtml && /<(b|strong|span)\b|font-weight/i.test(textEl.innerHTML);
+selectNodeContents(textEl);
+boldBtn.click();
+await new Promise(r => setTimeout(r, 40));
+results.boldToggleOff = true;
+
+/* B2: Font family via drawer */
+selectNodeContents(textEl);
+fontDrawer.click();
+await new Promise(r => setTimeout(r, 40));
+const serifBtn = rteToolbar.querySelector('button[data-font*="Georgia"]');
+if (!serifBtn) throw new Error('missing serif font option');
+const beforeFontHtml = textEl.innerHTML;
+serifBtn.click();
+await new Promise(r => setTimeout(r, 60));
+results.fontApplied = textEl.innerHTML !== beforeFontHtml && /font-family/i.test(textEl.innerHTML);
+
+/* B3: Fixed px size via drawer */
+selectNodeContents(textEl);
+pxDrawer.click();
+await new Promise(r => setTimeout(r, 40));
+const pxBtn = rteToolbar.querySelector('button[data-size-px="36"]');
+if (!pxBtn) throw new Error('missing 36px option');
+const beforePxHtml = textEl.innerHTML;
+pxBtn.click();
+await new Promise(r => setTimeout(r, 60));
+results.pxApplied = textEl.innerHTML !== beforePxHtml && /font-size/i.test(textEl.innerHTML);
+
+/* B6: Delete object with Backspace, then undo */
+textEl.blur();
+textEl.setAttribute('contenteditable', 'false');
+await new Promise(r => setTimeout(r, 40));
+const nr = newObj.getBoundingClientRect();
+pointer(newObj, 'pointerdown', nr.left + nr.width / 2, nr.top + Math.min(10, Math.max(4, nr.height / 2)));
+await new Promise(r => setTimeout(r, 60));
+results.objectSelected = newObj.classList.contains('is-selected');
+const beforeDeleteCount = root.querySelectorAll('[data-slide-object]').length;
+document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Backspace', bubbles: true, cancelable: true}));
+await new Promise(r => setTimeout(r, 80));
+const afterDeleteCount = root.querySelectorAll('[data-slide-object]').length;
+results.backspaceDelete = afterDeleteCount === beforeDeleteCount - 1;
+if (!undo.disabled) {
+  for (let i = 0; i < 6; i++) {
+    const countNow = root.querySelectorAll('[data-slide-object]').length;
+    if (countNow === beforeDeleteCount) break;
+    if (undo.disabled) break;
+    undo.click();
+    await new Promise(r => setTimeout(r, 60));
+  }
+}
+const afterUndoCount = root.querySelectorAll('[data-slide-object]').length;
+results.deleteUndoRestore = afterUndoCount === beforeDeleteCount;
+
+const allOk = results.addElementText &&
+  results.textBecameEditable &&
+  results.rteToolbarExists &&
+  results.hasBoldBtn &&
+  results.hasItalicBtn &&
+  results.hasFontDrawer &&
+  results.hasSizeDrawer &&
+  results.boldApplied &&
+  results.fontApplied &&
+  results.pxApplied &&
+  results.objectSelected &&
+  results.backspaceDelete &&
+  results.deleteUndoRestore;
+return {ok: allOk, ...results};
+"""
+
+EDITABLE_BOUNDS_SCRIPT = r"""
+const root = document.querySelector('.slides-offset');
+if (!root) throw new Error('missing slides root');
+const slides = root.querySelectorAll(':scope > section.slide');
+const clipped = [];
+const TOLERANCE = 2;
+for (let si = 0; si < slides.length; si++) {
+  const slide = slides[si];
+  const sr = slide.getBoundingClientRect();
+  /* Use the slide's own bounding rect, not the viewport.
+     The slide is 100vh; elements must stay inside it. */
+  const slideBottom = sr.bottom;
+  const slideRight = sr.right;
+  const slideLeft = sr.left;
+  const slideTop = sr.top;
+  /* Check data-edit-slot elements */
+  const slots = slide.querySelectorAll('[data-edit-slot]');
+  for (const slot of slots) {
+    const style = getComputedStyle(slot);
+    if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') continue;
+    if (slot.offsetParent === null && style.position !== 'fixed') continue;
+    const r = slot.getBoundingClientRect();
+    if (r.width < 1 || r.height < 1) continue;
+    if (r.bottom > slideBottom + TOLERANCE || r.right > slideRight + TOLERANCE ||
+        r.left < slideLeft - TOLERANCE || r.top < slideTop - TOLERANCE) {
+      clipped.push({
+        slide: slide.id || 'slide-' + si,
+        type: 'slot',
+        label: slot.getAttribute('data-edit-slot') || '',
+        slotType: slot.getAttribute('data-slot-type') || '',
+        slideH: Math.round(sr.height),
+        overBottom: Math.round(r.bottom - slideBottom),
+      });
+    }
+  }
+  /* Check data-slide-object elements */
+  const objects = slide.querySelectorAll('[data-slide-object]');
+  for (const obj of objects) {
+    const style = getComputedStyle(obj);
+    if (style.display === 'none' || style.visibility === 'hidden') continue;
+    const r = obj.getBoundingClientRect();
+    if (r.width < 1 || r.height < 1) continue;
+    if (r.bottom > slideBottom + TOLERANCE || r.right > slideRight + TOLERANCE ||
+        r.left < slideLeft - TOLERANCE || r.top < slideTop - TOLERANCE) {
+      clipped.push({
+        slide: slide.id || 'slide-' + si,
+        type: 'object',
+        label: obj.getAttribute('data-oid') || '',
+        objectType: obj.getAttribute('data-object-type') || '',
+        slideH: Math.round(sr.height),
+        overBottom: Math.round(r.bottom - slideBottom),
+      });
+    }
+  }
+}
+return {ok: clipped.length === 0, clippedCount: clipped.length, clipped: clipped.slice(0, 20), totalSlides: slides.length};
+"""
+
+
 OVERFLOW_SCRIPT = r"""
 const root = document.querySelector('.slides-offset');
 const doc = document.documentElement;
@@ -370,9 +789,20 @@ def main() -> int:
         return 1
     errors: list[str] = []
     samples = sample_paths()
+    matrix_lower = os.environ.get("SMOKE_PRESET_MATRIX", "").strip().lower()
     for sample in samples:
         if not sample.is_file():
             errors.append(f"missing sample {sample.relative_to(ROOT)}")
+            continue
+        if matrix_lower == "bounds":
+            result = chrome_eval(chrome, sample, 1280, 720, EDITABLE_BOUNDS_SCRIPT)
+            if not result.get("ok"):
+                clipped = result.get("clipped", [])
+                summary = "; ".join(
+                    f"{c['slide']}:{c['type']}:{c.get('label') or c.get('objectType','')} over={c.get('overBottom',0)}px (slideH={c.get('slideH','?')})"
+                    for c in clipped[:5]
+                )
+                errors.append(f"{sample.relative_to(ROOT)} bounds: {result.get('clippedCount',0)} clipped — {summary}")
             continue
         result = chrome_eval(chrome, sample, 1280, 720, EDIT_MODE_SCRIPT)
         if not result.get("ok"):
@@ -382,6 +812,19 @@ def main() -> int:
             result = chrome_eval(chrome, sample, 1280, 720, PAGES_SCRIPT)
             if not result.get("ok"):
                 errors.append(f"{sample.relative_to(ROOT)} pages/export interaction failed: {result}")
+            # A5: Undo/redo chain stress test (reference deck only in sample mode)
+            if sample == REFERENCE:
+                result = chrome_eval(chrome, sample, 1280, 720, UNDO_REDO_CHAIN_SCRIPT)
+                if not result.get("ok"):
+                    errors.append(f"{sample.relative_to(ROOT)} undo/redo chain failed: {result}")
+                # Export integrity test
+                result = chrome_eval(chrome, sample, 1280, 720, EXPORT_INTEGRITY_SCRIPT)
+                if not result.get("ok"):
+                    errors.append(f"{sample.relative_to(ROOT)} export integrity failed: {result}")
+                # B1-B3/B6/B7: RTE and usability smoke
+                result = chrome_eval(chrome, sample, 1280, 720, RTE_SMOKE_SCRIPT)
+                if not result.get("ok"):
+                    errors.append(f"{sample.relative_to(ROOT)} RTE/usability failed: {result}")
         source = sample.read_text(encoding="utf-8")
         if "data-edit-slot=" in source or sample.name in PORTED_SAMPLE_NAMES or matrix_mode:
             result = chrome_eval(chrome, sample, 1280, 720, SLOT_EDIT_SCRIPT)
@@ -391,6 +834,16 @@ def main() -> int:
             result = chrome_eval(chrome, sample, 1280, 720, COMPONENT_UNLOCK_SCRIPT)
             if not result.get("ok"):
                 errors.append(f"{sample.relative_to(ROOT)} component unlock failed: {result}")
+        # C0: Editable bounds visibility check
+        if matrix_lower == "all":
+            result = chrome_eval(chrome, sample, 1280, 720, EDITABLE_BOUNDS_SCRIPT)
+            if not result.get("ok"):
+                clipped = result.get("clipped", [])
+                summary = "; ".join(
+                    f"{c['slide']}:{c['type']}:{c.get('label') or c.get('objectType','')}"
+                    for c in clipped[:3]
+                )
+                errors.append(f"{sample.relative_to(ROOT)} bounds: {result.get('clippedCount',0)} clipped — {summary}")
         if not matrix_mode:
             for label, width, height in VIEWPORTS:
                 result = chrome_eval(chrome, sample, width, height, OVERFLOW_SCRIPT)
