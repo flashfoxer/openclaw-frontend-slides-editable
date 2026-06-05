@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-cobalt-grid" data-template-source="cobalt-grid" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-cobalt-grid" data-template-source="cobalt-grid" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
 <meta charset="utf-8" />
@@ -819,6 +819,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1378,7 +1411,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1528,54 +1561,54 @@
       <div class="frame">
         <div class="topbar">
           <div class="h" data-edit-slot="s2-title-7" data-slot-type="text" data-slot-label="The index, in six entries." data-slot-locked-layout="true">The index, in six entries.</div>
-          <div class="lab-tag caption" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Spring 2026 · selected trends" data-slot-locked-layout="true">Spring 2026 · selected trends</div>
+          <div class="lab-tag caption" data-edit-slot="s2-slot-7" data-slot-type="text" data-slot-label="Spring 2026 · selected trends" data-slot-locked-layout="true">Spring 2026 · selected trends</div>
         </div>
         <div class="list">
           <div class="row">
             <div class="num-tag caption">01.</div>
             <div>
               <h3 data-edit-slot="s2-title-1" data-slot-type="text" data-slot-label="Slow software" data-slot-locked-layout="true">Slow software</h3>
-              <p data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="Tools that opt out of the urgency contest and in" data-slot-locked-layout="true">Tools that opt out of the urgency contest and instead promise to be quiet, considered, and on by default.</p>
+              <p data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Tools that opt out of the urgency contest and in" data-slot-locked-layout="true">Tools that opt out of the urgency contest and instead promise to be quiet, considered, and on by default.</p>
             </div>
           </div>
           <div class="row">
             <div class="num-tag caption">02.</div>
             <div>
               <h3 data-edit-slot="s2-title-2" data-slot-type="text" data-slot-label="Domestic interfaces" data-slot-locked-layout="true">Domestic interfaces</h3>
-              <p data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="Screens designed to live in living rooms — softe" data-slot-locked-layout="true">Screens designed to live in living rooms — softer typography, warmer colour, and a willingness to be ignored.</p>
+              <p data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="Screens designed to live in living rooms — softe" data-slot-locked-layout="true">Screens designed to live in living rooms — softer typography, warmer colour, and a willingness to be ignored.</p>
             </div>
           </div>
           <div class="row">
             <div class="num-tag caption">03.</div>
             <div>
               <h3 data-edit-slot="s2-title-3" data-slot-type="text" data-slot-label="Hand-set print again" data-slot-locked-layout="true">Hand-set print again</h3>
-              <p data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="A return to letterpress, risograph, and small-ed" data-slot-locked-layout="true">A return to letterpress, risograph, and small-edition print, often paired with the most digital-feeling clients.</p>
+              <p data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="A return to letterpress, risograph, and small-ed" data-slot-locked-layout="true">A return to letterpress, risograph, and small-edition print, often paired with the most digital-feeling clients.</p>
             </div>
           </div>
           <div class="row">
             <div class="num-tag caption">04.</div>
             <div>
               <h3 data-edit-slot="s2-title-4" data-slot-type="text" data-slot-label="Quietly weird type" data-slot-locked-layout="true">Quietly weird type</h3>
-              <p data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="Display type with one slightly off detail — a ti" data-slot-locked-layout="true">Display type with one slightly off detail — a tilted ear, a long tail — that keeps a reader looking twice.</p>
+              <p data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="Display type with one slightly off detail — a ti" data-slot-locked-layout="true">Display type with one slightly off detail — a tilted ear, a long tail — that keeps a reader looking twice.</p>
             </div>
           </div>
           <div class="row">
             <div class="num-tag caption">05.</div>
             <div>
               <h3 data-edit-slot="s2-title-5" data-slot-type="text" data-slot-label="Receipts and ledgers" data-slot-locked-layout="true">Receipts and ledgers</h3>
-              <p data-edit-slot="s2-slot-7" data-slot-type="text" data-slot-label="Information designed to be filed, not consumed. " data-slot-locked-layout="true">Information designed to be filed, not consumed. Tabular layouts, dotted leaders, the page returning the favour.</p>
+              <p data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="Information designed to be filed, not consumed. " data-slot-locked-layout="true">Information designed to be filed, not consumed. Tabular layouts, dotted leaders, the page returning the favour.</p>
             </div>
           </div>
           <div class="row">
             <div class="num-tag caption">06.</div>
             <div>
               <h3 data-edit-slot="s2-title-6" data-slot-type="text" data-slot-label="Public weather" data-slot-locked-layout="true">Public weather</h3>
-              <p data-edit-slot="s2-slot-8" data-slot-type="text" data-slot-label="Brand and product writing that includes the actu" data-slot-locked-layout="true">Brand and product writing that includes the actual weather of the day, the mood of the team, the unfinished thought.</p>
+              <p data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="Brand and product writing that includes the actu" data-slot-locked-layout="true">Brand and product writing that includes the actual weather of the day, the mood of the team, the unfinished thought.</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="pagenum" data-edit-slot="s2-slot-2" data-slot-type="metric" data-slot-label="03 / 08" data-slot-locked-layout="true">03 / 08</div>
+      <div class="pagenum" data-edit-slot="s2-slot-8" data-slot-type="metric" data-slot-label="03 / 08" data-slot-locked-layout="true">03 / 08</div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
@@ -1614,19 +1647,19 @@
       <div class="frame">
         <div class="topbar">
           <div class="h" data-edit-slot="s4-title-1" data-slot-type="text" data-slot-label="Reader response, by quarter." data-slot-locked-layout="true">Reader response, by quarter.</div>
-          <div class="lab-tag caption" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="Newsletter opens · 2024 Q1 — 2026 Q1" data-slot-locked-layout="true">Newsletter opens · 2024 Q1 — 2026 Q1</div>
+          <div class="lab-tag caption" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="Newsletter opens · 2024 Q1 — 2026 Q1" data-slot-locked-layout="true">Newsletter opens · 2024 Q1 — 2026 Q1</div>
         </div>
         <div class="body">
           <div class="col-a">
             <div class="stat">
               <div class="vbig">82%</div>
-              <div class="lab2 caption" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="Open rate · Q1 2026" data-slot-locked-layout="true">Open rate · Q1 2026</div>
-              <div class="desc" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="A 2.1× lift on the inaugural issue, driven mostl" data-slot-locked-layout="true">A 2.1× lift on the inaugural issue, driven mostly by long-form chapters being read on Sunday mornings.</div>
+              <div class="lab2 caption" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="Open rate · Q1 2026" data-slot-locked-layout="true">Open rate · Q1 2026</div>
+              <div class="desc" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="A 2.1× lift on the inaugural issue, driven mostl" data-slot-locked-layout="true">A 2.1× lift on the inaugural issue, driven mostly by long-form chapters being read on Sunday mornings.</div>
             </div>
             <div class="stat">
               <div class="vbig" style="font-size: clamp(72px, min(7vw, 11vh), 150px);">11k</div>
-              <div class="lab2 caption" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="Active subscribers" data-slot-locked-layout="true">Active subscribers</div>
-              <div class="desc" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="Quiet, mostly-not-on-social, paying readers; we " data-slot-locked-layout="true">Quiet, mostly-not-on-social, paying readers; we do not run a referral programme.</div>
+              <div class="lab2 caption" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="Active subscribers" data-slot-locked-layout="true">Active subscribers</div>
+              <div class="desc" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="Quiet, mostly-not-on-social, paying readers; we " data-slot-locked-layout="true">Quiet, mostly-not-on-social, paying readers; we do not run a referral programme.</div>
             </div>
           </div>
           <div class="chart">
@@ -1719,69 +1752,69 @@
       <div class="frame">
         <div class="topbar">
           <div class="h" data-edit-slot="s6-title-1" data-slot-type="text" data-slot-label="Trend ledger, in long." data-slot-locked-layout="true">Trend ledger, in long.</div>
-          <div class="lab-tag caption" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="All ten · with our reading on each" data-slot-locked-layout="true">All ten · with our reading on each</div>
+          <div class="lab-tag caption" data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="All ten · with our reading on each" data-slot-locked-layout="true">All ten · with our reading on each</div>
         </div>
         <div class="ledger">
           <div class="row headrow">
             <div class="caption">No.</div>
-            <div class="caption" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Trend" data-slot-locked-layout="true">Trend</div>
-            <div class="caption" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Reading" data-slot-locked-layout="true">Reading</div>
-            <div class="caption" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Mood" data-slot-locked-layout="true">Mood</div>
-            <div class="caption" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="YoY" data-slot-locked-layout="true">YoY</div>
+            <div class="caption" data-edit-slot="s6-slot-10" data-slot-type="text" data-slot-label="Trend" data-slot-locked-layout="true">Trend</div>
+            <div class="caption" data-edit-slot="s6-slot-11" data-slot-type="text" data-slot-label="Reading" data-slot-locked-layout="true">Reading</div>
+            <div class="caption" data-edit-slot="s6-slot-12" data-slot-type="text" data-slot-label="Mood" data-slot-locked-layout="true">Mood</div>
+            <div class="caption" data-edit-slot="s6-slot-13" data-slot-type="text" data-slot-label="YoY" data-slot-locked-layout="true">YoY</div>
           </div>
           <div class="row">
             <div class="num-tag caption">01.</div>
-            <div class="nm" data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="Slow software" data-slot-locked-layout="true">Slow software</div>
-            <div class="desc" data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="Tools that opt out of urgency by default." data-slot-locked-layout="true">Tools that opt out of urgency by default.</div>
-            <div class="mood-tag" data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="Quiet · welcomed" data-slot-locked-layout="true">Quiet · welcomed</div>
-            <div class="delta-tag up caption" data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="14 pts" data-slot-locked-layout="true">14 pts</div>
+            <div class="nm" data-edit-slot="s6-slot-14" data-slot-type="text" data-slot-label="Slow software" data-slot-locked-layout="true">Slow software</div>
+            <div class="desc" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="Tools that opt out of urgency by default." data-slot-locked-layout="true">Tools that opt out of urgency by default.</div>
+            <div class="mood-tag" data-edit-slot="s6-slot-15" data-slot-type="text" data-slot-label="Quiet · welcomed" data-slot-locked-layout="true">Quiet · welcomed</div>
+            <div class="delta-tag up caption" data-edit-slot="s6-slot-16" data-slot-type="text" data-slot-label="14 pts" data-slot-locked-layout="true">14 pts</div>
           </div>
           <div class="row">
             <div class="num-tag caption">02.</div>
-            <div class="nm" data-edit-slot="s6-slot-10" data-slot-type="text" data-slot-label="Domestic interfaces" data-slot-locked-layout="true">Domestic interfaces</div>
-            <div class="desc" data-edit-slot="s6-slot-11" data-slot-type="text" data-slot-label="Screens designed to live in living rooms." data-slot-locked-layout="true">Screens designed to live in living rooms.</div>
-            <div class="mood-tag" data-edit-slot="s6-slot-12" data-slot-type="text" data-slot-label="Warm · ambient" data-slot-locked-layout="true">Warm · ambient</div>
-            <div class="delta-tag up caption" data-edit-slot="s6-slot-13" data-slot-type="text" data-slot-label="9 pts" data-slot-locked-layout="true">9 pts</div>
+            <div class="nm" data-edit-slot="s6-slot-17" data-slot-type="text" data-slot-label="Domestic interfaces" data-slot-locked-layout="true">Domestic interfaces</div>
+            <div class="desc" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Screens designed to live in living rooms." data-slot-locked-layout="true">Screens designed to live in living rooms.</div>
+            <div class="mood-tag" data-edit-slot="s6-slot-18" data-slot-type="text" data-slot-label="Warm · ambient" data-slot-locked-layout="true">Warm · ambient</div>
+            <div class="delta-tag up caption" data-edit-slot="s6-slot-19" data-slot-type="text" data-slot-label="9 pts" data-slot-locked-layout="true">9 pts</div>
           </div>
           <div class="row">
             <div class="num-tag caption">03.</div>
-            <div class="nm" data-edit-slot="s6-slot-14" data-slot-type="text" data-slot-label="Hand-set print" data-slot-locked-layout="true">Hand-set print</div>
-            <div class="desc" data-edit-slot="s6-slot-15" data-slot-type="text" data-slot-label="Letterpress and risograph paired with digital br" data-slot-locked-layout="true">Letterpress and risograph paired with digital briefs.</div>
-            <div class="mood-tag" data-edit-slot="s6-slot-16" data-slot-type="text" data-slot-label="Tactile · careful" data-slot-locked-layout="true">Tactile · careful</div>
-            <div class="delta-tag up caption" data-edit-slot="s6-slot-17" data-slot-type="text" data-slot-label="7 pts" data-slot-locked-layout="true">7 pts</div>
+            <div class="nm" data-edit-slot="s6-slot-20" data-slot-type="text" data-slot-label="Hand-set print" data-slot-locked-layout="true">Hand-set print</div>
+            <div class="desc" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Letterpress and risograph paired with digital br" data-slot-locked-layout="true">Letterpress and risograph paired with digital briefs.</div>
+            <div class="mood-tag" data-edit-slot="s6-slot-21" data-slot-type="text" data-slot-label="Tactile · careful" data-slot-locked-layout="true">Tactile · careful</div>
+            <div class="delta-tag up caption" data-edit-slot="s6-slot-22" data-slot-type="text" data-slot-label="7 pts" data-slot-locked-layout="true">7 pts</div>
           </div>
           <div class="row">
             <div class="num-tag caption">04.</div>
-            <div class="nm" data-edit-slot="s6-slot-18" data-slot-type="text" data-slot-label="Quietly weird type" data-slot-locked-layout="true">Quietly weird type</div>
-            <div class="desc" data-edit-slot="s6-slot-19" data-slot-type="text" data-slot-label="Display faces with one slightly off detail." data-slot-locked-layout="true">Display faces with one slightly off detail.</div>
-            <div class="mood-tag" data-edit-slot="s6-slot-20" data-slot-type="text" data-slot-label="Curious · alert" data-slot-locked-layout="true">Curious · alert</div>
-            <div class="delta-tag flat caption" data-edit-slot="s6-slot-21" data-slot-type="text" data-slot-label="flat" data-slot-locked-layout="true">flat</div>
+            <div class="nm" data-edit-slot="s6-slot-23" data-slot-type="text" data-slot-label="Quietly weird type" data-slot-locked-layout="true">Quietly weird type</div>
+            <div class="desc" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Display faces with one slightly off detail." data-slot-locked-layout="true">Display faces with one slightly off detail.</div>
+            <div class="mood-tag" data-edit-slot="s6-slot-24" data-slot-type="text" data-slot-label="Curious · alert" data-slot-locked-layout="true">Curious · alert</div>
+            <div class="delta-tag flat caption" data-edit-slot="s6-slot-25" data-slot-type="text" data-slot-label="flat" data-slot-locked-layout="true">flat</div>
           </div>
           <div class="row">
             <div class="num-tag caption">05.</div>
-            <div class="nm" data-edit-slot="s6-slot-22" data-slot-type="text" data-slot-label="Receipts &amp;amp; ledgers" data-slot-locked-layout="true">Receipts &amp; ledgers</div>
-            <div class="desc" data-edit-slot="s6-slot-23" data-slot-type="text" data-slot-label="Information designed to be filed, not consumed." data-slot-locked-layout="true">Information designed to be filed, not consumed.</div>
-            <div class="mood-tag" data-edit-slot="s6-slot-24" data-slot-type="text" data-slot-label="Plain · honest" data-slot-locked-layout="true">Plain · honest</div>
-            <div class="delta-tag up caption" data-edit-slot="s6-slot-25" data-slot-type="text" data-slot-label="5 pts" data-slot-locked-layout="true">5 pts</div>
+            <div class="nm" data-edit-slot="s6-slot-26" data-slot-type="text" data-slot-label="Receipts &amp;amp; ledgers" data-slot-locked-layout="true">Receipts &amp; ledgers</div>
+            <div class="desc" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Information designed to be filed, not consumed." data-slot-locked-layout="true">Information designed to be filed, not consumed.</div>
+            <div class="mood-tag" data-edit-slot="s6-slot-27" data-slot-type="text" data-slot-label="Plain · honest" data-slot-locked-layout="true">Plain · honest</div>
+            <div class="delta-tag up caption" data-edit-slot="s6-slot-28" data-slot-type="text" data-slot-label="5 pts" data-slot-locked-layout="true">5 pts</div>
           </div>
           <div class="row">
             <div class="num-tag caption">06.</div>
-            <div class="nm" data-edit-slot="s6-slot-26" data-slot-type="text" data-slot-label="Public weather" data-slot-locked-layout="true">Public weather</div>
-            <div class="desc" data-edit-slot="s6-slot-27" data-slot-type="text" data-slot-label="Brand voice that admits the day&#x27;s actual mood." data-slot-locked-layout="true">Brand voice that admits the day's actual mood.</div>
-            <div class="mood-tag" data-edit-slot="s6-slot-28" data-slot-type="text" data-slot-label="Open · tender" data-slot-locked-layout="true">Open · tender</div>
-            <div class="delta-tag up caption" data-edit-slot="s6-slot-29" data-slot-type="text" data-slot-label="11 pts" data-slot-locked-layout="true">11 pts</div>
+            <div class="nm" data-edit-slot="s6-slot-29" data-slot-type="text" data-slot-label="Public weather" data-slot-locked-layout="true">Public weather</div>
+            <div class="desc" data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="Brand voice that admits the day&#x27;s actual mood." data-slot-locked-layout="true">Brand voice that admits the day's actual mood.</div>
+            <div class="mood-tag" data-edit-slot="s6-slot-30" data-slot-type="text" data-slot-label="Open · tender" data-slot-locked-layout="true">Open · tender</div>
+            <div class="delta-tag up caption" data-edit-slot="s6-slot-31" data-slot-type="text" data-slot-label="11 pts" data-slot-locked-layout="true">11 pts</div>
           </div>
           <div class="row">
             <div class="num-tag caption">07.</div>
-            <div class="nm" data-edit-slot="s6-slot-30" data-slot-type="text" data-slot-label="Long-form receipts" data-slot-locked-layout="true">Long-form receipts</div>
-            <div class="desc" data-edit-slot="s6-slot-31" data-slot-type="text" data-slot-label="Newsletters that read like printed pamphlets." data-slot-locked-layout="true">Newsletters that read like printed pamphlets.</div>
-            <div class="mood-tag" data-edit-slot="s6-slot-32" data-slot-type="text" data-slot-label="Slow · sourced" data-slot-locked-layout="true">Slow · sourced</div>
-            <div class="delta-tag up caption" data-edit-slot="s6-slot-33" data-slot-type="text" data-slot-label="3 pts" data-slot-locked-layout="true">3 pts</div>
+            <div class="nm" data-edit-slot="s6-slot-32" data-slot-type="text" data-slot-label="Long-form receipts" data-slot-locked-layout="true">Long-form receipts</div>
+            <div class="desc" data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="Newsletters that read like printed pamphlets." data-slot-locked-layout="true">Newsletters that read like printed pamphlets.</div>
+            <div class="mood-tag" data-edit-slot="s6-slot-33" data-slot-type="text" data-slot-label="Slow · sourced" data-slot-locked-layout="true">Slow · sourced</div>
+            <div class="delta-tag up caption" data-edit-slot="s6-slot-34" data-slot-type="text" data-slot-label="3 pts" data-slot-locked-layout="true">3 pts</div>
           </div>
           <div class="row">
             <div class="num-tag caption">08.</div>
-            <div class="nm" data-edit-slot="s6-slot-34" data-slot-type="text" data-slot-label="Pre-loved objects" data-slot-locked-layout="true">Pre-loved objects</div>
-            <div class="desc" data-edit-slot="s6-slot-35" data-slot-type="text" data-slot-label="Resale and repair as the front of the brand." data-slot-locked-layout="true">Resale and repair as the front of the brand.</div>
+            <div class="nm" data-edit-slot="s6-slot-35" data-slot-type="text" data-slot-label="Pre-loved objects" data-slot-locked-layout="true">Pre-loved objects</div>
+            <div class="desc" data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="Resale and repair as the front of the brand." data-slot-locked-layout="true">Resale and repair as the front of the brand.</div>
             <div class="mood-tag" data-edit-slot="s6-slot-36" data-slot-type="text" data-slot-label="Worn · cared" data-slot-locked-layout="true">Worn · cared</div>
             <div class="delta-tag down caption" data-edit-slot="s6-slot-37" data-slot-type="text" data-slot-label="2 pts" data-slot-locked-layout="true">2 pts</div>
           </div>
@@ -2868,6 +2901,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2888,7 +2930,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2901,7 +2943,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -3949,12 +3991,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -3998,7 +4040,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

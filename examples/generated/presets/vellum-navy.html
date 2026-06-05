@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-vellum-navy" data-template-source="vellum" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-vellum-navy" data-template-source="vellum" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
     <meta charset="UTF-8" />
@@ -783,6 +783,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1342,7 +1375,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1427,11 +1460,11 @@
         <div class="cover-title">
           <span class="kicker">Essay 01 · 2026</span>
           <h1 class="display" data-edit-slot="s0-title-1" data-slot-type="text" data-slot-label="On Restraint" data-slot-locked-layout="true">On <em>Restraint</em></h1>
-          <p class="lead" style="max-width: 70%; text-align: center; color: var(--c-fg-2)" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="Field notes on the discipline of less, written f" data-slot-locked-layout="true">
+          <p class="lead" style="max-width: 70%; text-align: center; color: var(--c-fg-2)" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="Field notes on the discipline of less, written f" data-slot-locked-layout="true">
             Field notes on the discipline of less, written for designers who already know how to add.
           </p>
         </div>
-        <div class="pin-annotation" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="01 / 09 The Quiet Studio. Edition One." data-slot-locked-layout="true">
+        <div class="pin-annotation" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="01 / 09 The Quiet Studio. Edition One." data-slot-locked-layout="true">
           <span class="pin-note">01 / 09</span>
           <span class="pin-note">The Quiet Studio.</span>
           <span class="pin-note">Edition One.</span>
@@ -1458,19 +1491,19 @@
 
 <section class="slide light slide--text" data-slide="3" style="position: relative" id="slide-2" data-template-slide-index="3">
         <header class="slide-chrome">
-          <span class="label" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="[Field Note 03]" data-slot-locked-layout="true">[Field Note 03]</span>
-          <span class="label" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="03" data-slot-locked-layout="true">03</span>
+          <span class="label" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="[Field Note 03]" data-slot-locked-layout="true">[Field Note 03]</span>
+          <span class="label" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="03" data-slot-locked-layout="true">03</span>
         </header>
         <div class="slide-body" style="display: flex; flex-direction: column; justify-content: center; align-items: center; gap: var(--gap-md); text-align: center; padding: 0 8vw">
           <span class="kicker">Observation</span>
           <h2 class="h2" data-edit-slot="s2-title-1" data-slot-type="text" data-slot-label="What you remove is louder than what you keep." data-slot-locked-layout="true">
             What you <em>remove</em> is louder<br />than what you keep.
           </h2>
-          <p class="lead" style="max-width: 64ch; color: var(--c-fg-2)" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="Subtraction creates the figure. Addition only fi" data-slot-locked-layout="true">
+          <p class="lead" style="max-width: 64ch; color: var(--c-fg-2)" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Subtraction creates the figure. Addition only fi" data-slot-locked-layout="true">
             Subtraction creates the figure. Addition only fills the ground. Working drafts always carry more than they need; the work of editing is mostly the work of cutting.
           </p>
         </div>
-        <div class="pin-annotation" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="03 / 09 Show, don&#x27;t tell." data-slot-locked-layout="true">
+        <div class="pin-annotation" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="03 / 09 Show, don&#x27;t tell." data-slot-locked-layout="true">
           <span class="pin-note">03 / 09</span>
           <span class="pin-note">Show, don't tell.</span>
         </div>
@@ -1513,8 +1546,8 @@
 
 <section class="slide light slide--list" data-slide="5" style="position: relative" id="slide-4" data-template-slide-index="5">
         <header class="slide-chrome">
-          <span class="label" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="[Method]" data-slot-locked-layout="true">[Method]</span>
-          <span class="label" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="05" data-slot-locked-layout="true">05</span>
+          <span class="label" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="[Method]" data-slot-locked-layout="true">[Method]</span>
+          <span class="label" data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="05" data-slot-locked-layout="true">05</span>
         </header>
         <div class="slide-body">
           <div class="list-header">
@@ -1525,14 +1558,14 @@
           </div>
           <div class="list-items">
             <ul class="bullet-list">
-              <li data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="One accent color per spread. Never two." data-slot-locked-layout="true">One accent color per spread. Never two.</li>
-              <li data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="Body text obeys the grid. Display is allowed to " data-slot-locked-layout="true">Body text obeys the grid. Display is allowed to break it.</li>
-              <li data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="White space is a choice, not a default." data-slot-locked-layout="true">White space is a choice, not a default.</li>
-              <li data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="Reduce until removal hurts. Stop one step before" data-slot-locked-layout="true">Reduce until removal hurts. Stop one step before that.</li>
+              <li data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="One accent color per spread. Never two." data-slot-locked-layout="true">One accent color per spread. Never two.</li>
+              <li data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="Body text obeys the grid. Display is allowed to " data-slot-locked-layout="true">Body text obeys the grid. Display is allowed to break it.</li>
+              <li data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="White space is a choice, not a default." data-slot-locked-layout="true">White space is a choice, not a default.</li>
+              <li data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="Reduce until removal hurts. Stop one step before" data-slot-locked-layout="true">Reduce until removal hurts. Stop one step before that.</li>
             </ul>
           </div>
         </div>
-        <div class="pin-annotation" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="05 / 09 Four rules. No exceptions." data-slot-locked-layout="true">
+        <div class="pin-annotation" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="05 / 09 Four rules. No exceptions." data-slot-locked-layout="true">
           <span class="pin-note">05 / 09</span>
           <span class="pin-note">Four rules.</span>
           <span class="pin-note">No exceptions.</span>
@@ -1543,15 +1576,15 @@
 
 <section class="slide dark slide--quote" data-slide="6" style="position: relative" id="slide-5" data-template-slide-index="6">
         <div class="quote-mark">"</div>
-        <div class="quote-text" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Design is a plan for arranging elements to accom" data-slot-locked-layout="true">
+        <div class="quote-text" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Design is a plan for arranging elements to accom" data-slot-locked-layout="true">
           Design is a plan for arranging elements<br />
           to accomplish a particular <em>purpose</em>.
         </div>
-        <div class="quote-attr" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Charles Eames Designer · 1972" data-slot-locked-layout="true">
-          <span class="label accent" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Charles Eames" data-slot-locked-layout="true">Charles Eames</span>
-          <span class="label" style="color: var(--c-fg-2)" data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Designer · 1972" data-slot-locked-layout="true">Designer · 1972</span>
+        <div class="quote-attr">
+          <span class="label accent" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Charles Eames" data-slot-locked-layout="true">Charles Eames</span>
+          <span class="label" style="color: var(--c-fg-2)" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Designer · 1972" data-slot-locked-layout="true">Designer · 1972</span>
         </div>
-        <div class="pin-annotation" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="06 / 09 Eames said it. Still true." data-slot-locked-layout="true">
+        <div class="pin-annotation" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="06 / 09 Eames said it. Still true." data-slot-locked-layout="true">
           <span class="pin-note">06 / 09</span>
           <span class="pin-note">Eames said it.</span>
           <span class="pin-note">Still true.</span>
@@ -1565,29 +1598,29 @@
           <div class="compare-panel left">
             <span class="compare-label" style="color: var(--c-fg-2)">Before</span>
             <h3 class="h3" data-edit-slot="s6-title-1" data-slot-type="text" data-slot-label="The unfocused draft" data-slot-locked-layout="true">The <em>unfocused</em> draft</h3>
-            <p class="lead" style="color: var(--c-fg-2)" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Three points compete for the title slot. Two acc" data-slot-locked-layout="true">
+            <p class="lead" style="color: var(--c-fg-2)" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="Three points compete for the title slot. Two acc" data-slot-locked-layout="true">
               Three points compete for the title slot. Two accent colors. The body copy is two paragraphs and ends mid-thought.
             </p>
             <ul class="bullet-list" style="--sz-lead: var(--sz-body)">
-              <li data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Three claims, none load-bearing" data-slot-locked-layout="true">Three claims, none load-bearing</li>
-              <li data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Twin accents pull the eye apart" data-slot-locked-layout="true">Twin accents pull the eye apart</li>
-              <li data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Body unedited; reader does the work" data-slot-locked-layout="true">Body unedited; reader does the work</li>
+              <li data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Three claims, none load-bearing" data-slot-locked-layout="true">Three claims, none load-bearing</li>
+              <li data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Twin accents pull the eye apart" data-slot-locked-layout="true">Twin accents pull the eye apart</li>
+              <li data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Body unedited; reader does the work" data-slot-locked-layout="true">Body unedited; reader does the work</li>
             </ul>
           </div>
           <div class="compare-panel right">
             <span class="compare-label" style="color: var(--c-fg-2)">After</span>
             <h3 class="h3" data-edit-slot="s6-title-2" data-slot-type="text" data-slot-label="The edited piece" data-slot-locked-layout="true">The <em>edited</em> piece</h3>
-            <p class="lead" style="color: var(--c-fg-2)" data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="One claim takes the title. One accent does the w" data-slot-locked-layout="true">
+            <p class="lead" style="color: var(--c-fg-2)" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="One claim takes the title. One accent does the w" data-slot-locked-layout="true">
               One claim takes the title. One accent does the work. The paragraph ends where the thought ends.
             </p>
             <ul class="bullet-list" style="--sz-lead: var(--sz-body)">
-              <li data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="One claim, fully argued" data-slot-locked-layout="true">One claim, fully argued</li>
-              <li data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="One accent, used once" data-slot-locked-layout="true">One accent, used once</li>
-              <li data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="Body cut to the bone" data-slot-locked-layout="true">Body cut to the bone</li>
+              <li data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="One claim, fully argued" data-slot-locked-layout="true">One claim, fully argued</li>
+              <li data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="One accent, used once" data-slot-locked-layout="true">One accent, used once</li>
+              <li data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="Body cut to the bone" data-slot-locked-layout="true">Body cut to the bone</li>
             </ul>
           </div>
         </div>
-        <div class="pin-annotation" style="bottom: calc(var(--pad-y) * 0.9); left: var(--pad-x); z-index: 5" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="07 / 09 Two states. Same essay." data-slot-locked-layout="true">
+        <div class="pin-annotation" style="bottom: calc(var(--pad-y) * 0.9); left: var(--pad-x); z-index: 5" data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="07 / 09 Two states. Same essay." data-slot-locked-layout="true">
           <span class="pin-note">07 / 09</span>
           <span class="pin-note">Two states.</span>
           <span class="pin-note">Same essay.</span>
@@ -1604,40 +1637,40 @@
         <div class="slide-body">
           <div class="chart-header">
             <h2 class="h2" data-edit-slot="s7-title-1" data-slot-type="text" data-slot-label="How drafts shrink during editing." data-slot-locked-layout="true">How drafts <em>shrink</em> during editing.</h2>
-            <span class="label" data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="Word count, indexed (start = 100)" data-slot-locked-layout="true">Word count, indexed (start = 100)</span>
+            <span class="label" data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Word count, indexed (start = 100)" data-slot-locked-layout="true">Word count, indexed (start = 100)</span>
           </div>
           <div class="chart-wrapper">
             <div class="bar-track">
               <div class="bar-col">
                 <span class="bar-val hi">100</span>
                 <div class="bar-fill" style="height: 100%"></div>
-                <span class="bar-x-label" data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Draft" data-slot-locked-layout="true">Draft</span>
+                <span class="bar-x-label" data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Draft" data-slot-locked-layout="true">Draft</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">92</span>
                 <div class="bar-fill" style="height: 92%"></div>
-                <span class="bar-x-label" data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="First read" data-slot-locked-layout="true">First read</span>
+                <span class="bar-x-label" data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="First read" data-slot-locked-layout="true">First read</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">78</span>
                 <div class="bar-fill" style="height: 78%"></div>
-                <span class="bar-x-label" data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="Second read" data-slot-locked-layout="true">Second read</span>
+                <span class="bar-x-label" data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="Second read" data-slot-locked-layout="true">Second read</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">65</span>
                 <div class="bar-fill" style="height: 65%"></div>
-                <span class="bar-x-label" data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="Peer review" data-slot-locked-layout="true">Peer review</span>
+                <span class="bar-x-label" data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="Peer review" data-slot-locked-layout="true">Peer review</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val hi">58</span>
                 <div class="bar-fill accent" style="height: 58%"></div>
-                <span class="bar-x-label" data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="Final" data-slot-locked-layout="true">Final</span>
+                <span class="bar-x-label" data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="Final" data-slot-locked-layout="true">Final</span>
               </div>
             </div>
             <div class="chart-baseline"></div>
           </div>
         </div>
-        <div class="pin-annotation" data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="08 / 09 Internal study, 2026. n = 412." data-slot-locked-layout="true">
+        <div class="pin-annotation" data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="08 / 09 Internal study, 2026. n = 412." data-slot-locked-layout="true">
           <span class="pin-note">08 / 09</span>
           <span class="pin-note">Internal study, 2026.</span>
           <span class="pin-note">n = 412.</span>
@@ -1652,11 +1685,11 @@
           <h1 class="h1" data-edit-slot="s8-title-1" data-slot-type="text" data-slot-label="Edit until it stops looking edited." data-slot-locked-layout="true">
             Edit until it stops<br />looking <em>edited</em>.
           </h1>
-          <p class="lead" style="color: var(--c-fg-2); max-width: 56ch" data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="Thank you for reading. Comments, corrections, or" data-slot-locked-layout="true">
+          <p class="lead" style="color: var(--c-fg-2); max-width: 56ch" data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="Thank you for reading. Comments, corrections, or" data-slot-locked-layout="true">
             Thank you for reading. Comments, corrections, or quiet disagreement welcome at <span style="color: var(--c-emphasis)">notes@quiet-studio.com</span>.
           </p>
         </div>
-        <div class="pin-annotation" data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="09 / 09 The Quiet Studio. Set in Cormorant + DM " data-slot-locked-layout="true">
+        <div class="pin-annotation" data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="09 / 09 The Quiet Studio. Set in Cormorant + DM " data-slot-locked-layout="true">
           <span class="pin-note">09 / 09</span>
           <span class="pin-note">The Quiet Studio.</span>
           <span class="pin-note">Set in Cormorant + DM Sans.</span>
@@ -2682,6 +2715,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2702,7 +2744,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2715,7 +2757,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -3763,12 +3805,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -3812,7 +3854,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

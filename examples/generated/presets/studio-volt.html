@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-studio-volt" data-template-source="studio" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-studio-volt" data-template-source="studio" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
     <meta charset="UTF-8" />
@@ -878,6 +878,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1437,7 +1470,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1598,19 +1631,19 @@
 
 <section class="slide light slide--split" id="slide-3" data-template-slide-index="4">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="Our Work 04 / 12" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s3-slot-9" data-slot-type="text" data-slot-label="Our Work" data-slot-locked-layout="true">Our Work</span>
+             data-edit-slot="s3-slot-7" data-slot-type="text" data-slot-label="Our Work" data-slot-locked-layout="true">Our Work</span>
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s3-slot-10" data-slot-type="text" data-slot-label="04 / 12" data-slot-locked-layout="true">04 / 12</span>
+             data-edit-slot="s3-slot-8" data-slot-type="text" data-slot-label="04 / 12" data-slot-locked-layout="true">04 / 12</span>
         </div>
 
         <div class="slide-body">
@@ -1619,7 +1652,7 @@
             <p
               class="label"
               style="color: var(--c-fg-light-2); letter-spacing: 0.12em"
-             data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="APPROACH" data-slot-locked-layout="true">
+             data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="APPROACH" data-slot-locked-layout="true">
               APPROACH
             </p>
             <h2 class="h2" style="color: var(--c-fg-light)" data-edit-slot="s3-title-1" data-slot-type="text" data-slot-label="WE BUILD WHAT OTHERS PLAN" data-slot-locked-layout="true">
@@ -1632,15 +1665,15 @@
                 font-weight: 400;
                 text-transform: none;
               "
-             data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="Our studio pairs strategic thinking with craft-l" data-slot-locked-layout="true">
+             data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Our studio pairs strategic thinking with craft-l" data-slot-locked-layout="true">
               Our studio pairs strategic thinking with craft-level execution.
               Every project begins with a question: what needs to be true for
               this to work? We answer it in the work itself.
             </p>
             <ul class="bullet-list">
-              <li data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="Strategy before aesthetics" data-slot-locked-layout="true">Strategy before aesthetics</li>
-              <li data-edit-slot="s3-slot-7" data-slot-type="text" data-slot-label="Constraints as creative fuel" data-slot-locked-layout="true">Constraints as creative fuel</li>
-              <li data-edit-slot="s3-slot-8" data-slot-type="text" data-slot-label="Delivery on schedule, not on someday" data-slot-locked-layout="true">Delivery on schedule, not on someday</li>
+              <li data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Strategy before aesthetics" data-slot-locked-layout="true">Strategy before aesthetics</li>
+              <li data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Constraints as creative fuel" data-slot-locked-layout="true">Constraints as creative fuel</li>
+              <li data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="Delivery on schedule, not on someday" data-slot-locked-layout="true">Delivery on schedule, not on someday</li>
             </ul>
           </div>
 
@@ -1661,16 +1694,16 @@
             <p
               class="caption"
               style="color: var(--c-fg-light-3); font-family: var(--f-mono)"
-             data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="[Caption — project name, year]" data-slot-locked-layout="true">
+             data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="[Caption — project name, year]" data-slot-locked-layout="true">
               [Caption — project name, year]
             </p>
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="[Studio Name] · [Date] 04 / 12" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label" style="color: var(--c-fg-light-3)"
-             data-edit-slot="s3-slot-11" data-slot-type="text" data-slot-label="[Studio Name] · [Date]" data-slot-locked-layout="true">[Studio Name] · [Date]</span>
-          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s3-slot-12" data-slot-type="text" data-slot-label="04 / 12" data-slot-locked-layout="true">04 / 12</span>
+             data-edit-slot="s3-slot-9" data-slot-type="text" data-slot-label="[Studio Name] · [Date]" data-slot-locked-layout="true">[Studio Name] · [Date]</span>
+          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s3-slot-10" data-slot-type="text" data-slot-label="04 / 12" data-slot-locked-layout="true">04 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1678,19 +1711,19 @@
 
 <section class="slide light slide--stats" id="slide-4" data-template-slide-index="5">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="By the Numbers 05 / 12" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="By the Numbers" data-slot-locked-layout="true">By the Numbers</span>
+             data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="By the Numbers" data-slot-locked-layout="true">By the Numbers</span>
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="05 / 12" data-slot-locked-layout="true">05 / 12</span>
+             data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="05 / 12" data-slot-locked-layout="true">05 / 12</span>
         </div>
 
         <div class="slide-body">
@@ -1708,32 +1741,32 @@
           <div class="stats-grid" data-anim="fade-up" data-delay="2">
             <div class="stat-card">
               <div class="stat-value">12</div>
-              <div class="stat-label" style="color: var(--c-fg-light)" data-edit-slot="s4-slot-2" data-slot-type="metric" data-slot-label="Years of practice" data-slot-locked-layout="true">
+              <div class="stat-label" style="color: var(--c-fg-light)" data-edit-slot="s4-slot-3" data-slot-type="metric" data-slot-label="Years of practice" data-slot-locked-layout="true">
                 Years of practice
               </div>
-              <div class="stat-note" data-edit-slot="s4-slot-3" data-slot-type="metric" data-slot-label="[Studio Name] founded [Year]" data-slot-locked-layout="true">[Studio Name] founded [Year]</div>
+              <div class="stat-note" data-edit-slot="s4-slot-4" data-slot-type="metric" data-slot-label="[Studio Name] founded [Year]" data-slot-locked-layout="true">[Studio Name] founded [Year]</div>
             </div>
             <div class="stat-card">
               <div class="stat-value">200+</div>
-              <div class="stat-label" style="color: var(--c-fg-light)" data-edit-slot="s4-slot-4" data-slot-type="metric" data-slot-label="Projects delivered" data-slot-locked-layout="true">
+              <div class="stat-label" style="color: var(--c-fg-light)" data-edit-slot="s4-slot-5" data-slot-type="metric" data-slot-label="Projects delivered" data-slot-locked-layout="true">
                 Projects delivered
               </div>
-              <div class="stat-note" data-edit-slot="s4-slot-5" data-slot-type="metric" data-slot-label="Across [N] industries" data-slot-locked-layout="true">Across [N] industries</div>
+              <div class="stat-note" data-edit-slot="s4-slot-6" data-slot-type="metric" data-slot-label="Across [N] industries" data-slot-locked-layout="true">Across [N] industries</div>
             </div>
             <div class="stat-card">
               <div class="stat-value">3</div>
-              <div class="stat-label" style="color: var(--c-fg-light)" data-edit-slot="s4-slot-6" data-slot-type="metric" data-slot-label="Continents active" data-slot-locked-layout="true">
+              <div class="stat-label" style="color: var(--c-fg-light)" data-edit-slot="s4-slot-7" data-slot-type="metric" data-slot-label="Continents active" data-slot-locked-layout="true">
                 Continents active
               </div>
-              <div class="stat-note" data-edit-slot="s4-slot-7" data-slot-type="metric" data-slot-label="[City A], [City B], [City C]" data-slot-locked-layout="true">[City A], [City B], [City C]</div>
+              <div class="stat-note" data-edit-slot="s4-slot-8" data-slot-type="metric" data-slot-label="[City A], [City B], [City C]" data-slot-locked-layout="true">[City A], [City B], [City C]</div>
             </div>
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="[Studio Name] · [Date] 05 / 12" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label" style="color: var(--c-fg-light-3)"
-             data-edit-slot="s4-slot-11" data-slot-type="text" data-slot-label="[Studio Name] · [Date]" data-slot-locked-layout="true">[Studio Name] · [Date]</span>
-          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s4-slot-12" data-slot-type="text" data-slot-label="05 / 12" data-slot-locked-layout="true">05 / 12</span>
+             data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="[Studio Name] · [Date]" data-slot-locked-layout="true">[Studio Name] · [Date]</span>
+          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="05 / 12" data-slot-locked-layout="true">05 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1741,11 +1774,11 @@
 
 <section class="slide dark slide--list" id="slide-5" data-template-slide-index="6">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Services 06 / 12" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="Services" data-slot-locked-layout="true">Services</span>
+             data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Services" data-slot-locked-layout="true">Services</span>
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s5-slot-10" data-slot-type="text" data-slot-label="06 / 12" data-slot-locked-layout="true">06 / 12</span>
+             data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="06 / 12" data-slot-locked-layout="true">06 / 12</span>
         </div>
 
         <div class="slide-body">
@@ -1755,7 +1788,7 @@
             <p
               class="lead muted"
               style="text-transform: none; font-weight: 400; max-width: 90%"
-             data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="A focused set of services built for ambitious cr" data-slot-locked-layout="true">
+             data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="A focused set of services built for ambitious cr" data-slot-locked-layout="true">
               A focused set of services built for ambitious creative and
               commercial challenges.
             </p>
@@ -1776,9 +1809,9 @@
           </ul>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="[Studio Name] · [Date] 06 / 12" data-slot-locked-layout="true">
-          <span class="label muted" data-edit-slot="s5-slot-11" data-slot-type="text" data-slot-label="[Studio Name] · [Date]" data-slot-locked-layout="true">[Studio Name] · [Date]</span>
-          <span class="label muted" data-edit-slot="s5-slot-12" data-slot-type="text" data-slot-label="06 / 12" data-slot-locked-layout="true">06 / 12</span>
+        <div class="slide-foot">
+          <span class="label muted" data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="[Studio Name] · [Date]" data-slot-locked-layout="true">[Studio Name] · [Date]</span>
+          <span class="label muted" data-edit-slot="s5-slot-10" data-slot-type="text" data-slot-label="06 / 12" data-slot-locked-layout="true">06 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1796,10 +1829,10 @@
         </p>
 
         <!-- Attribution: mono label -->
-        <div class="quote-attr" data-anim="fade-in" data-delay="2" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="[CLIENT NAME] CMO · [Company] · [Year]" data-slot-locked-layout="true">
+        <div class="quote-attr" data-anim="fade-in" data-delay="2">
           <span class="label" style="color: var(--c-fg); letter-spacing: 0.1em"
-             data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="[CLIENT NAME]" data-slot-locked-layout="true">[CLIENT NAME]</span>
-          <span class="label muted" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="CMO · [Company] · [Year]" data-slot-locked-layout="true">CMO · [Company] · [Year]</span>
+             data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="[CLIENT NAME]" data-slot-locked-layout="true">[CLIENT NAME]</span>
+          <span class="label muted" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="CMO · [Company] · [Year]" data-slot-locked-layout="true">CMO · [Company] · [Year]</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1807,19 +1840,19 @@
 
 <section class="slide light slide--compare" id="slide-7" data-template-slide-index="8">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Before / After 08 / 12" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="Before / After" data-slot-locked-layout="true">Before / After</span>
+             data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="Before / After" data-slot-locked-layout="true">Before / After</span>
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s7-slot-12" data-slot-type="text" data-slot-label="08 / 12" data-slot-locked-layout="true">08 / 12</span>
+             data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="08 / 12" data-slot-locked-layout="true">08 / 12</span>
         </div>
 
         <div class="slide-body">
@@ -1838,14 +1871,14 @@
                 text-transform: none;
                 font-weight: 400;
               "
-             data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="A brand built by committee, refined to inoffensi" data-slot-locked-layout="true">
+             data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="A brand built by committee, refined to inoffensi" data-slot-locked-layout="true">
               A brand built by committee, refined to inoffensiveness. Nothing
               wrong. Nothing memorable. Indistinguishable from category norms.
             </p>
             <ul class="bullet-list">
-              <li data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="No clear point of view" data-slot-locked-layout="true">No clear point of view</li>
-              <li data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Inconsistent execution across touchpoints" data-slot-locked-layout="true">Inconsistent execution across touchpoints</li>
-              <li data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="Campaigns that launched and disappeared" data-slot-locked-layout="true">Campaigns that launched and disappeared</li>
+              <li data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="No clear point of view" data-slot-locked-layout="true">No clear point of view</li>
+              <li data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Inconsistent execution across touchpoints" data-slot-locked-layout="true">Inconsistent execution across touchpoints</li>
+              <li data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Campaigns that launched and disappeared" data-slot-locked-layout="true">Campaigns that launched and disappeared</li>
             </ul>
           </div>
 
@@ -1864,22 +1897,22 @@
                 text-transform: none;
                 font-weight: 400;
               "
-             data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="A brand with a defined perspective. Work that ac" data-slot-locked-layout="true">
+             data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="A brand with a defined perspective. Work that ac" data-slot-locked-layout="true">
               A brand with a defined perspective. Work that accumulates — each
               campaign reinforces the one before, building memory and trust.
             </p>
             <ul class="bullet-list">
-              <li data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="Ownable visual and verbal territory" data-slot-locked-layout="true">Ownable visual and verbal territory</li>
-              <li data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="System that scales without diluting" data-slot-locked-layout="true">System that scales without diluting</li>
-              <li data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="Campaigns that created lasting recall" data-slot-locked-layout="true">Campaigns that created lasting recall</li>
+              <li data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="Ownable visual and verbal territory" data-slot-locked-layout="true">Ownable visual and verbal territory</li>
+              <li data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="System that scales without diluting" data-slot-locked-layout="true">System that scales without diluting</li>
+              <li data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="Campaigns that created lasting recall" data-slot-locked-layout="true">Campaigns that created lasting recall</li>
             </ul>
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="[Studio Name] · [Date] 08 / 12" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label" style="color: var(--c-fg-light-3)"
-             data-edit-slot="s7-slot-13" data-slot-type="text" data-slot-label="[Studio Name] · [Date]" data-slot-locked-layout="true">[Studio Name] · [Date]</span>
-          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s7-slot-14" data-slot-type="text" data-slot-label="08 / 12" data-slot-locked-layout="true">08 / 12</span>
+             data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="[Studio Name] · [Date]" data-slot-locked-layout="true">[Studio Name] · [Date]</span>
+          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s7-slot-12" data-slot-type="text" data-slot-label="08 / 12" data-slot-locked-layout="true">08 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1930,11 +1963,11 @@
 
 <section class="slide dark slide--chart" id="slide-10" data-template-slide-index="11">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s10-slot-1" data-slot-type="text" data-slot-label="Project Output 11 / 12" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s10-slot-9" data-slot-type="text" data-slot-label="Project Output" data-slot-locked-layout="true">Project Output</span>
+             data-edit-slot="s10-slot-2" data-slot-type="text" data-slot-label="Project Output" data-slot-locked-layout="true">Project Output</span>
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s10-slot-10" data-slot-type="text" data-slot-label="11 / 12" data-slot-locked-layout="true">11 / 12</span>
+             data-edit-slot="s10-slot-3" data-slot-type="text" data-slot-label="11 / 12" data-slot-locked-layout="true">11 / 12</span>
         </div>
 
         <div class="slide-body">
@@ -1966,41 +1999,41 @@
               <div class="bar-col">
                 <span class="bar-val">14</span>
                 <div class="bar-fill" style="height: 8vh"></div>
-                <span class="bar-x-label" data-edit-slot="s10-slot-2" data-slot-type="text" data-slot-label="[Y-4]" data-slot-locked-layout="true">[Y-4]</span>
+                <span class="bar-x-label" data-edit-slot="s10-slot-6" data-slot-type="text" data-slot-label="[Y-4]" data-slot-locked-layout="true">[Y-4]</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">21</span>
                 <div class="bar-fill" style="height: 12vh"></div>
-                <span class="bar-x-label" data-edit-slot="s10-slot-3" data-slot-type="text" data-slot-label="[Y-3]" data-slot-locked-layout="true">[Y-3]</span>
+                <span class="bar-x-label" data-edit-slot="s10-slot-7" data-slot-type="text" data-slot-label="[Y-3]" data-slot-locked-layout="true">[Y-3]</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">28</span>
                 <div class="bar-fill" style="height: 17vh"></div>
-                <span class="bar-x-label" data-edit-slot="s10-slot-4" data-slot-type="text" data-slot-label="[Y-2]" data-slot-locked-layout="true">[Y-2]</span>
+                <span class="bar-x-label" data-edit-slot="s10-slot-8" data-slot-type="text" data-slot-label="[Y-2]" data-slot-locked-layout="true">[Y-2]</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">35</span>
                 <div class="bar-fill" style="height: 22vh"></div>
-                <span class="bar-x-label" data-edit-slot="s10-slot-5" data-slot-type="text" data-slot-label="[Y-1]" data-slot-locked-layout="true">[Y-1]</span>
+                <span class="bar-x-label" data-edit-slot="s10-slot-9" data-slot-type="text" data-slot-label="[Y-1]" data-slot-locked-layout="true">[Y-1]</span>
               </div>
               <div class="bar-col">
                 <!-- Accent bar: the highlighted year -->
                 <span class="bar-val hi">47</span>
                 <div class="bar-fill accent" style="height: 30vh"></div>
-                <span class="bar-x-label" data-edit-slot="s10-slot-6" data-slot-type="text" data-slot-label="[Year]" data-slot-locked-layout="true">[Year]</span>
+                <span class="bar-x-label" data-edit-slot="s10-slot-10" data-slot-type="text" data-slot-label="[Year]" data-slot-locked-layout="true">[Year]</span>
               </div>
             </div>
             <div class="chart-baseline"></div>
           </div>
 
-          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s10-slot-7" data-slot-type="text" data-slot-label="Source: [Studio Name] internal tracking · [Year]" data-slot-locked-layout="true">
+          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s10-slot-1" data-slot-type="text" data-slot-label="Source: [Studio Name] internal tracking · [Year]" data-slot-locked-layout="true">
             Source: [Studio Name] internal tracking · [Year]
           </p>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s10-slot-8" data-slot-type="text" data-slot-label="[Studio Name] · [Date] 11 / 12" data-slot-locked-layout="true">
-          <span class="label muted" data-edit-slot="s10-slot-11" data-slot-type="text" data-slot-label="[Studio Name] · [Date]" data-slot-locked-layout="true">[Studio Name] · [Date]</span>
-          <span class="label muted" data-edit-slot="s10-slot-12" data-slot-type="text" data-slot-label="11 / 12" data-slot-locked-layout="true">11 / 12</span>
+        <div class="slide-foot">
+          <span class="label muted" data-edit-slot="s10-slot-4" data-slot-type="text" data-slot-label="[Studio Name] · [Date]" data-slot-locked-layout="true">[Studio Name] · [Date]</span>
+          <span class="label muted" data-edit-slot="s10-slot-5" data-slot-type="text" data-slot-label="11 / 12" data-slot-locked-layout="true">11 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2034,13 +2067,13 @@
           data-delay="2"
         >
           <div>
-            <p class="body" style="color: var(--c-fg-light-2)" data-edit-slot="s11-slot-3" data-slot-type="text" data-slot-label="Contact [Name A] via email on [name@studio.com] " data-slot-locked-layout="true">
+            <p class="body" style="color: var(--c-fg-light-2)" data-edit-slot="s11-slot-1" data-slot-type="text" data-slot-label="Contact [Name A] via email on [name@studio.com] " data-slot-locked-layout="true">
               Contact [Name A] via email on [name@studio.com]<br />
               or via phone on [+00 000 000 000]
             </p>
           </div>
-          <div data-edit-slot="s11-slot-1" data-slot-type="text" data-slot-label="Contact [Name B] via email on [name@studio.com] " data-slot-locked-layout="true">
-            <p class="body" style="color: var(--c-fg-light-2)" data-edit-slot="s11-slot-4" data-slot-type="text" data-slot-label="Contact [Name B] via email on [name@studio.com] " data-slot-locked-layout="true">
+          <div>
+            <p class="body" style="color: var(--c-fg-light-2)" data-edit-slot="s11-slot-2" data-slot-type="text" data-slot-label="Contact [Name B] via email on [name@studio.com] " data-slot-locked-layout="true">
               Contact [Name B] via email on [name@studio.com]<br />
               or via phone on [+00 000 000 000]
             </p>
@@ -2053,7 +2086,7 @@
           style="border-top-color: var(--c-border-light)"
           data-anim="fade-in"
           data-delay="4"
-         data-edit-slot="s11-slot-2" data-slot-type="text" data-slot-label="Page 12 [Studio Name] × [Client Name] [Presentat" data-slot-locked-layout="true">
+         data-edit-slot="s11-slot-3" data-slot-type="text" data-slot-label="Page 12 [Studio Name] × [Client Name] [Presentat" data-slot-locked-layout="true">
           <span class="cover-footer-col" style="color: var(--c-fg-light-2)">
             Page 12<br />[Studio Name] × [Client Name]
           </span>
@@ -3088,6 +3121,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -3108,7 +3150,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -3121,7 +3163,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -4169,12 +4211,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -4218,7 +4260,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

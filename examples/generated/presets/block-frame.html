@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-block-frame" data-template-source="block-frame" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-block-frame" data-template-source="block-frame" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
   <meta charset="UTF-8">
@@ -1116,6 +1116,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1675,7 +1708,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1763,9 +1796,9 @@
         <div class="corner-bracket tr"></div>
         <div class="corner-bracket bl"></div>
         <div class="corner-bracket br"></div>
-        <div class="nb-label hero-label" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="Presentation Template" data-slot-locked-layout="true">Presentation Template</div>
+        <div class="nb-label hero-label" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="Presentation Template" data-slot-locked-layout="true">Presentation Template</div>
         <h1 class="nb-heading-xl hero-title" data-edit-slot="s0-title-1" data-slot-type="text" data-slot-label="NEO- BRUTALISM STYLE" data-slot-locked-layout="true">NEO-<br>BRUTALISM<br>STYLE</h1>
-        <p class="hero-subtitle" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="A bold, high-contrast template designed for maxi" data-slot-locked-layout="true">A bold, high-contrast template designed for maximum visual impact and uncompromising clarity.</p>
+        <p class="hero-subtitle" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="A bold, high-contrast template designed for maxi" data-slot-locked-layout="true">A bold, high-contrast template designed for maximum visual impact and uncompromising clarity.</p>
         <div class="deco-pink-rect"></div>
         <div class="deco-green-circle"></div>
         <div class="deco-yellow-bar" data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="Get Started" data-slot-locked-layout="true">Get Started</div>
@@ -1779,7 +1812,7 @@
         <div class="nb-label nb-label-yellow">Overview</div>
         <h2 class="nb-heading-lg" data-edit-slot="s1-title-1" data-slot-type="text" data-slot-label="What We Deliver" data-slot-locked-layout="true">What We<br>Deliver</h2>
         <p class="nb-body" style="max-width: 480px;" data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="Every project follows a rigorous process that ba" data-slot-locked-layout="true">Every project follows a rigorous process that balances creative exploration with systematic execution. The result is work that stands out while remaining fully functional.</p>
-        <div style="display: flex; gap: 12px; flex-wrap: wrap;" data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="12+ Years 500+ Projects" data-slot-locked-layout="true">
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;" data-edit-slot="s1-slot-5" data-slot-type="text" data-slot-label="12+ Years 500+ Projects" data-slot-locked-layout="true">
           <span class="stat-pill">12+ Years</span>
           <span class="stat-pill">500+ Projects</span>
         </div>
@@ -1787,15 +1820,15 @@
       <div class="col-right">
         <div class="intro-card">
           <h3 data-edit-slot="s1-title-2" data-slot-type="text" data-slot-label="Strategy First" data-slot-locked-layout="true">Strategy First</h3>
-          <p data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="We begin with deep research and stakeholder alig" data-slot-locked-layout="true">We begin with deep research and stakeholder alignment to ensure every decision is grounded in clear objectives.</p>
+          <p data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="We begin with deep research and stakeholder alig" data-slot-locked-layout="true">We begin with deep research and stakeholder alignment to ensure every decision is grounded in clear objectives.</p>
         </div>
         <div class="intro-card">
           <h3 data-edit-slot="s1-title-3" data-slot-type="text" data-slot-label="Design System" data-slot-locked-layout="true">Design System</h3>
-          <p data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="A modular approach to visuals ensures consistenc" data-slot-locked-layout="true">A modular approach to visuals ensures consistency across all touchpoints while allowing room for expression.</p>
+          <p data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="A modular approach to visuals ensures consistenc" data-slot-locked-layout="true">A modular approach to visuals ensures consistency across all touchpoints while allowing room for expression.</p>
         </div>
         <div class="intro-card">
           <h3 data-edit-slot="s1-title-4" data-slot-type="text" data-slot-label="Launch Ready" data-slot-locked-layout="true">Launch Ready</h3>
-          <p data-edit-slot="s1-slot-5" data-slot-type="text" data-slot-label="Final deliverables are production-tested, docume" data-slot-locked-layout="true">Final deliverables are production-tested, documented, and handed off with a comprehensive usage guide.</p>
+          <p data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="Final deliverables are production-tested, docume" data-slot-locked-layout="true">Final deliverables are production-tested, documented, and handed off with a comprehensive usage guide.</p>
         </div>
       </div>
 
@@ -1809,21 +1842,21 @@
       <div class="cards-row">
         <div class="feature-card">
           <div class="card-deco"></div>
-          <div class="feature-icon icon-pink" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="A" data-slot-locked-layout="true">A</div>
+          <div class="feature-icon icon-pink" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="A" data-slot-locked-layout="true">A</div>
           <h3 data-edit-slot="s2-title-1" data-slot-type="text" data-slot-label="Modular Layouts" data-slot-locked-layout="true">Modular Layouts</h3>
-          <p data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="Mix and match components to build unique present" data-slot-locked-layout="true">Mix and match components to build unique presentations without starting from scratch each time.</p>
+          <p data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Mix and match components to build unique present" data-slot-locked-layout="true">Mix and match components to build unique presentations without starting from scratch each time.</p>
         </div>
         <div class="feature-card">
           <div class="card-deco"></div>
-          <div class="feature-icon icon-blue" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="B" data-slot-locked-layout="true">B</div>
+          <div class="feature-icon icon-blue" data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="B" data-slot-locked-layout="true">B</div>
           <h3 data-edit-slot="s2-title-2" data-slot-type="text" data-slot-label="Responsive Ready" data-slot-locked-layout="true">Responsive Ready</h3>
-          <p data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="Adapts seamlessly to different screen sizes whil" data-slot-locked-layout="true">Adapts seamlessly to different screen sizes while maintaining the bold visual character.</p>
+          <p data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="Adapts seamlessly to different screen sizes whil" data-slot-locked-layout="true">Adapts seamlessly to different screen sizes while maintaining the bold visual character.</p>
         </div>
         <div class="feature-card">
           <div class="card-deco"></div>
-          <div class="feature-icon icon-green" data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="C" data-slot-locked-layout="true">C</div>
+          <div class="feature-icon icon-green" data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="C" data-slot-locked-layout="true">C</div>
           <h3 data-edit-slot="s2-title-3" data-slot-type="text" data-slot-label="Data Friendly" data-slot-locked-layout="true">Data Friendly</h3>
-          <p data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="Built-in styles for charts, statistics, and info" data-slot-locked-layout="true">Built-in styles for charts, statistics, and information-dense slides that remain readable.</p>
+          <p data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="Built-in styles for charts, statistics, and info" data-slot-locked-layout="true">Built-in styles for charts, statistics, and information-dense slides that remain readable.</p>
         </div>
       </div>
 
@@ -1928,30 +1961,30 @@
         <div class="visual-box">
           <span style="color: var(--black); font-family: Inter, sans-serif; font-weight: 700; font-size: 22px; text-transform: uppercase; letter-spacing: 0.06em; text-align: center; padding: 0 24px;">Image Placeholder</span>
         </div>
-        <div class="visual-label" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Visual System" data-slot-locked-layout="true">Visual System</div>
+        <div class="visual-label" data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Visual System" data-slot-locked-layout="true">Visual System</div>
       </div>
       <div class="split-content">
         <div class="nb-label nb-label-green">Methodology</div>
         <h2 class="nb-heading-md" data-edit-slot="s5-title-1" data-slot-type="text" data-slot-label="How We Structure Every Project" data-slot-locked-layout="true">How We Structure<br>Every Project</h2>
         <ul class="content-list">
-          <li data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="01 Discovery phase to map stakeholder needs and " data-slot-locked-layout="true">
-            <span class="list-num" data-edit-slot="s5-slot-7" data-slot-type="metric" data-slot-label="01" data-slot-locked-layout="true">01</span>
-            <span data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="Discovery phase to map stakeholder needs and tec" data-slot-locked-layout="true">Discovery phase to map stakeholder needs and technical constraints before any visual work begins.</span>
+          <li data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="01 Discovery phase to map stakeholder needs and " data-slot-locked-layout="true">
+            <span class="list-num" data-edit-slot="s5-slot-6" data-slot-type="metric" data-slot-label="01" data-slot-locked-layout="true">01</span>
+            <span data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Discovery phase to map stakeholder needs and tec" data-slot-locked-layout="true">Discovery phase to map stakeholder needs and technical constraints before any visual work begins.</span>
           </li>
-          <li data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="02 Iterative wireframing with rapid feedback loo" data-slot-locked-layout="true">
-            <span class="list-num" data-edit-slot="s5-slot-9" data-slot-type="metric" data-slot-label="02" data-slot-locked-layout="true">02</span>
-            <span data-edit-slot="s5-slot-10" data-slot-type="text" data-slot-label="Iterative wireframing with rapid feedback loops " data-slot-locked-layout="true">Iterative wireframing with rapid feedback loops to validate information architecture early.</span>
+          <li data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="02 Iterative wireframing with rapid feedback loo" data-slot-locked-layout="true">
+            <span class="list-num" data-edit-slot="s5-slot-8" data-slot-type="metric" data-slot-label="02" data-slot-locked-layout="true">02</span>
+            <span data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="Iterative wireframing with rapid feedback loops " data-slot-locked-layout="true">Iterative wireframing with rapid feedback loops to validate information architecture early.</span>
           </li>
-          <li data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="03 High-fidelity prototyping with real content t" data-slot-locked-layout="true">
-            <span class="list-num" data-edit-slot="s5-slot-11" data-slot-type="metric" data-slot-label="03" data-slot-locked-layout="true">03</span>
-            <span data-edit-slot="s5-slot-12" data-slot-type="text" data-slot-label="High-fidelity prototyping with real content to t" data-slot-locked-layout="true">High-fidelity prototyping with real content to test readability and visual hierarchy.</span>
+          <li data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="03 High-fidelity prototyping with real content t" data-slot-locked-layout="true">
+            <span class="list-num" data-edit-slot="s5-slot-10" data-slot-type="metric" data-slot-label="03" data-slot-locked-layout="true">03</span>
+            <span data-edit-slot="s5-slot-11" data-slot-type="text" data-slot-label="High-fidelity prototyping with real content to t" data-slot-locked-layout="true">High-fidelity prototyping with real content to test readability and visual hierarchy.</span>
           </li>
-          <li data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="04 Production handoff with annotated specificati" data-slot-locked-layout="true">
-            <span class="list-num" data-edit-slot="s5-slot-13" data-slot-type="metric" data-slot-label="04" data-slot-locked-layout="true">04</span>
-            <span data-edit-slot="s5-slot-14" data-slot-type="text" data-slot-label="Production handoff with annotated specifications" data-slot-locked-layout="true">Production handoff with annotated specifications and a living style guide.</span>
+          <li data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="04 Production handoff with annotated specificati" data-slot-locked-layout="true">
+            <span class="list-num" data-edit-slot="s5-slot-12" data-slot-type="metric" data-slot-label="04" data-slot-locked-layout="true">04</span>
+            <span data-edit-slot="s5-slot-13" data-slot-type="text" data-slot-label="Production handoff with annotated specifications" data-slot-locked-layout="true">Production handoff with annotated specifications and a living style guide.</span>
           </li>
         </ul>
-        <div data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="View Process" data-slot-locked-layout="true"><a class="nb-btn" href="#">View Process</a></div>
+        <div data-edit-slot="s5-slot-14" data-slot-type="text" data-slot-label="View Process" data-slot-locked-layout="true"><a class="nb-btn" href="#">View Process</a></div>
       </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1999,23 +2032,23 @@
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-deco" style="background: var(--pink);"></div>
-          <div class="stat-number" data-edit-slot="s7-slot-1" data-slot-type="metric" data-slot-label="98%" data-slot-locked-layout="true">98%</div>
-          <div class="stat-label" data-edit-slot="s7-slot-2" data-slot-type="metric" data-slot-label="Client Satisfaction" data-slot-locked-layout="true">Client Satisfaction</div>
+          <div class="stat-number" data-edit-slot="s7-slot-5" data-slot-type="metric" data-slot-label="98%" data-slot-locked-layout="true">98%</div>
+          <div class="stat-label" data-edit-slot="s7-slot-1" data-slot-type="metric" data-slot-label="Client Satisfaction" data-slot-locked-layout="true">Client Satisfaction</div>
         </div>
         <div class="stat-card">
           <div class="stat-deco" style="background: var(--blue);"></div>
-          <div class="stat-number" data-edit-slot="s7-slot-3" data-slot-type="metric" data-slot-label="14" data-slot-locked-layout="true">14</div>
-          <div class="stat-label" data-edit-slot="s7-slot-4" data-slot-type="metric" data-slot-label="Industry Awards" data-slot-locked-layout="true">Industry Awards</div>
+          <div class="stat-number" data-edit-slot="s7-slot-6" data-slot-type="metric" data-slot-label="14" data-slot-locked-layout="true">14</div>
+          <div class="stat-label" data-edit-slot="s7-slot-2" data-slot-type="metric" data-slot-label="Industry Awards" data-slot-locked-layout="true">Industry Awards</div>
         </div>
         <div class="stat-card">
           <div class="stat-deco" style="background: var(--green);"></div>
-          <div class="stat-number" data-edit-slot="s7-slot-5" data-slot-type="metric" data-slot-label="3.2x" data-slot-locked-layout="true">3.2x</div>
-          <div class="stat-label" data-edit-slot="s7-slot-6" data-slot-type="metric" data-slot-label="Avg. ROI Increase" data-slot-locked-layout="true">Avg. ROI Increase</div>
+          <div class="stat-number" data-edit-slot="s7-slot-7" data-slot-type="metric" data-slot-label="3.2x" data-slot-locked-layout="true">3.2x</div>
+          <div class="stat-label" data-edit-slot="s7-slot-3" data-slot-type="metric" data-slot-label="Avg. ROI Increase" data-slot-locked-layout="true">Avg. ROI Increase</div>
         </div>
         <div class="stat-card">
           <div class="stat-deco" style="background: var(--yellow);"></div>
-          <div class="stat-number" data-edit-slot="s7-slot-7" data-slot-type="metric" data-slot-label="50+" data-slot-locked-layout="true">50+</div>
-          <div class="stat-label" data-edit-slot="s7-slot-8" data-slot-type="metric" data-slot-label="Team Members" data-slot-locked-layout="true">Team Members</div>
+          <div class="stat-number" data-edit-slot="s7-slot-8" data-slot-type="metric" data-slot-label="50+" data-slot-locked-layout="true">50+</div>
+          <div class="stat-label" data-edit-slot="s7-slot-4" data-slot-type="metric" data-slot-label="Team Members" data-slot-locked-layout="true">Team Members</div>
         </div>
       </div>
 
@@ -3098,6 +3131,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -3118,7 +3160,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -3131,7 +3173,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -4179,12 +4221,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -4228,7 +4270,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

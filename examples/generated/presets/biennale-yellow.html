@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-biennale-yellow" data-template-source="biennale-yellow" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-biennale-yellow" data-template-source="biennale-yellow" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
 <meta charset="utf-8" />
@@ -587,6 +587,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1146,7 +1179,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1279,7 +1312,7 @@
         <div>
           <div class="word">Programme</div>
         </div>
-        <div class="meta" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Six interlocking strands run across the year. Ea" data-slot-locked-layout="true">Six interlocking strands run across the year. Each is independently curated, but every strand answers to the same question: what does light know that we don't?</div>
+        <div class="meta" data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="Six interlocking strands run across the year. Ea" data-slot-locked-layout="true">Six interlocking strands run across the year. Each is independently curated, but every strand answers to the same question: what does light know that we don't?</div>
       </div>
       <div class="right">
         <div class="head caption">Strand · Title · Anchor</div>
@@ -1288,51 +1321,51 @@
             <div class="num">01</div>
             <div>
               <h3 data-edit-slot="s2-title-1" data-slot-type="text" data-slot-label="Slow Atmospheres" data-slot-locked-layout="true">Slow Atmospheres</h3>
-              <p data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="A reading room of long-form essays, drawings and" data-slot-locked-layout="true">A reading room of long-form essays, drawings and weather notebooks, organised around the changing yellow of late afternoon.</p>
+              <p data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="A reading room of long-form essays, drawings and" data-slot-locked-layout="true">A reading room of long-form essays, drawings and weather notebooks, organised around the changing yellow of late afternoon.</p>
             </div>
           </div>
           <div class="strand">
             <div class="num">02</div>
             <div>
               <h3 data-edit-slot="s2-title-2" data-slot-type="text" data-slot-label="Public Form" data-slot-locked-layout="true">Public Form</h3>
-              <p data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="Three commissions in three pavilions, each exami" data-slot-locked-layout="true">Three commissions in three pavilions, each examining how a public square wears its own light over the course of a season.</p>
+              <p data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="Three commissions in three pavilions, each exami" data-slot-locked-layout="true">Three commissions in three pavilions, each examining how a public square wears its own light over the course of a season.</p>
             </div>
           </div>
           <div class="strand">
             <div class="num">03</div>
             <div>
               <h3 data-edit-slot="s2-title-3" data-slot-type="text" data-slot-label="Field Notes" data-slot-locked-layout="true">Field Notes</h3>
-              <p data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="A residency programme drawing artists, architect" data-slot-locked-layout="true">A residency programme drawing artists, architects and meteorologists together for a hundred days of recording, drawing and arguing.</p>
+              <p data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="A residency programme drawing artists, architect" data-slot-locked-layout="true">A residency programme drawing artists, architects and meteorologists together for a hundred days of recording, drawing and arguing.</p>
             </div>
           </div>
           <div class="strand">
             <div class="num">04</div>
             <div>
               <h3 data-edit-slot="s2-title-4" data-slot-type="text" data-slot-label="Quiet Editions" data-slot-locked-layout="true">Quiet Editions</h3>
-              <p data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="A typographic publishing strand committed to pri" data-slot-locked-layout="true">A typographic publishing strand committed to printing only what asks to be read in daylight, on warm paper, slowly.</p>
+              <p data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="A typographic publishing strand committed to pri" data-slot-locked-layout="true">A typographic publishing strand committed to printing only what asks to be read in daylight, on warm paper, slowly.</p>
             </div>
           </div>
           <div class="strand">
             <div class="num">05</div>
             <div>
               <h3 data-edit-slot="s2-title-5" data-slot-type="text" data-slot-label="Open Conversations" data-slot-locked-layout="true">Open Conversations</h3>
-              <p data-edit-slot="s2-slot-7" data-slot-type="text" data-slot-label="Twelve evenings of public talks, paired with a m" data-slot-locked-layout="true">Twelve evenings of public talks, paired with a meal and a question: what is the weather like in your work?</p>
+              <p data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="Twelve evenings of public talks, paired with a m" data-slot-locked-layout="true">Twelve evenings of public talks, paired with a meal and a question: what is the weather like in your work?</p>
             </div>
           </div>
         </div>
       </div>
-      <div class="pagenum" data-edit-slot="s2-slot-2" data-slot-type="metric" data-slot-label="03 / 08" data-slot-locked-layout="true">03 / 08</div>
+      <div class="pagenum" data-edit-slot="s2-slot-7" data-slot-type="metric" data-slot-label="03 / 08" data-slot-locked-layout="true">03 / 08</div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide s-chapter" id="slide-3" data-template-slide-index="4">
       <div class="glow" aria-hidden="true"></div>
-      <div class="caption vrail" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="First Chapter — Slow Atmospheres" data-slot-locked-layout="true">First Chapter — Slow Atmospheres</div>
+      <div class="caption vrail" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="First Chapter — Slow Atmospheres" data-slot-locked-layout="true">First Chapter — Slow Atmospheres</div>
       <div class="stack">
         <div class="nm">01</div>
         <div class="ttl" data-edit-slot="s3-title-1" data-slot-type="text" data-slot-label="A reading of the season&#x27;s quietest hours" data-slot-locked-layout="true">A reading of the season's quietest hours</div>
-        <p class="lede" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="In its first chapter the Aurora Programme conven" data-slot-locked-layout="true">In its first chapter the Aurora Programme convenes around the slowest light of the year: the long minutes after the sun has gone but before the room has admitted it. We open the year in March, in three rooms, in three cities, with three lamps left burning past closing.</p>
+        <p class="lede" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="In its first chapter the Aurora Programme conven" data-slot-locked-layout="true">In its first chapter the Aurora Programme convenes around the slowest light of the year: the long minutes after the sun has gone but before the room has admitted it. We open the year in March, in three rooms, in three cities, with three lamps left burning past closing.</p>
       </div>
       <div class="pagenum" data-edit-slot="s3-slot-3" data-slot-type="metric" data-slot-label="04 / 08" data-slot-locked-layout="true">04 / 08</div>
 
@@ -2504,6 +2537,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2524,7 +2566,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2537,7 +2579,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -3585,12 +3627,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -3634,7 +3676,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-emerald-editorial" data-template-source="emerald-editorial" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-emerald-editorial" data-template-source="emerald-editorial" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
 <meta charset="utf-8" />
@@ -796,6 +796,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1355,7 +1388,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1506,8 +1539,8 @@
         <span>SECTION OPENER</span>
         <span>EIGHT MINUTES</span>
       </div>
-      <div class="s3-numeral" data-edit-slot="s2-slot-1" data-slot-type="metric" data-slot-label="Q3" data-slot-locked-layout="true">Q3</div>
-      <div class="bot" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="OVERVIEW FOUR THEMES" data-slot-locked-layout="true">
+      <div class="s3-numeral" data-edit-slot="s2-slot-2" data-slot-type="metric" data-slot-label="Q3" data-slot-locked-layout="true">Q3</div>
+      <div class="bot" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="OVERVIEW FOUR THEMES" data-slot-locked-layout="true">
         <span>OVERVIEW</span>
         <span>FOUR THEMES</span>
       </div>
@@ -1515,7 +1548,7 @@
     <div class="s3-right">
       <div class="kicker">A READING OF THE PERIOD</div>
       <h2 data-edit-slot="s2-title-1" data-slot-type="text" data-slot-label="The Quarter, In Review." data-slot-locked-layout="true">The Quarter, In Review.</h2>
-      <p class="lede" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="A short framing of what changed, what held stead" data-slot-locked-layout="true">A short framing of what changed, what held steady, and where the team's attention is most needed in the weeks to come. The opener sets the tone for the data and decisions that follow.</p>
+      <p class="lede" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="A short framing of what changed, what held stead" data-slot-locked-layout="true">A short framing of what changed, what held steady, and where the team's attention is most needed in the weeks to come. The opener sets the tone for the data and decisions that follow.</p>
       <div class="marks" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="THREE THEMES TWO DECISIONS ONE QUESTION" data-slot-locked-layout="true">
         <span class="mark">THREE THEMES</span>
         <span class="mark">TWO DECISIONS</span>
@@ -1527,7 +1560,7 @@
   </section>
 
 <section class="slide s4" data-screen-label="04 Statement And Three" id="slide-3" data-template-slide-index="4">
-    <div class="masthead" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="OVERVIEW · A READING OF THE PERIOD THREE THREADS" data-slot-locked-layout="true">
+    <div class="masthead" data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="OVERVIEW · A READING OF THE PERIOD THREE THREADS" data-slot-locked-layout="true">
       <span>OVERVIEW · A READING OF THE PERIOD</span>
       <span>THREE THREADS</span>
     </div>
@@ -1544,17 +1577,17 @@
       <div class="s4-cell">
         <div class="n">01</div>
         <h4 data-edit-slot="s3-title-2" data-slot-type="text" data-slot-label="A Wider Field Of Customers" data-slot-locked-layout="true">A Wider Field Of Customers</h4>
-        <p data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Expansion into adjacent segments held through th" data-slot-locked-layout="true">Expansion into adjacent segments held through the period, with new accounts arriving from regions that previously sat at the margins of our practice.</p>
+        <p data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="Expansion into adjacent segments held through th" data-slot-locked-layout="true">Expansion into adjacent segments held through the period, with new accounts arriving from regions that previously sat at the margins of our practice.</p>
       </div>
       <div class="s4-cell">
         <div class="n">02</div>
         <h4 data-edit-slot="s3-title-3" data-slot-type="text" data-slot-label="Quieter, Steadier Operations" data-slot-locked-layout="true">Quieter, Steadier Operations</h4>
-        <p data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Internal systems were rebuilt around fewer movin" data-slot-locked-layout="true">Internal systems were rebuilt around fewer moving parts. Incidents fell, and the time spent on routine work fell with them, freeing capacity for longer projects.</p>
+        <p data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Internal systems were rebuilt around fewer movin" data-slot-locked-layout="true">Internal systems were rebuilt around fewer moving parts. Incidents fell, and the time spent on routine work fell with them, freeing capacity for longer projects.</p>
       </div>
       <div class="s4-cell">
         <div class="n">03</div>
         <h4 data-edit-slot="s3-title-4" data-slot-type="text" data-slot-label="A Renewed Product Cadence" data-slot-locked-layout="true">A Renewed Product Cadence</h4>
-        <p data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Two releases shipped on the schedule we set in s" data-slot-locked-layout="true">Two releases shipped on the schedule we set in spring, and the team closed the period with a clearer view of the autumn roadmap than it began with.</p>
+        <p data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Two releases shipped on the schedule we set in s" data-slot-locked-layout="true">Two releases shipped on the schedule we set in spring, and the team closed the period with a clearer view of the autumn roadmap than it began with.</p>
       </div>
     </div>
 
@@ -1562,14 +1595,14 @@
   </section>
 
 <section class="slide s5" data-screen-label="05 Data Study" id="slide-4" data-template-slide-index="5">
-    <div class="masthead" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="DATA STUDY · QUARTERLY MOVEMENT SIX QUARTERS" data-slot-locked-layout="true">
+    <div class="masthead" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="DATA STUDY · QUARTERLY MOVEMENT SIX QUARTERS" data-slot-locked-layout="true">
       <span>DATA STUDY · QUARTERLY MOVEMENT</span>
       <span>SIX QUARTERS</span>
     </div>
 
     <div class="s5-head">
       <h2 class="s5-h" data-edit-slot="s4-title-1" data-slot-type="text" data-slot-label="How the numbers moved." data-slot-locked-layout="true">How the<br>numbers moved.</h2>
-      <p class="s5-sub" data-edit-slot="s4-slot-14" data-slot-type="text" data-slot-label="Two indicators tracked side by side across six q" data-slot-locked-layout="true">Two indicators tracked side by side across six quarters. The lighter bars show what was committed; the bone bars show what was delivered against it.</p>
+      <p class="s5-sub" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="Two indicators tracked side by side across six q" data-slot-locked-layout="true">Two indicators tracked side by side across six quarters. The lighter bars show what was committed; the bone bars show what was delivered against it.</p>
     </div>
 
     <div class="s5-body">
@@ -1593,30 +1626,30 @@
           <div class="chart-bars">
             <div class="grp">
               <div class="bar" style="height: 42%;"><span class="v">52</span></div>
-              <div class="bar b2" style="height: 35%;" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="44" data-slot-locked-layout="true"><span class="v">44</span></div>
+              <div class="bar b2" style="height: 35%;" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="44" data-slot-locked-layout="true"><span class="v">44</span></div>
             </div>
             <div class="grp">
               <div class="bar" style="height: 51%;"><span class="v">61</span></div>
-              <div class="bar b2" style="height: 47%;" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="57" data-slot-locked-layout="true"><span class="v">57</span></div>
+              <div class="bar b2" style="height: 47%;" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="57" data-slot-locked-layout="true"><span class="v">57</span></div>
             </div>
             <div class="grp">
               <div class="bar" style="height: 58%;"><span class="v">70</span></div>
-              <div class="bar b2" style="height: 50%;" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="60" data-slot-locked-layout="true"><span class="v">60</span></div>
+              <div class="bar b2" style="height: 50%;" data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="60" data-slot-locked-layout="true"><span class="v">60</span></div>
             </div>
             <div class="grp">
               <div class="bar" style="height: 64%;"><span class="v">77</span></div>
-              <div class="bar b2" style="height: 60%;" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="72" data-slot-locked-layout="true"><span class="v">72</span></div>
+              <div class="bar b2" style="height: 60%;" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="72" data-slot-locked-layout="true"><span class="v">72</span></div>
             </div>
             <div class="grp">
               <div class="bar" style="height: 75%;"><span class="v">90</span></div>
-              <div class="bar b2" style="height: 70%;" data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="84" data-slot-locked-layout="true"><span class="v">84</span></div>
+              <div class="bar b2" style="height: 70%;" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="84" data-slot-locked-layout="true"><span class="v">84</span></div>
             </div>
             <div class="grp">
               <div class="bar" style="height: 88%;"><span class="v">106</span></div>
-              <div class="bar b2" style="height: 82%;" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="98" data-slot-locked-layout="true"><span class="v">98</span></div>
+              <div class="bar b2" style="height: 82%;" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="98" data-slot-locked-layout="true"><span class="v">98</span></div>
             </div>
           </div>
-          <div class="chart-x" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="Q2·24 Q3·24 Q4·24 Q1·25 Q2·25 Q3·25" data-slot-locked-layout="true">
+          <div class="chart-x" data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="Q2·24 Q3·24 Q4·24 Q1·25 Q2·25 Q3·25" data-slot-locked-layout="true">
             <span>Q2·24</span>
             <span>Q3·24</span>
             <span>Q4·24</span>
@@ -1627,22 +1660,22 @@
         </div>
         <div class="chart-legend">
           <div class="it"><span class="sw"></span><span>COMMITTED</span></div>
-          <div class="it" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="DELIVERED" data-slot-locked-layout="true"><span class="sw b2"></span><span>DELIVERED</span></div>
+          <div class="it" data-edit-slot="s4-slot-11" data-slot-type="text" data-slot-label="DELIVERED" data-slot-locked-layout="true"><span class="sw b2"></span><span>DELIVERED</span></div>
         </div>
       </div>
 
       <aside class="s5-side">
-        <span class="tag" data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="THE TAKEAWAY" data-slot-locked-layout="true">THE TAKEAWAY</span>
+        <span class="tag" data-edit-slot="s4-slot-12" data-slot-type="text" data-slot-label="THE TAKEAWAY" data-slot-locked-layout="true">THE TAKEAWAY</span>
         <h3 class="take" data-edit-slot="s4-title-2" data-slot-type="text" data-slot-label="Delivery is closing the gap on commitment for th" data-slot-locked-layout="true">Delivery is closing the gap on commitment for the third quarter running.</h3>
-        <p class="note" data-edit-slot="s4-slot-11" data-slot-type="text" data-slot-label="The margin between committed and delivered work " data-slot-locked-layout="true">The margin between committed and delivered work narrowed from fifteen percent to eight percent across the period.</p>
+        <p class="note" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="The margin between committed and delivered work " data-slot-locked-layout="true">The margin between committed and delivered work narrowed from fifteen percent to eight percent across the period.</p>
         <div class="stats">
           <div class="stat">
             <div class="num">8<span class="u">%</span></div>
-            <div class="lbl" data-edit-slot="s4-slot-12" data-slot-type="text" data-slot-label="CURRENT GAP WAS 15%" data-slot-locked-layout="true">CURRENT GAP<br>WAS 15%</div>
+            <div class="lbl" data-edit-slot="s4-slot-13" data-slot-type="text" data-slot-label="CURRENT GAP WAS 15%" data-slot-locked-layout="true">CURRENT GAP<br>WAS 15%</div>
           </div>
           <div class="stat">
             <div class="num">+24<span class="u">%</span></div>
-            <div class="lbl" data-edit-slot="s4-slot-13" data-slot-type="text" data-slot-label="YEAR ON YEAR DELIVERY GROWTH" data-slot-locked-layout="true">YEAR ON YEAR<br>DELIVERY GROWTH</div>
+            <div class="lbl" data-edit-slot="s4-slot-14" data-slot-type="text" data-slot-label="YEAR ON YEAR DELIVERY GROWTH" data-slot-locked-layout="true">YEAR ON YEAR<br>DELIVERY GROWTH</div>
           </div>
         </div>
       </aside>
@@ -1652,7 +1685,7 @@
   </section>
 
 <section class="slide s6" data-screen-label="06 Process Diagram" id="slide-5" data-template-slide-index="6">
-    <div class="masthead" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="DIAGRAM · THE WORKING METHOD FOUR STEPS" data-slot-locked-layout="true">
+    <div class="masthead" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="DIAGRAM · THE WORKING METHOD FOUR STEPS" data-slot-locked-layout="true">
       <span>DIAGRAM · THE WORKING METHOD</span>
       <span>FOUR STEPS</span>
     </div>
@@ -1662,32 +1695,32 @@
         <div class="s6-eyebrow">FROM QUESTION TO DECISION</div>
         <h2 class="s6-h" data-edit-slot="s5-title-1" data-slot-type="text" data-slot-label="A four-step working method." data-slot-locked-layout="true">A four-step<br>working method.</h2>
       </div>
-      <p class="s6-sub" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="A short loop the team runs every fortnight. Each" data-slot-locked-layout="true">A short loop the team runs every fortnight. Each step has a single owner and produces one artefact that the next step depends on. The cadence is the most important part.</p>
+      <p class="s6-sub" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="A short loop the team runs every fortnight. Each" data-slot-locked-layout="true">A short loop the team runs every fortnight. Each step has a single owner and produces one artefact that the next step depends on. The cadence is the most important part.</p>
     </div>
 
     <div class="s6-flow">
       <div class="step">
         <div class="n">01</div>
         <h4 data-edit-slot="s5-title-2" data-slot-type="text" data-slot-label="Frame The Question" data-slot-locked-layout="true">Frame The Question</h4>
-        <p data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Write down the decision we are making and who it" data-slot-locked-layout="true">Write down the decision we are making and who it affects. Keep the brief to a single page so the room can read it before the discussion.</p>
-        <div class="meta" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="LEAD2 DAYS" data-slot-locked-layout="true"><span>LEAD</span><span>2 DAYS</span></div>
+        <p data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Write down the decision we are making and who it" data-slot-locked-layout="true">Write down the decision we are making and who it affects. Keep the brief to a single page so the room can read it before the discussion.</p>
+        <div class="meta" data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="LEAD2 DAYS" data-slot-locked-layout="true"><span>LEAD</span><span>2 DAYS</span></div>
       </div>
       <div class="step alt">
         <div class="n">02</div>
         <h4 data-edit-slot="s5-title-3" data-slot-type="text" data-slot-label="Gather The Evidence" data-slot-locked-layout="true">Gather The Evidence</h4>
-        <p data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Pull the numbers, talk to three customers, read " data-slot-locked-layout="true">Pull the numbers, talk to three customers, read the prior work. Note what is missing and where the picture is most uncertain.</p>
-        <div class="meta" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="ANALYST4 DAYS" data-slot-locked-layout="true"><span>ANALYST</span><span>4 DAYS</span></div>
+        <p data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Pull the numbers, talk to three customers, read " data-slot-locked-layout="true">Pull the numbers, talk to three customers, read the prior work. Note what is missing and where the picture is most uncertain.</p>
+        <div class="meta" data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="ANALYST4 DAYS" data-slot-locked-layout="true"><span>ANALYST</span><span>4 DAYS</span></div>
       </div>
       <div class="step">
         <div class="n">03</div>
         <h4 data-edit-slot="s5-title-4" data-slot-type="text" data-slot-label="Draft A Position" data-slot-locked-layout="true">Draft A Position</h4>
-        <p data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Write the recommendation in plain prose with two" data-slot-locked-layout="true">Write the recommendation in plain prose with two alternatives. Circulate it the day before the review so colleagues arrive with comments in hand.</p>
-        <div class="meta" data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="LEAD3 DAYS" data-slot-locked-layout="true"><span>LEAD</span><span>3 DAYS</span></div>
+        <p data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Write the recommendation in plain prose with two" data-slot-locked-layout="true">Write the recommendation in plain prose with two alternatives. Circulate it the day before the review so colleagues arrive with comments in hand.</p>
+        <div class="meta" data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="LEAD3 DAYS" data-slot-locked-layout="true"><span>LEAD</span><span>3 DAYS</span></div>
       </div>
       <div class="step alt">
         <div class="n">04</div>
         <h4 data-edit-slot="s5-title-5" data-slot-type="text" data-slot-label="Decide And Record" data-slot-locked-layout="true">Decide And Record</h4>
-        <p data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="Meet, decide, and write the decision into the lo" data-slot-locked-layout="true">Meet, decide, and write the decision into the log within a day. The log is the single record we return to when the question comes back.</p>
+        <p data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Meet, decide, and write the decision into the lo" data-slot-locked-layout="true">Meet, decide, and write the decision into the log within a day. The log is the single record we return to when the question comes back.</p>
         <div class="meta" data-edit-slot="s5-slot-10" data-slot-type="text" data-slot-label="GROUP1 DAY" data-slot-locked-layout="true"><span>GROUP</span><span>1 DAY</span></div>
       </div>
     </div>
@@ -1696,7 +1729,7 @@
   </section>
 
 <section class="slide s7" data-screen-label="07 KPI Grid" id="slide-6" data-template-slide-index="7">
-    <div class="masthead" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="HEADLINE INDICATORS · Q3 FOUR NUMBERS" data-slot-locked-layout="true">
+    <div class="masthead" data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="HEADLINE INDICATORS · Q3 FOUR NUMBERS" data-slot-locked-layout="true">
       <span>HEADLINE INDICATORS · Q3</span>
       <span>FOUR NUMBERS</span>
     </div>
@@ -1706,33 +1739,33 @@
         <div class="s7-eyebrow">FOUR NUMBERS WORTH KEEPING IN VIEW</div>
         <h2 class="s7-h" data-edit-slot="s6-title-1" data-slot-type="text" data-slot-label="By the numbers." data-slot-locked-layout="true">By the<br>numbers.</h2>
       </div>
-      <p class="s7-sub" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="A short panel of indicators the team reviews eac" data-slot-locked-layout="true">A short panel of indicators the team reviews each month. Variances are read against the plan agreed in March, not against the prior year.</p>
+      <p class="s7-sub" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="A short panel of indicators the team reviews eac" data-slot-locked-layout="true">A short panel of indicators the team reviews each month. Variances are read against the plan agreed in March, not against the prior year.</p>
     </div>
 
     <div class="s7-grid">
       <div class="kpi">
         <div class="lbl">ACTIVE ACCOUNTS</div>
-        <div class="val" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="2,418" data-slot-locked-layout="true">2,418</div>
-        <div class="delta" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="+ 12.4%" data-slot-locked-layout="true">+ 12.4%</div>
-        <div class="desc" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Net new accounts added across the three operatin" data-slot-locked-layout="true">Net new accounts added across the three operating regions during the quarter.</div>
+        <div class="val" data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="2,418" data-slot-locked-layout="true">2,418</div>
+        <div class="delta" data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="+ 12.4%" data-slot-locked-layout="true">+ 12.4%</div>
+        <div class="desc" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Net new accounts added across the three operatin" data-slot-locked-layout="true">Net new accounts added across the three operating regions during the quarter.</div>
       </div>
       <div class="kpi alt">
         <div class="lbl">RETENTION RATE</div>
-        <div class="val" data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="94%" data-slot-locked-layout="true">94<span class="u">%</span></div>
-        <div class="delta" data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="+ 3.1 PP" data-slot-locked-layout="true">+ 3.1 PP</div>
-        <div class="desc" data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="Trailing twelve-month retention across the renew" data-slot-locked-layout="true">Trailing twelve-month retention across the renewing cohort of accounts.</div>
+        <div class="val" data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="94%" data-slot-locked-layout="true">94<span class="u">%</span></div>
+        <div class="delta" data-edit-slot="s6-slot-10" data-slot-type="text" data-slot-label="+ 3.1 PP" data-slot-locked-layout="true">+ 3.1 PP</div>
+        <div class="desc" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Trailing twelve-month retention across the renew" data-slot-locked-layout="true">Trailing twelve-month retention across the renewing cohort of accounts.</div>
       </div>
       <div class="kpi">
         <div class="lbl">CYCLE TIME</div>
-        <div class="val" data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="11d" data-slot-locked-layout="true">11<span class="u">d</span></div>
-        <div class="delta" data-edit-slot="s6-slot-10" data-slot-type="text" data-slot-label="− 2 DAYS" data-slot-locked-layout="true">− 2 DAYS</div>
-        <div class="desc" data-edit-slot="s6-slot-11" data-slot-type="text" data-slot-label="Median time from intake to first delivery, weigh" data-slot-locked-layout="true">Median time from intake to first delivery, weighted by project volume.</div>
+        <div class="val" data-edit-slot="s6-slot-11" data-slot-type="text" data-slot-label="11d" data-slot-locked-layout="true">11<span class="u">d</span></div>
+        <div class="delta" data-edit-slot="s6-slot-12" data-slot-type="text" data-slot-label="− 2 DAYS" data-slot-locked-layout="true">− 2 DAYS</div>
+        <div class="desc" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Median time from intake to first delivery, weigh" data-slot-locked-layout="true">Median time from intake to first delivery, weighted by project volume.</div>
       </div>
       <div class="kpi alt">
         <div class="lbl">MARGIN ON REVENUE</div>
-        <div class="val" data-edit-slot="s6-slot-12" data-slot-type="text" data-slot-label="37%" data-slot-locked-layout="true">37<span class="u">%</span></div>
-        <div class="delta" data-edit-slot="s6-slot-13" data-slot-type="text" data-slot-label="+ 1.8 PP" data-slot-locked-layout="true">+ 1.8 PP</div>
-        <div class="desc" data-edit-slot="s6-slot-14" data-slot-type="text" data-slot-label="Contribution margin after direct costs, before a" data-slot-locked-layout="true">Contribution margin after direct costs, before allocated overhead.</div>
+        <div class="val" data-edit-slot="s6-slot-13" data-slot-type="text" data-slot-label="37%" data-slot-locked-layout="true">37<span class="u">%</span></div>
+        <div class="delta" data-edit-slot="s6-slot-14" data-slot-type="text" data-slot-label="+ 1.8 PP" data-slot-locked-layout="true">+ 1.8 PP</div>
+        <div class="desc" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Contribution margin after direct costs, before a" data-slot-locked-layout="true">Contribution margin after direct costs, before allocated overhead.</div>
       </div>
     </div>
 
@@ -2796,6 +2829,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2816,7 +2858,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2829,7 +2871,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -3877,12 +3919,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -3926,7 +3968,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

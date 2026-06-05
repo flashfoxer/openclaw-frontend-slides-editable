@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-grove" data-template-source="grove" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-grove" data-template-source="grove" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
     <meta charset="UTF-8" />
@@ -878,6 +878,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1437,7 +1470,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1520,11 +1553,11 @@
 <div id="deck" class="slides-offset stage" data-ported-template="grove">
 <section class="slide dark slide--cover" id="slide-0" data-template-slide-index="1">
         <!-- Vertical sidebar label: rotated text on the left edge -->
-        <div class="grove-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="Strategy · Presentation" data-slot-locked-layout="true">
+        <div class="grove-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="Strategy · Presentation" data-slot-locked-layout="true">
           Strategy · Presentation
         </div>
         <!-- Watermark number: near-invisible serif "01" in background -->
-        <div class="grove-num" data-edit-slot="s0-slot-2" data-slot-type="metric" data-slot-label="01" data-slot-locked-layout="true">01</div>
+        <div class="grove-num" data-edit-slot="s0-slot-5" data-slot-type="metric" data-slot-label="01" data-slot-locked-layout="true">01</div>
 
         <!-- Main content: grows to fill, centers vertically -->
         <div
@@ -1562,7 +1595,7 @@
             style="max-width: 40%; margin-top: var(--gap-md)"
             data-anim="fade-up"
             data-delay="4"
-           data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="A [type of work] for [audience or occasion]. [Mo" data-slot-locked-layout="true">
+           data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="A [type of work] for [audience or occasion]. [Mo" data-slot-locked-layout="true">
             A [type of work] for [audience or occasion]. [Month, Year].
           </p>
         </div>
@@ -1577,9 +1610,9 @@
           "
           data-anim="fade-in"
           data-delay="5"
-         data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="[Prepared by] [Confidential]" data-slot-locked-layout="true">
-          <span class="label muted" data-edit-slot="s0-slot-5" data-slot-type="text" data-slot-label="[Prepared by]" data-slot-locked-layout="true">[Prepared by]</span>
-          <span class="label muted" data-edit-slot="s0-slot-6" data-slot-type="text" data-slot-label="[Confidential]" data-slot-locked-layout="true">[Confidential]</span>
+        >
+          <span class="label muted" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="[Prepared by]" data-slot-locked-layout="true">[Prepared by]</span>
+          <span class="label muted" data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="[Confidential]" data-slot-locked-layout="true">[Confidential]</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1587,9 +1620,9 @@
 
 <section class="slide dark slide--chapter" id="slide-1" data-template-slide-index="2">
         <!-- Watermark: massive near-invisible "01" in background -->
-        <div class="grove-num" data-edit-slot="s1-slot-1" data-slot-type="metric" data-slot-label="01" data-slot-locked-layout="true">01</div>
+        <div class="grove-num" data-edit-slot="s1-slot-2" data-slot-type="metric" data-slot-label="01" data-slot-locked-layout="true">01</div>
         <!-- Section kicker: "01 / CONTEXT" in mono coral -->
-        <div class="chapter-num" data-anim="fade-in" data-delay="0" data-edit-slot="s1-slot-2" data-slot-type="metric" data-slot-label="01 / Context" data-slot-locked-layout="true">
+        <div class="chapter-num" data-anim="fade-in" data-delay="0" data-edit-slot="s1-slot-3" data-slot-type="metric" data-slot-label="01 / Context" data-slot-locked-layout="true">
           01 / Context
         </div>
         <!-- Short coral rule -->
@@ -1609,7 +1642,7 @@
           style="max-width: 48%"
           data-anim="fade-up"
           data-delay="3"
-         data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="An honest assessment of where the market is, and" data-slot-locked-layout="true">
+         data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="An honest assessment of where the market is, and" data-slot-locked-layout="true">
           An honest assessment of where the market is, and where the opportunity
           lies.
         </p>
@@ -1619,12 +1652,12 @@
 
 <section class="slide dark slide--statement" id="slide-2" data-template-slide-index="3">
         <!-- Vertical sidebar label -->
-        <div class="grove-sidebar" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="The Thesis" data-slot-locked-layout="true">The Thesis</div>
+        <div class="grove-sidebar" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="The Thesis" data-slot-locked-layout="true">The Thesis</div>
         <!-- Chrome bar: section name left, page number right -->
-        <div class="slide-chrome" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="Core Insight 03" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="Core Insight" data-slot-locked-layout="true">Core Insight</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="03" data-slot-locked-layout="true">03</span>
+             data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Core Insight" data-slot-locked-layout="true">Core Insight</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="03" data-slot-locked-layout="true">03</span>
         </div>
 
         <div class="slide-body">
@@ -1647,29 +1680,29 @@
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="03 / 12" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label muted"></span>
-          <span class="label muted" data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="03 / 12" data-slot-locked-layout="true">03 / 12</span>
+          <span class="label muted" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="03 / 12" data-slot-locked-layout="true">03 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide light slide--split" id="slide-3" data-template-slide-index="4">
-        <div class="grove-sidebar" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="The Evidence" data-slot-locked-layout="true">The Evidence</div>
-        <div class="slide-chrome" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Research · Insight 04" data-slot-locked-layout="true">
+        <div class="grove-sidebar" data-edit-slot="s3-slot-9" data-slot-type="text" data-slot-label="The Evidence" data-slot-locked-layout="true">The Evidence</div>
+        <div class="slide-chrome">
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s3-slot-9" data-slot-type="text" data-slot-label="Research · Insight" data-slot-locked-layout="true">Research · Insight</span>
+             data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="Research · Insight" data-slot-locked-layout="true">Research · Insight</span>
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s3-slot-10" data-slot-type="text" data-slot-label="04" data-slot-locked-layout="true">04</span>
+             data-edit-slot="s3-slot-7" data-slot-type="text" data-slot-label="04" data-slot-locked-layout="true">04</span>
         </div>
 
         <div class="slide-body">
@@ -1679,17 +1712,17 @@
             <h2 class="h2" data-edit-slot="s3-title-1" data-slot-type="text" data-slot-label="Audiences have outgrown the stories being told a" data-slot-locked-layout="true">
               Audiences have outgrown the stories being told about <em>them</em>
             </h2>
-            <p class="lead" style="color: var(--c-fg-light-2)" data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Three years of primary research across six marke" data-slot-locked-layout="true">
+            <p class="lead" style="color: var(--c-fg-light-2)" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="Three years of primary research across six marke" data-slot-locked-layout="true">
               Three years of primary research across six markets revealed a
               consistent pattern: the gap between how brands communicate and how
               people actually live is widening.
             </p>
             <ul class="bullet-list" style="color: var(--c-fg-light)">
-              <li data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Authenticity is valued over aspiration in all ca" data-slot-locked-layout="true">
+              <li data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Authenticity is valued over aspiration in all ca" data-slot-locked-layout="true">
                 Authenticity is valued over aspiration in all categories tested
               </li>
-              <li data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="Trust is earned through consistency, not campaig" data-slot-locked-layout="true">Trust is earned through consistency, not campaigns</li>
-              <li data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="Communities form around shared values, not produ" data-slot-locked-layout="true">
+              <li data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Trust is earned through consistency, not campaig" data-slot-locked-layout="true">Trust is earned through consistency, not campaigns</li>
+              <li data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Communities form around shared values, not produ" data-slot-locked-layout="true">
                 Communities form around shared values, not product features
               </li>
             </ul>
@@ -1714,26 +1747,26 @@
                 font-family: var(--f-mono);
                 letter-spacing: 0.08em;
               "
-             data-edit-slot="s3-slot-7" data-slot-type="text" data-slot-label="[Caption: research context or visual annotation]" data-slot-locked-layout="true">
+             data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="[Caption: research context or visual annotation]" data-slot-locked-layout="true">
               [Caption: research context or visual annotation]
             </p>
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s3-slot-8" data-slot-type="text" data-slot-label="04 / 12" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label" style="color: var(--c-fg-light-2)"></span>
-          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s3-slot-11" data-slot-type="text" data-slot-label="04 / 12" data-slot-locked-layout="true">04 / 12</span>
+          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s3-slot-8" data-slot-type="text" data-slot-label="04 / 12" data-slot-locked-layout="true">04 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide dark slide--stats" id="slide-4" data-template-slide-index="5">
-        <div class="grove-sidebar" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="By The Numbers" data-slot-locked-layout="true">By The Numbers</div>
-        <div class="slide-chrome" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="Market · Metrics 05" data-slot-locked-layout="true">
+        <div class="grove-sidebar" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="By The Numbers" data-slot-locked-layout="true">By The Numbers</div>
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="Market · Metrics" data-slot-locked-layout="true">Market · Metrics</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="05" data-slot-locked-layout="true">05</span>
+             data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="Market · Metrics" data-slot-locked-layout="true">Market · Metrics</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="05" data-slot-locked-layout="true">05</span>
         </div>
 
         <div class="slide-body">
@@ -1747,19 +1780,19 @@
             <div class="grove-stat">
               <!-- Serif stat value in coral: 73 + italic % suffix -->
               <div class="grove-stat-val">73<em>%</em></div>
-              <div class="grove-stat-label" data-edit-slot="s4-slot-3" data-slot-type="metric" data-slot-label="Of consumers distrust brand-created content" data-slot-locked-layout="true">
+              <div class="grove-stat-label" data-edit-slot="s4-slot-6" data-slot-type="metric" data-slot-label="Of consumers distrust brand-created content" data-slot-locked-layout="true">
                 Of consumers distrust brand-created content
               </div>
             </div>
             <div class="grove-stat">
               <div class="grove-stat-val">4.8<em>×</em></div>
-              <div class="grove-stat-label" data-edit-slot="s4-slot-4" data-slot-type="metric" data-slot-label="Higher engagement for community-driven campaigns" data-slot-locked-layout="true">
+              <div class="grove-stat-label" data-edit-slot="s4-slot-7" data-slot-type="metric" data-slot-label="Higher engagement for community-driven campaigns" data-slot-locked-layout="true">
                 Higher engagement for community-driven campaigns
               </div>
             </div>
             <div class="grove-stat">
               <div class="grove-stat-val">#1</div>
-              <div class="grove-stat-label" data-edit-slot="s4-slot-5" data-slot-type="metric" data-slot-label="Driver of purchase decisions: peer recommendatio" data-slot-locked-layout="true">
+              <div class="grove-stat-label" data-edit-slot="s4-slot-8" data-slot-type="metric" data-slot-label="Driver of purchase decisions: peer recommendatio" data-slot-locked-layout="true">
                 Driver of purchase decisions: peer recommendation
               </div>
             </div>
@@ -1771,35 +1804,35 @@
             style="font-family: var(--f-mono); letter-spacing: 0.08em"
             data-anim="fade-in"
             data-delay="3"
-           data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="Source: [Primary Research] · [Year] · N=[sample " data-slot-locked-layout="true">
+           data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="Source: [Primary Research] · [Year] · N=[sample " data-slot-locked-layout="true">
             Source: [Primary Research] · [Year] · N=[sample size] across
             [geographies]
           </p>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="05 / 12" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label muted"></span>
-          <span class="label muted" data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="05 / 12" data-slot-locked-layout="true">05 / 12</span>
+          <span class="label muted" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="05 / 12" data-slot-locked-layout="true">05 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide light slide--list" id="slide-5" data-template-slide-index="6">
-        <div class="grove-sidebar" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Our Approach" data-slot-locked-layout="true">Our Approach</div>
-        <div class="slide-chrome" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Framework 06" data-slot-locked-layout="true">
+        <div class="grove-sidebar" data-edit-slot="s5-slot-10" data-slot-type="text" data-slot-label="Our Approach" data-slot-locked-layout="true">Our Approach</div>
+        <div class="slide-chrome">
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s5-slot-10" data-slot-type="text" data-slot-label="Framework" data-slot-locked-layout="true">Framework</span>
+             data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Framework" data-slot-locked-layout="true">Framework</span>
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s5-slot-11" data-slot-type="text" data-slot-label="06" data-slot-locked-layout="true">06</span>
+             data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="06" data-slot-locked-layout="true">06</span>
         </div>
 
         <div class="slide-body">
@@ -1809,7 +1842,7 @@
             <h2 class="h2" data-edit-slot="s5-title-1" data-slot-type="text" data-slot-label="Five principles that reframe how we think about " data-slot-locked-layout="true">
               Five principles that <em>reframe</em> how we think about brand
             </h2>
-            <p class="body" style="color: var(--c-fg-light-2)" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="These are not tactics. They are the underlying c" data-slot-locked-layout="true">
+            <p class="body" style="color: var(--c-fg-light-2)" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="These are not tactics. They are the underlying c" data-slot-locked-layout="true">
               These are not tactics. They are the underlying commitments that
               make everything else possible.
             </p>
@@ -1822,29 +1855,29 @@
             data-anim="fade-up"
             data-delay="2"
           >
-            <li data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Start with the community, not the product — earn" data-slot-locked-layout="true">
+            <li data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Start with the community, not the product — earn" data-slot-locked-layout="true">
               Start with the community, not the product — earn presence before
               claiming it
             </li>
-            <li data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Replace broadcast with conversation — listen bef" data-slot-locked-layout="true">
+            <li data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Replace broadcast with conversation — listen bef" data-slot-locked-layout="true">
               Replace broadcast with conversation — listen before speaking
             </li>
-            <li data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Make the values visible in operations, not just " data-slot-locked-layout="true">
+            <li data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Make the values visible in operations, not just " data-slot-locked-layout="true">
               Make the values visible in operations, not just in messaging
             </li>
-            <li data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Treat long-term relationship as the primary metr" data-slot-locked-layout="true">
+            <li data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Treat long-term relationship as the primary metr" data-slot-locked-layout="true">
               Treat long-term relationship as the primary metric, not reach
             </li>
-            <li data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="Give audiences ownership of the narrative — part" data-slot-locked-layout="true">
+            <li data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Give audiences ownership of the narrative — part" data-slot-locked-layout="true">
               Give audiences ownership of the narrative — participation over
               performance
             </li>
           </ul>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="06 / 12" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label" style="color: var(--c-fg-light-2)"></span>
-          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s5-slot-12" data-slot-type="text" data-slot-label="06 / 12" data-slot-locked-layout="true">06 / 12</span>
+          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="06 / 12" data-slot-locked-layout="true">06 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1861,29 +1894,29 @@
         </p>
 
         <!-- Attribution: coral name, muted role -->
-        <div class="quote-attr" data-anim="fade-up" data-delay="3" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="[Author Name] [Title] · [Year]" data-slot-locked-layout="true">
-          <span class="label accent" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="[Author Name]" data-slot-locked-layout="true">[Author Name]</span>
-          <span class="label muted" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="[Title] · [Year]" data-slot-locked-layout="true">[Title] · [Year]</span>
+        <div class="quote-attr" data-anim="fade-up" data-delay="3">
+          <span class="label accent" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="[Author Name]" data-slot-locked-layout="true">[Author Name]</span>
+          <span class="label muted" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="[Title] · [Year]" data-slot-locked-layout="true">[Title] · [Year]</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide light slide--compare" id="slide-7" data-template-slide-index="8">
-        <div class="grove-sidebar" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Before / After" data-slot-locked-layout="true">Before / After</div>
-        <div class="slide-chrome" data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="The Shift 08" data-slot-locked-layout="true">
+        <div class="grove-sidebar" data-edit-slot="s7-slot-12" data-slot-type="text" data-slot-label="Before / After" data-slot-locked-layout="true">Before / After</div>
+        <div class="slide-chrome">
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s7-slot-12" data-slot-type="text" data-slot-label="The Shift" data-slot-locked-layout="true">The Shift</span>
+             data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="The Shift" data-slot-locked-layout="true">The Shift</span>
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s7-slot-13" data-slot-type="text" data-slot-label="08" data-slot-locked-layout="true">08</span>
+             data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="08" data-slot-locked-layout="true">08</span>
         </div>
 
         <div class="slide-body">
@@ -1893,7 +1926,7 @@
               The Old Model
             </div>
             <h3 class="h3" data-edit-slot="s7-title-1" data-slot-type="text" data-slot-label="Brand as broadcaster — pushing messages outward" data-slot-locked-layout="true">Brand as broadcaster — pushing messages outward</h3>
-            <p class="lead" style="color: var(--c-fg-light-2)" data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="The organization speaks. The audience receives. " data-slot-locked-layout="true">
+            <p class="lead" style="color: var(--c-fg-light-2)" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="The organization speaks. The audience receives. " data-slot-locked-layout="true">
               The organization speaks. The audience receives. Feedback is
               collected in annual surveys and processed into next year's
               messaging brief.
@@ -1902,9 +1935,9 @@
               class="bullet-list"
               style="font-size: var(--sz-body); color: var(--c-fg-light)"
             >
-              <li data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Campaigns replace conversations" data-slot-locked-layout="true">Campaigns replace conversations</li>
-              <li data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="Reach is the primary metric" data-slot-locked-layout="true">Reach is the primary metric</li>
-              <li data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="Community is a distribution channel" data-slot-locked-layout="true">Community is a distribution channel</li>
+              <li data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="Campaigns replace conversations" data-slot-locked-layout="true">Campaigns replace conversations</li>
+              <li data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Reach is the primary metric" data-slot-locked-layout="true">Reach is the primary metric</li>
+              <li data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Community is a distribution channel" data-slot-locked-layout="true">Community is a distribution channel</li>
             </ul>
           </div>
 
@@ -1914,7 +1947,7 @@
             <h3 class="h3" data-edit-slot="s7-title-2" data-slot-type="text" data-slot-label="Brand as participant — embedded in the community" data-slot-locked-layout="true">
               Brand as participant — embedded in the <em>community</em>
             </h3>
-            <p class="lead" style="color: var(--c-fg-light-2)" data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="The organization listens first and speaks in res" data-slot-locked-layout="true">
+            <p class="lead" style="color: var(--c-fg-light-2)" data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="The organization listens first and speaks in res" data-slot-locked-layout="true">
               The organization listens first and speaks in response. Feedback is
               constant, not a project. The community owns the story as much as
               the brand does.
@@ -1923,16 +1956,16 @@
               class="bullet-list"
               style="font-size: var(--sz-body); color: var(--c-fg-light)"
             >
-              <li data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="Relationships replace campaigns" data-slot-locked-layout="true">Relationships replace campaigns</li>
-              <li data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="Trust is the primary metric" data-slot-locked-layout="true">Trust is the primary metric</li>
-              <li data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="Community is the source of strategy" data-slot-locked-layout="true">Community is the source of strategy</li>
+              <li data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="Relationships replace campaigns" data-slot-locked-layout="true">Relationships replace campaigns</li>
+              <li data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="Trust is the primary metric" data-slot-locked-layout="true">Trust is the primary metric</li>
+              <li data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="Community is the source of strategy" data-slot-locked-layout="true">Community is the source of strategy</li>
             </ul>
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="08 / 12" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label" style="color: var(--c-fg-light-2)"></span>
-          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s7-slot-14" data-slot-type="text" data-slot-label="08 / 12" data-slot-locked-layout="true">08 / 12</span>
+          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="08 / 12" data-slot-locked-layout="true">08 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1940,8 +1973,8 @@
 
 <section class="slide dark slide--chapter" id="slide-8" data-template-slide-index="9">
         <!-- Watermark: massive near-invisible "02" -->
-        <div class="grove-num" data-edit-slot="s8-slot-1" data-slot-type="metric" data-slot-label="02" data-slot-locked-layout="true">02</div>
-        <div class="chapter-num" data-anim="fade-in" data-delay="0" data-edit-slot="s8-slot-2" data-slot-type="metric" data-slot-label="02 / Recommendation" data-slot-locked-layout="true">
+        <div class="grove-num" data-edit-slot="s8-slot-2" data-slot-type="metric" data-slot-label="02" data-slot-locked-layout="true">02</div>
+        <div class="chapter-num" data-anim="fade-in" data-delay="0" data-edit-slot="s8-slot-3" data-slot-type="metric" data-slot-label="02 / Recommendation" data-slot-locked-layout="true">
           02 / Recommendation
         </div>
         <div class="chapter-rule" data-anim="reveal-right" data-delay="1"></div>
@@ -1958,7 +1991,7 @@
           style="max-width: 45%"
           data-anim="fade-up"
           data-delay="3"
-         data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="A practical framework built on the evidence, wit" data-slot-locked-layout="true">
+         data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="A practical framework built on the evidence, wit" data-slot-locked-layout="true">
           A practical framework built on the evidence, with clear priorities and
           measurable outcomes.
         </p>
@@ -1967,20 +2000,20 @@
   </section>
 
 <section class="slide light slide--statement" id="slide-9" data-template-slide-index="10">
-        <div class="grove-sidebar" data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="The Recommendation" data-slot-locked-layout="true">The Recommendation</div>
-        <div class="slide-chrome" data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="Strategic Direction 10" data-slot-locked-layout="true">
+        <div class="grove-sidebar" data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="The Recommendation" data-slot-locked-layout="true">The Recommendation</div>
+        <div class="slide-chrome">
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="Strategic Direction" data-slot-locked-layout="true">Strategic Direction</span>
+             data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="Strategic Direction" data-slot-locked-layout="true">Strategic Direction</span>
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s9-slot-6" data-slot-type="text" data-slot-label="10" data-slot-locked-layout="true">10</span>
+             data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="10" data-slot-locked-layout="true">10</span>
         </div>
 
         <div class="slide-body">
@@ -2007,7 +2040,7 @@
               "
               data-anim="fade-up"
               data-delay="4"
-             data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="The organizations that win the next decade will " data-slot-locked-layout="true">
+             data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="The organizations that win the next decade will " data-slot-locked-layout="true">
               The organizations that win the next decade will earn trust slowly,
               through consistent action — not through the perfection of their
               messaging.
@@ -2015,20 +2048,20 @@
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="10 / 12" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label" style="color: var(--c-fg-light-2)"></span>
-          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s9-slot-7" data-slot-type="text" data-slot-label="10 / 12" data-slot-locked-layout="true">10 / 12</span>
+          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="10 / 12" data-slot-locked-layout="true">10 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide dark slide--chart" id="slide-10" data-template-slide-index="11">
-        <div class="grove-sidebar" data-edit-slot="s10-slot-1" data-slot-type="text" data-slot-label="The Data" data-slot-locked-layout="true">The Data</div>
-        <div class="slide-chrome" data-edit-slot="s10-slot-2" data-slot-type="text" data-slot-label="Trust Index · Category Benchmarks 11" data-slot-locked-layout="true">
+        <div class="grove-sidebar" data-edit-slot="s10-slot-6" data-slot-type="text" data-slot-label="The Data" data-slot-locked-layout="true">The Data</div>
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s10-slot-10" data-slot-type="text" data-slot-label="Trust Index · Category Benchmarks" data-slot-locked-layout="true">Trust Index · Category Benchmarks</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s10-slot-11" data-slot-type="text" data-slot-label="11" data-slot-locked-layout="true">11</span>
+             data-edit-slot="s10-slot-2" data-slot-type="text" data-slot-label="Trust Index · Category Benchmarks" data-slot-locked-layout="true">Trust Index · Category Benchmarks</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s10-slot-3" data-slot-type="text" data-slot-label="11" data-slot-locked-layout="true">11</span>
         </div>
 
         <div class="slide-body">
@@ -2048,28 +2081,28 @@
               <div class="bar-col">
                 <span class="bar-val">38</span>
                 <div class="bar-fill" style="height: 12vh"></div>
-                <span class="bar-x-label" data-edit-slot="s10-slot-3" data-slot-type="text" data-slot-label="Finance" data-slot-locked-layout="true">Finance</span>
+                <span class="bar-x-label" data-edit-slot="s10-slot-7" data-slot-type="text" data-slot-label="Finance" data-slot-locked-layout="true">Finance</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">44</span>
                 <div class="bar-fill" style="height: 15vh"></div>
-                <span class="bar-x-label" data-edit-slot="s10-slot-4" data-slot-type="text" data-slot-label="Media" data-slot-locked-layout="true">Media</span>
+                <span class="bar-x-label" data-edit-slot="s10-slot-8" data-slot-type="text" data-slot-label="Media" data-slot-locked-layout="true">Media</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">56</span>
                 <div class="bar-fill" style="height: 18vh"></div>
-                <span class="bar-x-label" data-edit-slot="s10-slot-5" data-slot-type="text" data-slot-label="Retail" data-slot-locked-layout="true">Retail</span>
+                <span class="bar-x-label" data-edit-slot="s10-slot-9" data-slot-type="text" data-slot-label="Retail" data-slot-locked-layout="true">Retail</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">62</span>
                 <div class="bar-fill" style="height: 21vh"></div>
-                <span class="bar-x-label" data-edit-slot="s10-slot-6" data-slot-type="text" data-slot-label="Healthcare" data-slot-locked-layout="true">Healthcare</span>
+                <span class="bar-x-label" data-edit-slot="s10-slot-10" data-slot-type="text" data-slot-label="Healthcare" data-slot-locked-layout="true">Healthcare</span>
               </div>
               <!-- Highest bar: coral accent fill, coral value label -->
               <div class="bar-col">
                 <span class="bar-val hi">79</span>
                 <div class="bar-fill accent" style="height: 27vh"></div>
-                <span class="bar-x-label" data-edit-slot="s10-slot-7" data-slot-type="text" data-slot-label="Community" data-slot-locked-layout="true">Community</span>
+                <span class="bar-x-label" data-edit-slot="s10-slot-11" data-slot-type="text" data-slot-label="Community" data-slot-locked-layout="true">Community</span>
               </div>
             </div>
             <!-- Thin baseline rule below all bars -->
@@ -2077,14 +2110,14 @@
           </div>
 
           <!-- Source attribution -->
-          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s10-slot-8" data-slot-type="text" data-slot-label="Source: [Research Institute] · Consumer Trust In" data-slot-locked-layout="true">
+          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s10-slot-1" data-slot-type="text" data-slot-label="Source: [Research Institute] · Consumer Trust In" data-slot-locked-layout="true">
             Source: [Research Institute] · Consumer Trust Index · [Year]
           </p>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s10-slot-9" data-slot-type="text" data-slot-label="[Organization] · [Year] 11 / 12" data-slot-locked-layout="true">
-          <span class="label muted" data-edit-slot="s10-slot-12" data-slot-type="text" data-slot-label="[Organization] · [Year]" data-slot-locked-layout="true">[Organization] · [Year]</span>
-          <span class="label muted" data-edit-slot="s10-slot-13" data-slot-type="text" data-slot-label="11 / 12" data-slot-locked-layout="true">11 / 12</span>
+        <div class="slide-foot">
+          <span class="label muted" data-edit-slot="s10-slot-4" data-slot-type="text" data-slot-label="[Organization] · [Year]" data-slot-locked-layout="true">[Organization] · [Year]</span>
+          <span class="label muted" data-edit-slot="s10-slot-5" data-slot-type="text" data-slot-label="11 / 12" data-slot-locked-layout="true">11 / 12</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2092,10 +2125,10 @@
 
 <section class="slide dark slide--end" id="slide-11" data-template-slide-index="12">
         <!-- Watermark number in the background -->
-        <div class="grove-num" data-edit-slot="s11-slot-1" data-slot-type="metric" data-slot-label="12" data-slot-locked-layout="true">12</div>
+        <div class="grove-num" data-edit-slot="s11-slot-3" data-slot-type="metric" data-slot-label="12" data-slot-locked-layout="true">12</div>
 
         <!-- Organization kicker -->
-        <div class="kicker" data-anim="fade-in" data-delay="0" data-edit-slot="s11-slot-2" data-slot-type="text" data-slot-label="[Organization]" data-slot-locked-layout="true">
+        <div class="kicker" data-anim="fade-in" data-delay="0" data-edit-slot="s11-slot-4" data-slot-type="text" data-slot-label="[Organization]" data-slot-locked-layout="true">
           [Organization]
         </div>
 
@@ -2118,7 +2151,7 @@
           style="max-width: 45%"
           data-anim="fade-up"
           data-delay="3"
-         data-edit-slot="s11-slot-3" data-slot-type="text" data-slot-label="[Author Name] · [author@organization.com] · [org" data-slot-locked-layout="true">
+         data-edit-slot="s11-slot-1" data-slot-type="text" data-slot-label="[Author Name] · [author@organization.com] · [org" data-slot-locked-layout="true">
           [Author Name] · [author@organization.com] · [organization.com]
         </p>
 
@@ -2128,7 +2161,7 @@
           style="margin-top: var(--gap-lg)"
           data-anim="fade-in"
           data-delay="4"
-         data-edit-slot="s11-slot-4" data-slot-type="text" data-slot-label="[Deck version] · [Date] · [Confidentiality note]" data-slot-locked-layout="true">
+         data-edit-slot="s11-slot-2" data-slot-type="text" data-slot-label="[Deck version] · [Date] · [Confidentiality note]" data-slot-locked-layout="true">
           [Deck version] · [Date] · [Confidentiality note]
         </p>
 
@@ -3152,6 +3185,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -3172,7 +3214,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -3185,7 +3227,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -4233,12 +4275,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -4282,7 +4324,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

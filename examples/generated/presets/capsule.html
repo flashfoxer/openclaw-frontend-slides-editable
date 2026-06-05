@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-capsule" data-template-source="capsule" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-capsule" data-template-source="capsule" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
 <meta charset="UTF-8">
@@ -1096,6 +1096,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1655,7 +1688,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1855,18 +1888,18 @@
 <section class="slide slide-5" data-slide="5" id="slide-4" data-template-slide-index="5">
     <div class="floating-pills">
       <div class="f-pill pill-coral" style="width:80px;height:35px;top:10%;left:8%;transform:rotate(-15deg);font-size:0.6rem;">Bold</div>
-      <div class="f-pill pill-lavender" style="width:100px;height:40px;top:15%;right:10%;transform:rotate(12deg);font-size:0.65rem;" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="Inspire" data-slot-locked-layout="true">Inspire</div>
-      <div class="f-pill pill-sky" style="width:90px;height:38px;bottom:12%;left:12%;transform:rotate(8deg);font-size:0.6rem;" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="Create" data-slot-locked-layout="true">Create</div>
-      <div class="f-pill pill-lime" style="width:110px;height:42px;bottom:18%;right:8%;transform:rotate(-10deg);font-size:0.7rem;" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="Elevate" data-slot-locked-layout="true">Elevate</div>
-      <div class="f-pill pill-violet" style="width:70px;height:70px;border-radius:50%;top:8%;left:40%;font-size:0.55rem;" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="Now" data-slot-locked-layout="true">Now</div>
-      <div class="f-pill pill-peach" style="width:75px;height:35px;bottom:8%;left:45%;transform:rotate(20deg);font-size:0.55rem;" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="Today" data-slot-locked-layout="true">Today</div>
+      <div class="f-pill pill-lavender" style="width:100px;height:40px;top:15%;right:10%;transform:rotate(12deg);font-size:0.65rem;" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="Inspire" data-slot-locked-layout="true">Inspire</div>
+      <div class="f-pill pill-sky" style="width:90px;height:38px;bottom:12%;left:12%;transform:rotate(8deg);font-size:0.6rem;" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="Create" data-slot-locked-layout="true">Create</div>
+      <div class="f-pill pill-lime" style="width:110px;height:42px;bottom:18%;right:8%;transform:rotate(-10deg);font-size:0.7rem;" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="Elevate" data-slot-locked-layout="true">Elevate</div>
+      <div class="f-pill pill-violet" style="width:70px;height:70px;border-radius:50%;top:8%;left:40%;font-size:0.55rem;" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="Now" data-slot-locked-layout="true">Now</div>
+      <div class="f-pill pill-peach" style="width:75px;height:35px;bottom:8%;left:45%;transform:rotate(20deg);font-size:0.55rem;" data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="Today" data-slot-locked-layout="true">Today</div>
     </div>
     <div class="statement-box">
       <div class="quote-mark">&ldquo;</div>
-      <blockquote data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="The best time to plant a tree was twenty years a" data-slot-locked-layout="true">
-        The best time to plant a tree was twenty years ago. The second best time is <span class="quote-highlight" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="right now" data-slot-locked-layout="true">right now</span>. Every moment of hesitation is a moment where <span class="quote-highlight alt" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="possibility" data-slot-locked-layout="true">possibility</span> quietly dims.
+      <blockquote data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="The best time to plant a tree was twenty years a" data-slot-locked-layout="true">
+        The best time to plant a tree was twenty years ago. The second best time is <span class="quote-highlight" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="right now" data-slot-locked-layout="true">right now</span>. Every moment of hesitation is a moment where <span class="quote-highlight alt" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="possibility" data-slot-locked-layout="true">possibility</span> quietly dims.
       </blockquote>
-      <div class="attribution" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="A Philosophy of Action" data-slot-locked-layout="true">A Philosophy of Action</div>
+      <div class="attribution" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="A Philosophy of Action" data-slot-locked-layout="true">A Philosophy of Action</div>
     </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1980,21 +2013,21 @@
       <div class="visual-side">
         <div class="visual-frame">
           <div class="frame-pattern"></div>
-          <div class="frame-content" data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="Visual Placeholder" data-slot-locked-layout="true">
+          <div class="frame-content" data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="Visual Placeholder" data-slot-locked-layout="true">
             <span>Visual Placeholder</span>
           </div>
         </div>
       </div>
       <div class="text-side">
         <h2 data-edit-slot="s8-title-1" data-slot-type="text" data-slot-label="Where Vision Meets Execution" data-slot-locked-layout="true">Where Vision Meets Execution</h2>
-        <p data-edit-slot="s8-slot-6" data-slot-type="text" data-slot-label="Great ideas deserve more than good intentions. T" data-slot-locked-layout="true">Great ideas deserve more than good intentions. They demand rigorous craft, thoughtful iteration, and an unwavering commitment to the user experience at every touchpoint.</p>
-        <p data-edit-slot="s8-slot-7" data-slot-type="text" data-slot-label="Our methodology bridges the gap between aspirati" data-slot-locked-layout="true">Our methodology bridges the gap between aspiration and reality. By grounding creative instinct in empirical insight, we produce work that is simultaneously daring and dependable.</p>
+        <p data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="Great ideas deserve more than good intentions. T" data-slot-locked-layout="true">Great ideas deserve more than good intentions. They demand rigorous craft, thoughtful iteration, and an unwavering commitment to the user experience at every touchpoint.</p>
+        <p data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="Our methodology bridges the gap between aspirati" data-slot-locked-layout="true">Our methodology bridges the gap between aspiration and reality. By grounding creative instinct in empirical insight, we produce work that is simultaneously daring and dependable.</p>
         <div class="text-pills">
           <div class="mini-pill pill-coral">Research</div>
-          <div class="mini-pill pill-lime" data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="Strategy" data-slot-locked-layout="true">Strategy</div>
-          <div class="mini-pill pill-sky" data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="Design" data-slot-locked-layout="true">Design</div>
-          <div class="mini-pill pill-violet" data-edit-slot="s8-slot-4" data-slot-type="text" data-slot-label="Build" data-slot-locked-layout="true">Build</div>
-          <div class="mini-pill pill-yellow" data-edit-slot="s8-slot-5" data-slot-type="text" data-slot-label="Measure" data-slot-locked-layout="true">Measure</div>
+          <div class="mini-pill pill-lime" data-edit-slot="s8-slot-4" data-slot-type="text" data-slot-label="Strategy" data-slot-locked-layout="true">Strategy</div>
+          <div class="mini-pill pill-sky" data-edit-slot="s8-slot-5" data-slot-type="text" data-slot-label="Design" data-slot-locked-layout="true">Design</div>
+          <div class="mini-pill pill-violet" data-edit-slot="s8-slot-6" data-slot-type="text" data-slot-label="Build" data-slot-locked-layout="true">Build</div>
+          <div class="mini-pill pill-yellow" data-edit-slot="s8-slot-7" data-slot-type="text" data-slot-label="Measure" data-slot-locked-layout="true">Measure</div>
         </div>
       </div>
     </div>
@@ -3039,6 +3072,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -3059,7 +3101,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -3072,7 +3114,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -4120,12 +4162,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -4169,7 +4211,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

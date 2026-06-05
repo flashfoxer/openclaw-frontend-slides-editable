@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-long-table" data-template-source="long-table" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-long-table" data-template-source="long-table" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
 <meta charset="utf-8" />
@@ -888,6 +888,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1447,7 +1480,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1533,21 +1566,21 @@
         <div class="left">
           <div class="ed-row">
             <div class="ed-badge caption">5</div>
-            <div class="ed-label caption" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="december edition" data-slot-locked-layout="true">december edition</div>
+            <div class="ed-label caption" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="december edition" data-slot-locked-layout="true">december edition</div>
           </div>
           <h1 class="title" data-edit-slot="s0-title-1" data-slot-type="text" data-slot-label="Long Table" data-slot-locked-layout="true">Long Table</h1>
-          <div class="actions" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="Lisbon | Apply now" data-slot-locked-layout="true">
+          <div class="actions" data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="Lisbon | Apply now" data-slot-locked-layout="true">
             <span class="pill caption">Lisbon</span>
             <span class="pill-divider caption">|</span>
             <span class="pill caption">Apply now</span>
           </div>
-          <div class="stats body-it" data-edit-slot="s0-slot-3" data-slot-type="metric" data-slot-label="22 seats only More than dinner, it&#x27;s a long even" data-slot-locked-layout="true">
+          <div class="stats body-it" data-edit-slot="s0-slot-4" data-slot-type="metric" data-slot-label="22 seats only More than dinner, it&#x27;s a long even" data-slot-locked-layout="true">
             <span class="num">22 seats only</span><br/>
             More than dinner, it's a long evening.
           </div>
-          <div class="bottom-block" data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="Not a meal, an evening Where ten strangers, one " data-slot-locked-layout="true">
+          <div class="bottom-block">
             <span class="rect-tag caption">Not a meal, an evening</span>
-            <p class="tagline" data-edit-slot="s0-slot-8" data-slot-type="text" data-slot-label="Where ten strangers, one cook, and a long evenin" data-slot-locked-layout="true">Where ten strangers, one cook, and a long evening meet under low light. Twice a month, by application.</p>
+            <p class="tagline" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="Where ten strangers, one cook, and a long evenin" data-slot-locked-layout="true">Where ten strangers, one cook, and a long evening meet under low light. Twice a month, by application.</p>
           </div>
         </div>
 
@@ -1568,21 +1601,21 @@
         <div class="left">
           <div class="ed-row">
             <div class="ed-badge caption">·</div>
-            <div class="ed-label caption" data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="a letter from the table" data-slot-locked-layout="true">a letter from the table</div>
+            <div class="ed-label caption" data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="a letter from the table" data-slot-locked-layout="true">a letter from the table</div>
           </div>
           <h2 class="h" data-edit-slot="s1-title-1" data-slot-type="text" data-slot-label="A note before we sit." data-slot-locked-layout="true">A note<br/>before<br/>we sit.</h2>
         </div>
         <div class="right">
-          <p data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="We started Long Table in a borrowed kitchen, wit" data-slot-locked-layout="true">We started Long Table in a borrowed kitchen, with <span class="empha">six chairs we'd carried up the stairs</span>, and the conviction that an evening is more than the food on the plates.</p>
-          <p data-edit-slot="s1-slot-5" data-slot-type="text" data-slot-label="Three years on we&#x27;ve seated almost two thousand " data-slot-locked-layout="true">Three years on we've seated almost <span class="empha">two thousand strangers</span> across nine cities, and we've learned that the chairs are sometimes the most important part.</p>
-          <p data-edit-slot="s1-slot-6" data-slot-type="text" data-slot-label="This deck is the small handbook we send our host" data-slot-locked-layout="true">This deck is the small handbook we send our hosts before each edition. It is also, quietly, an invitation.</p>
+          <p data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="We started Long Table in a borrowed kitchen, wit" data-slot-locked-layout="true">We started Long Table in a borrowed kitchen, with <span class="empha">six chairs we'd carried up the stairs</span>, and the conviction that an evening is more than the food on the plates.</p>
+          <p data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="Three years on we&#x27;ve seated almost two thousand " data-slot-locked-layout="true">Three years on we've seated almost <span class="empha">two thousand strangers</span> across nine cities, and we've learned that the chairs are sometimes the most important part.</p>
+          <p data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="This deck is the small handbook we send our host" data-slot-locked-layout="true">This deck is the small handbook we send our hosts before each edition. It is also, quietly, an invitation.</p>
           <div class="sig">
             <div class="who-tag">Iris &amp; Theo</div>
-            <div data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="founders · written from a kitchen in Lisbon, Nov" data-slot-locked-layout="true">founders · written from a kitchen in Lisbon, November 2025</div>
+            <div data-edit-slot="s1-slot-5" data-slot-type="text" data-slot-label="founders · written from a kitchen in Lisbon, Nov" data-slot-locked-layout="true">founders · written from a kitchen in Lisbon, November 2025</div>
           </div>
         </div>
       </div>
-      <div class="pagenum" data-edit-slot="s1-slot-3" data-slot-type="metric" data-slot-label="02 / 08" data-slot-locked-layout="true">02 / 08</div>
+      <div class="pagenum" data-edit-slot="s1-slot-6" data-slot-type="metric" data-slot-label="02 / 08" data-slot-locked-layout="true">02 / 08</div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
@@ -1591,40 +1624,40 @@
       <div class="frame">
         <div class="topbar">
           <div class="h" data-edit-slot="s2-title-1" data-slot-type="text" data-slot-label="Three recent editions" data-slot-locked-layout="true">Three recent editions</div>
-          <div class="lab-tag caption" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Long Table · 2025 · selected" data-slot-locked-layout="true">Long Table · 2025 · selected</div>
+          <div class="lab-tag caption" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="Long Table · 2025 · selected" data-slot-locked-layout="true">Long Table · 2025 · selected</div>
         </div>
         <div class="grid">
           <div class="card">
             <div class="card-top">
               <div class="num-tag caption">No. 03</div>
-              <div class="city-tag caption" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="Mexico City" data-slot-locked-layout="true">Mexico City</div>
+              <div class="city-tag caption" data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="Mexico City" data-slot-locked-layout="true">Mexico City</div>
             </div>
-            <div class="nm" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="A Plate of Quiet" data-slot-locked-layout="true">A Plate<br/>of Quiet</div>
-            <div class="desc body-it" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="Eight courses cooked entirely on a single induct" data-slot-locked-layout="true">Eight courses cooked entirely on a single induction ring. The room agreed not to use phones for the entire evening, and almost kept the agreement.</div>
+            <div class="nm" data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="A Plate of Quiet" data-slot-locked-layout="true">A Plate<br/>of Quiet</div>
+            <div class="desc body-it" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Eight courses cooked entirely on a single induct" data-slot-locked-layout="true">Eight courses cooked entirely on a single induction ring. The room agreed not to use phones for the entire evening, and almost kept the agreement.</div>
             <div class="meta-row">
               <div class="seats-tag caption">22 seats</div>
-              <div class="date-tag caption" data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="14 March 2025" data-slot-locked-layout="true">14 March 2025</div>
+              <div class="date-tag caption" data-edit-slot="s2-slot-7" data-slot-type="text" data-slot-label="14 March 2025" data-slot-locked-layout="true">14 March 2025</div>
             </div>
           </div>
           <div class="card">
             <div class="card-top">
               <div class="num-tag caption">No. 04</div>
-              <div class="city-tag caption" data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="Tokyo" data-slot-locked-layout="true">Tokyo</div>
+              <div class="city-tag caption" data-edit-slot="s2-slot-8" data-slot-type="text" data-slot-label="Tokyo" data-slot-locked-layout="true">Tokyo</div>
             </div>
-            <div class="nm" data-edit-slot="s2-slot-7" data-slot-type="text" data-slot-label="A Soup of Letters" data-slot-locked-layout="true">A Soup<br/>of Letters</div>
-            <div class="desc body-it" data-edit-slot="s2-slot-8" data-slot-type="text" data-slot-label="A reading evening, with a single course served s" data-slot-locked-layout="true">A reading evening, with a single course served slowly. Four guest writers, one bowl per person, and the longest pause we have ever held between courses.</div>
+            <div class="nm" data-edit-slot="s2-slot-9" data-slot-type="text" data-slot-label="A Soup of Letters" data-slot-locked-layout="true">A Soup<br/>of Letters</div>
+            <div class="desc body-it" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="A reading evening, with a single course served s" data-slot-locked-layout="true">A reading evening, with a single course served slowly. Four guest writers, one bowl per person, and the longest pause we have ever held between courses.</div>
             <div class="meta-row">
               <div class="seats-tag caption">18 seats</div>
-              <div class="date-tag caption" data-edit-slot="s2-slot-9" data-slot-type="text" data-slot-label="06 July 2025" data-slot-locked-layout="true">06 July 2025</div>
+              <div class="date-tag caption" data-edit-slot="s2-slot-10" data-slot-type="text" data-slot-label="06 July 2025" data-slot-locked-layout="true">06 July 2025</div>
             </div>
           </div>
           <div class="card">
             <div class="card-top">
               <div class="num-tag caption">No. 05</div>
-              <div class="city-tag caption" data-edit-slot="s2-slot-10" data-slot-type="text" data-slot-label="Lisbon" data-slot-locked-layout="true">Lisbon</div>
+              <div class="city-tag caption" data-edit-slot="s2-slot-11" data-slot-type="text" data-slot-label="Lisbon" data-slot-locked-layout="true">Lisbon</div>
             </div>
-            <div class="nm" data-edit-slot="s2-slot-11" data-slot-type="text" data-slot-label="December Edition" data-slot-locked-layout="true">December<br/>Edition</div>
-            <div class="desc body-it" data-edit-slot="s2-slot-12" data-slot-type="text" data-slot-label="A long winter dinner. Twenty-two seats, one shar" data-slot-locked-layout="true">A long winter dinner. Twenty-two seats, one shared roast, and a quiet bookshop next door we'll wander to between courses, when the rain agrees.</div>
+            <div class="nm" data-edit-slot="s2-slot-12" data-slot-type="text" data-slot-label="December Edition" data-slot-locked-layout="true">December<br/>Edition</div>
+            <div class="desc body-it" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="A long winter dinner. Twenty-two seats, one shar" data-slot-locked-layout="true">A long winter dinner. Twenty-two seats, one shared roast, and a quiet bookshop next door we'll wander to between courses, when the rain agrees.</div>
             <div class="meta-row">
               <div class="seats-tag caption">22 seats</div>
               <div class="date-tag caption" data-edit-slot="s2-slot-13" data-slot-type="text" data-slot-label="11 December 2025" data-slot-locked-layout="true">11 December 2025</div>
@@ -1642,10 +1675,10 @@
         <div class="left">
           <div class="ed-row">
             <div class="ed-badge caption">5</div>
-            <div class="ed-label caption" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="december · the featured edition" data-slot-locked-layout="true">december · the featured edition</div>
+            <div class="ed-label caption" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="december · the featured edition" data-slot-locked-layout="true">december · the featured edition</div>
           </div>
           <h2 class="ttl" data-edit-slot="s3-title-1" data-slot-type="text" data-slot-label="An evening for the rain." data-slot-locked-layout="true">An evening<br/>for the rain.</h2>
-          <p class="lede" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="A long winter dinner in a converted printing roo" data-slot-locked-layout="true">A long winter dinner in a converted printing room above a bookshop. One shared roast, an unhurried wine list, and a single intermission that may, if the weather agrees, become a walk to the harbour and back.</p>
+          <p class="lede" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="A long winter dinner in a converted printing roo" data-slot-locked-layout="true">A long winter dinner in a converted printing room above a bookshop. One shared roast, an unhurried wine list, and a single intermission that may, if the weather agrees, become a walk to the harbour and back.</p>
           <div class="stats-line" data-edit-slot="s3-slot-3" data-slot-type="metric" data-slot-label="Apply by 28 November Twelve seats left" data-slot-locked-layout="true">
             <span class="pill caption">Apply by 28 November</span>
             <span class="pill caption">Twelve seats left</span>
@@ -1692,37 +1725,37 @@
               <div class="nm">Roasted chestnut soup</div>
               <div class="desc body-it" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="with brown butter, sage, and a single thin disc " data-slot-locked-layout="true">with brown butter, sage, and a single thin disc of pear</div>
             </div>
-            <div class="pair-tag caption" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="unoaked white" data-slot-locked-layout="true">unoaked white</div>
+            <div class="pair-tag caption" data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="unoaked white" data-slot-locked-layout="true">unoaked white</div>
           </div>
           <div class="course">
             <div class="num-tag caption">ii.</div>
             <div class="item">
               <div class="nm">A small bread, hot</div>
-              <div class="desc body-it" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="made the morning of, with cultured butter and a " data-slot-locked-layout="true">made the morning of, with cultured butter and a coarse salt</div>
+              <div class="desc body-it" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="made the morning of, with cultured butter and a " data-slot-locked-layout="true">made the morning of, with cultured butter and a coarse salt</div>
             </div>
-            <div class="pair-tag caption" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="water, lemon" data-slot-locked-layout="true">water, lemon</div>
+            <div class="pair-tag caption" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="water, lemon" data-slot-locked-layout="true">water, lemon</div>
           </div>
           <div class="course">
             <div class="num-tag caption">iii.</div>
             <div class="item">
               <div class="nm">Mackerel, lightly cured</div>
-              <div class="desc body-it" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="on toasted rye, with parsley oil and pickled cel" data-slot-locked-layout="true">on toasted rye, with parsley oil and pickled celery</div>
+              <div class="desc body-it" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="on toasted rye, with parsley oil and pickled cel" data-slot-locked-layout="true">on toasted rye, with parsley oil and pickled celery</div>
             </div>
-            <div class="pair-tag caption" data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="vinho verde" data-slot-locked-layout="true">vinho verde</div>
+            <div class="pair-tag caption" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="vinho verde" data-slot-locked-layout="true">vinho verde</div>
           </div>
           <div class="course">
             <div class="num-tag caption">iv.</div>
             <div class="item">
               <div class="nm">A long roast, the centre course</div>
-              <div class="desc body-it" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="slow lamb shoulder, root vegetables under it, se" data-slot-locked-layout="true">slow lamb shoulder, root vegetables under it, served family-style</div>
+              <div class="desc body-it" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="slow lamb shoulder, root vegetables under it, se" data-slot-locked-layout="true">slow lamb shoulder, root vegetables under it, served family-style</div>
             </div>
-            <div class="pair-tag caption" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="douro red" data-slot-locked-layout="true">douro red</div>
+            <div class="pair-tag caption" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="douro red" data-slot-locked-layout="true">douro red</div>
           </div>
           <div class="course">
             <div class="num-tag caption">v.</div>
             <div class="item">
               <div class="nm">Cheese, two only</div>
-              <div class="desc body-it" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="a soft, a hard, both local; quince paste and wal" data-slot-locked-layout="true">a soft, a hard, both local; quince paste and walnuts in the half-shell</div>
+              <div class="desc body-it" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="a soft, a hard, both local; quince paste and wal" data-slot-locked-layout="true">a soft, a hard, both local; quince paste and walnuts in the half-shell</div>
             </div>
             <div class="pair-tag caption" data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="port, late bottled" data-slot-locked-layout="true">port, late bottled</div>
           </div>
@@ -1737,14 +1770,14 @@
       <div class="frame">
         <div class="right">
           <div class="kicker caption">A guest writes</div>
-          <p class="qbody" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="An evening I keep describing, badly, to people w" data-slot-locked-layout="true">An evening I keep <span class="it-emph" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="describing," data-slot-locked-layout="true">describing,</span> badly, to people who weren't there.</p>
+          <p class="qbody" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="An evening I keep describing, badly, to people w" data-slot-locked-layout="true">An evening I keep <span class="it-emph" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="describing," data-slot-locked-layout="true">describing,</span> badly, to people who weren't there.</p>
           <div class="who-row">
             <div class="who-tag">Hana Brennan</div>
-            <div class="meta-tag caption" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="long-table guest · Edition No. 04 · Tokyo" data-slot-locked-layout="true">long-table guest · Edition No. 04 · Tokyo</div>
+            <div class="meta-tag caption" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="long-table guest · Edition No. 04 · Tokyo" data-slot-locked-layout="true">long-table guest · Edition No. 04 · Tokyo</div>
           </div>
         </div>
       </div>
-      <div class="pagenum" data-edit-slot="s5-slot-3" data-slot-type="metric" data-slot-label="06 / 08" data-slot-locked-layout="true">06 / 08</div>
+      <div class="pagenum" data-edit-slot="s5-slot-4" data-slot-type="metric" data-slot-label="06 / 08" data-slot-locked-layout="true">06 / 08</div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
@@ -1817,10 +1850,10 @@
         <div class="left">
           <div class="ed-row">
             <div class="ed-badge caption">·</div>
-            <div class="ed-label caption" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="come and sit with us" data-slot-locked-layout="true">come and sit with us</div>
+            <div class="ed-label caption" data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="come and sit with us" data-slot-locked-layout="true">come and sit with us</div>
           </div>
           <h2 class="h" data-edit-slot="s7-title-1" data-slot-type="text" data-slot-label="See you at the table." data-slot-locked-layout="true">See you<br/>at the table.</h2>
-          <p class="desc-it" data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="Every Long Table evening is by application. We r" data-slot-locked-layout="true">Every Long Table evening is by application. We read each one, and we usually answer within a week. The next room opens for Brooklyn on the seventeenth of January.</p>
+          <p class="desc-it" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Every Long Table evening is by application. We r" data-slot-locked-layout="true">Every Long Table evening is by application. We read each one, and we usually answer within a week. The next room opens for Brooklyn on the seventeenth of January.</p>
           <div class="actions" data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="long-table.co Apply for Brooklyn" data-slot-locked-layout="true">
             <span class="pill caption">long-table.co</span>
             <span class="pill caption">Apply for Brooklyn</span>
@@ -2865,6 +2898,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2885,7 +2927,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2898,7 +2940,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -3946,12 +3988,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -3995,7 +4037,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

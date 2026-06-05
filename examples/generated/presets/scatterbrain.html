@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-scatterbrain" data-template-source="scatterbrain" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-scatterbrain" data-template-source="scatterbrain" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
     <meta charset="UTF-8">
@@ -920,6 +920,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1479,7 +1512,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1565,13 +1598,13 @@
                 <div class="title-cluster">
                     <div class="post-it post-it-yellow main-title-postit pin">
                         <h1 data-edit-slot="s0-title-1" data-slot-type="text" data-slot-label="Scatterbrain" data-slot-locked-layout="true">Scatterbrain</h1>
-                        <p class="handwritten" style="margin-top: 0.5rem; color: var(--ink-light);" data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="A Post-it Inspired Template" data-slot-locked-layout="true">A Post-it Inspired Template</p>
+                        <p class="handwritten" style="margin-top: 0.5rem; color: var(--ink-light);" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="A Post-it Inspired Template" data-slot-locked-layout="true">A Post-it Inspired Template</p>
                     </div>
-                    <div class="post-it post-it-blue title-accent-1 pin-blue" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="Remember this!" data-slot-locked-layout="true">Remember this!</div>
-                    <div class="post-it post-it-pink title-accent-2 pin" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="Notes &amp; Ideas" data-slot-locked-layout="true">Notes & Ideas</div>
+                    <div class="post-it post-it-blue title-accent-1 pin-blue" data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="Remember this!" data-slot-locked-layout="true">Remember this!</div>
+                    <div class="post-it post-it-pink title-accent-2 pin" data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="Notes &amp; Ideas" data-slot-locked-layout="true">Notes & Ideas</div>
                     <div class="post-it post-it-green title-accent-3">!</div>
                 </div>
-                <p class="subtitle-text" data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="Collect your thoughts, pin your ideas, and watch" data-slot-locked-layout="true">Collect your thoughts, pin your ideas, and watch the big picture emerge from the chaos of creativity.</p>
+                <p class="subtitle-text" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="Collect your thoughts, pin your ideas, and watch" data-slot-locked-layout="true">Collect your thoughts, pin your ideas, and watch the big picture emerge from the chaos of creativity.</p>
             </div>
             <svg class="doodle" style="top: 10%; left: 5%; width: 100px; height: 100px;" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="40" stroke="#2d2a26" stroke-width="3" fill="none" opacity="0.15"/>
@@ -1588,12 +1621,12 @@
                 <div class="statement-layout">
                     <div class="post-it post-it-yellow statement-postit pin tape">
                         <h2 data-edit-slot="s1-title-1" data-slot-type="text" data-slot-label="&quot;The best ideas start as scattered thoughts on s" data-slot-locked-layout="true">"The best ideas start as scattered thoughts on sticky corners."</h2>
-                        <p style="margin-top: 1.5rem; font-style: italic;" data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="Every great project begins with a single note, a" data-slot-locked-layout="true">Every great project begins with a single note, a fleeting thought, a moment of inspiration captured before it drifts away.</p>
-                        <p class="handwritten" style="margin-top: 1rem; text-align: right;" data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="— The Creative Process" data-slot-locked-layout="true">— The Creative Process</p>
+                        <p style="margin-top: 1.5rem; font-style: italic;" data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="Every great project begins with a single note, a" data-slot-locked-layout="true">Every great project begins with a single note, a fleeting thought, a moment of inspiration captured before it drifts away.</p>
+                        <p class="handwritten" style="margin-top: 1rem; text-align: right;" data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="— The Creative Process" data-slot-locked-layout="true">— The Creative Process</p>
                     </div>
                 </div>
-                <div class="post-it post-it-blue side-note pin-blue" data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="Jot it down before you forget!" data-slot-locked-layout="true">
-                    <p class="handwritten" data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="Jot it down before you forget!" data-slot-locked-layout="true">Jot it down before you forget!</p>
+                <div class="post-it post-it-blue side-note pin-blue">
+                    <p class="handwritten" data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="Jot it down before you forget!" data-slot-locked-layout="true">Jot it down before you forget!</p>
                 </div>
             </div>
             <svg class="doodle" style="top: 20%; left: 8%; width: 80px; height: 80px;" viewBox="0 0 80 80">
@@ -1678,21 +1711,21 @@
                         <h3 data-edit-slot="s3-title-2" data-slot-type="text" data-slot-label="Key Metrics" data-slot-locked-layout="true">Key Metrics</h3>
                         <div class="legend-item">
                             <div class="legend-swatch" style="background: var(--yellow);"></div>
-                            <span data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="Revenue Streams" data-slot-locked-layout="true">Revenue Streams</span>
+                            <span data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Revenue Streams" data-slot-locked-layout="true">Revenue Streams</span>
                         </div>
                         <div class="legend-item">
                             <div class="legend-swatch" style="background: var(--blue);"></div>
-                            <span data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="User Acquisition" data-slot-locked-layout="true">User Acquisition</span>
+                            <span data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="User Acquisition" data-slot-locked-layout="true">User Acquisition</span>
                         </div>
                         <div class="legend-item">
                             <div class="legend-swatch" style="background: var(--pink);"></div>
-                            <span data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Market Expansion" data-slot-locked-layout="true">Market Expansion</span>
+                            <span data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Market Expansion" data-slot-locked-layout="true">Market Expansion</span>
                         </div>
                         <div class="legend-item">
                             <div class="legend-swatch" style="background: var(--green);"></div>
-                            <span data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Product Lines" data-slot-locked-layout="true">Product Lines</span>
+                            <span data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="Product Lines" data-slot-locked-layout="true">Product Lines</span>
                         </div>
-                        <p class="handwritten" style="margin-top: 1.5rem; border-top: 2px solid var(--ink); padding-top: 1rem;" data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="Steady upward trend across all channels this fis" data-slot-locked-layout="true">Steady upward trend across all channels this fiscal year.</p>
+                        <p class="handwritten" style="margin-top: 1.5rem; border-top: 2px solid var(--ink); padding-top: 1rem;" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="Steady upward trend across all channels this fis" data-slot-locked-layout="true">Steady upward trend across all channels this fiscal year.</p>
                     </div>
                 </div>
             </div>
@@ -1736,7 +1769,7 @@
                     <div class="timeline-row">
                         <div class="post-it post-it-yellow timeline-node pin">
                             <h3 data-edit-slot="s5-title-1" data-slot-type="text" data-slot-label="Phase One" data-slot-locked-layout="true">Phase One</h3>
-                            <p class="phase-label" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Foundation" data-slot-locked-layout="true">Foundation</p>
+                            <p class="phase-label" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Foundation" data-slot-locked-layout="true">Foundation</p>
                         </div>
                         <div class="timeline-connector">
                             <svg viewBox="0 0 200 60" preserveAspectRatio="none">
@@ -1744,14 +1777,14 @@
                                 <polygon points="190,25 200,30 190,35" fill="#2d2a26" opacity="0.3"/>
                             </svg>
                         </div>
-                        <div class="post-it post-it-white timeline-content" style="border: 2px solid var(--ink);" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Establish core principles, gather requirements, " data-slot-locked-layout="true">
-                            <p data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Establish core principles, gather requirements, " data-slot-locked-layout="true">Establish core principles, gather requirements, and build the foundational architecture that everything else will stand upon.</p>
+                        <div class="post-it post-it-white timeline-content" style="border: 2px solid var(--ink);">
+                            <p data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Establish core principles, gather requirements, " data-slot-locked-layout="true">Establish core principles, gather requirements, and build the foundational architecture that everything else will stand upon.</p>
                         </div>
                     </div>
                     <div class="timeline-row">
                         <div class="post-it post-it-blue timeline-node pin-blue">
                             <h3 data-edit-slot="s5-title-2" data-slot-type="text" data-slot-label="Phase Two" data-slot-locked-layout="true">Phase Two</h3>
-                            <p class="phase-label" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Creation" data-slot-locked-layout="true">Creation</p>
+                            <p class="phase-label" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Creation" data-slot-locked-layout="true">Creation</p>
                         </div>
                         <div class="timeline-connector">
                             <svg viewBox="0 0 200 60" preserveAspectRatio="none">
@@ -1759,14 +1792,14 @@
                                 <polygon points="190,25 200,30 190,35" fill="#2d2a26" opacity="0.3"/>
                             </svg>
                         </div>
-                        <div class="post-it post-it-white timeline-content" style="border: 2px solid var(--ink);" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Design prototypes, iterate through feedback cycl" data-slot-locked-layout="true">
-                            <p data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Design prototypes, iterate through feedback cycl" data-slot-locked-layout="true">Design prototypes, iterate through feedback cycles, and refine the product until every detail feels intentional.</p>
+                        <div class="post-it post-it-white timeline-content" style="border: 2px solid var(--ink);">
+                            <p data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Design prototypes, iterate through feedback cycl" data-slot-locked-layout="true">Design prototypes, iterate through feedback cycles, and refine the product until every detail feels intentional.</p>
                         </div>
                     </div>
                     <div class="timeline-row">
                         <div class="post-it post-it-green timeline-node pin-green">
                             <h3 data-edit-slot="s5-title-3" data-slot-type="text" data-slot-label="Phase Three" data-slot-locked-layout="true">Phase Three</h3>
-                            <p class="phase-label" data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="Delivery" data-slot-locked-layout="true">Delivery</p>
+                            <p class="phase-label" data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Delivery" data-slot-locked-layout="true">Delivery</p>
                         </div>
                         <div class="timeline-connector">
                             <svg viewBox="0 0 200 60" preserveAspectRatio="none">
@@ -1774,8 +1807,8 @@
                                 <polygon points="190,25 200,30 190,35" fill="#2d2a26" opacity="0.3"/>
                             </svg>
                         </div>
-                        <div class="post-it post-it-white timeline-content" style="border: 2px solid var(--ink);" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Launch to the world, measure impact, gather insi" data-slot-locked-layout="true">
-                            <p data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="Launch to the world, measure impact, gather insi" data-slot-locked-layout="true">Launch to the world, measure impact, gather insights, and prepare for the next cycle of innovation.</p>
+                        <div class="post-it post-it-white timeline-content" style="border: 2px solid var(--ink);">
+                            <p data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Launch to the world, measure impact, gather insi" data-slot-locked-layout="true">Launch to the world, measure impact, gather insights, and prepare for the next cycle of innovation.</p>
                         </div>
                     </div>
                 </div>
@@ -1794,13 +1827,13 @@
                     </div>
                     <div class="text-cluster">
                         <div class="post-it post-it-pink main-text-postit pin">
-                            <span class="label" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Spotlight" data-slot-locked-layout="true">Spotlight</span>
+                            <span class="label" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Spotlight" data-slot-locked-layout="true">Spotlight</span>
                             <h3 style="margin-top: 1rem;" data-edit-slot="s6-title-1" data-slot-type="text" data-slot-label="Capturing the Moment" data-slot-locked-layout="true">Capturing the Moment</h3>
-                            <p data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Visual storytelling transforms abstract concepts" data-slot-locked-layout="true">Visual storytelling transforms abstract concepts into tangible understanding. A single image can communicate what paragraphs struggle to explain.</p>
-                            <p style="margin-top: 1rem;" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="We believe in the power of imagery to bridge gap" data-slot-locked-layout="true">We believe in the power of imagery to bridge gaps, evoke emotion, and create lasting impressions that words alone cannot achieve.</p>
+                            <p data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="Visual storytelling transforms abstract concepts" data-slot-locked-layout="true">Visual storytelling transforms abstract concepts into tangible understanding. A single image can communicate what paragraphs struggle to explain.</p>
+                            <p style="margin-top: 1rem;" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="We believe in the power of imagery to bridge gap" data-slot-locked-layout="true">We believe in the power of imagery to bridge gaps, evoke emotion, and create lasting impressions that words alone cannot achieve.</p>
                         </div>
-                        <div class="post-it post-it-yellow mini-note pin-gold" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="Visuals first, text second." data-slot-locked-layout="true">
-                            <p class="handwritten" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Visuals first, text second." data-slot-locked-layout="true">Visuals first, text second.</p>
+                        <div class="post-it post-it-yellow mini-note pin-gold">
+                            <p class="handwritten" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Visuals first, text second." data-slot-locked-layout="true">Visuals first, text second.</p>
                         </div>
                     </div>
                 </div>
@@ -1849,22 +1882,22 @@
                     <div class="diagram-note post-it post-it-yellow pin">
                         <h3 data-edit-slot="s7-title-2" data-slot-type="text" data-slot-label="Key Statistics" data-slot-locked-layout="true">Key Statistics</h3>
                         <div class="stat-row">
-                            <span class="stat-label" data-edit-slot="s7-slot-5" data-slot-type="metric" data-slot-label="Total Reach" data-slot-locked-layout="true">Total Reach</span>
+                            <span class="stat-label" data-edit-slot="s7-slot-2" data-slot-type="metric" data-slot-label="Total Reach" data-slot-locked-layout="true">Total Reach</span>
                             <span class="stat-value">128K</span>
                         </div>
-                        <div class="stat-row" data-edit-slot="s7-slot-1" data-slot-type="metric" data-slot-label="Engagement 84%" data-slot-locked-layout="true">
-                            <span class="stat-label" data-edit-slot="s7-slot-6" data-slot-type="metric" data-slot-label="Engagement" data-slot-locked-layout="true">Engagement</span>
+                        <div class="stat-row">
+                            <span class="stat-label" data-edit-slot="s7-slot-3" data-slot-type="metric" data-slot-label="Engagement" data-slot-locked-layout="true">Engagement</span>
                             <span class="stat-value">84%</span>
                         </div>
-                        <div class="stat-row" data-edit-slot="s7-slot-2" data-slot-type="metric" data-slot-label="Retention 62%" data-slot-locked-layout="true">
-                            <span class="stat-label" data-edit-slot="s7-slot-7" data-slot-type="metric" data-slot-label="Retention" data-slot-locked-layout="true">Retention</span>
+                        <div class="stat-row">
+                            <span class="stat-label" data-edit-slot="s7-slot-4" data-slot-type="metric" data-slot-label="Retention" data-slot-locked-layout="true">Retention</span>
                             <span class="stat-value">62%</span>
                         </div>
-                        <div class="stat-row" data-edit-slot="s7-slot-3" data-slot-type="metric" data-slot-label="Satisfaction 4.8" data-slot-locked-layout="true">
-                            <span class="stat-label" data-edit-slot="s7-slot-8" data-slot-type="metric" data-slot-label="Satisfaction" data-slot-locked-layout="true">Satisfaction</span>
+                        <div class="stat-row">
+                            <span class="stat-label" data-edit-slot="s7-slot-5" data-slot-type="metric" data-slot-label="Satisfaction" data-slot-locked-layout="true">Satisfaction</span>
                             <span class="stat-value">4.8</span>
                         </div>
-                        <p class="handwritten" style="margin-top: 1.5rem;" data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Numbers tell the story we need to hear." data-slot-locked-layout="true">Numbers tell the story we need to hear.</p>
+                        <p class="handwritten" style="margin-top: 1.5rem;" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Numbers tell the story we need to hear." data-slot-locked-layout="true">Numbers tell the story we need to hear.</p>
                     </div>
                 </div>
             </div>
@@ -1881,22 +1914,22 @@
                     <div class="post-it post-it-blue compare-postit left pin-blue">
                         <h3 data-edit-slot="s8-title-1" data-slot-type="text" data-slot-label="Before" data-slot-locked-layout="true">Before</h3>
                         <ul class="compare-list">
-                            <li data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="Scattered documentation" data-slot-locked-layout="true">Scattered documentation</li>
-                            <li data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="Unclear ownership" data-slot-locked-layout="true">Unclear ownership</li>
-                            <li data-edit-slot="s8-slot-4" data-slot-type="text" data-slot-label="Inconsistent processes" data-slot-locked-layout="true">Inconsistent processes</li>
-                            <li data-edit-slot="s8-slot-5" data-slot-type="text" data-slot-label="Reactive problem solving" data-slot-locked-layout="true">Reactive problem solving</li>
-                            <li data-edit-slot="s8-slot-6" data-slot-type="text" data-slot-label="Silos between teams" data-slot-locked-layout="true">Silos between teams</li>
+                            <li data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="Scattered documentation" data-slot-locked-layout="true">Scattered documentation</li>
+                            <li data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="Unclear ownership" data-slot-locked-layout="true">Unclear ownership</li>
+                            <li data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="Inconsistent processes" data-slot-locked-layout="true">Inconsistent processes</li>
+                            <li data-edit-slot="s8-slot-4" data-slot-type="text" data-slot-label="Reactive problem solving" data-slot-locked-layout="true">Reactive problem solving</li>
+                            <li data-edit-slot="s8-slot-5" data-slot-type="text" data-slot-label="Silos between teams" data-slot-locked-layout="true">Silos between teams</li>
                         </ul>
                     </div>
-                    <div class="compare-vs" data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="vs" data-slot-locked-layout="true">vs</div>
+                    <div class="compare-vs" data-edit-slot="s8-slot-11" data-slot-type="text" data-slot-label="vs" data-slot-locked-layout="true">vs</div>
                     <div class="post-it post-it-yellow compare-postit right pin-gold">
                         <h3 data-edit-slot="s8-title-2" data-slot-type="text" data-slot-label="After" data-slot-locked-layout="true">After</h3>
                         <ul class="compare-list">
-                            <li data-edit-slot="s8-slot-7" data-slot-type="text" data-slot-label="Centralized knowledge base" data-slot-locked-layout="true">Centralized knowledge base</li>
-                            <li data-edit-slot="s8-slot-8" data-slot-type="text" data-slot-label="Defined responsibilities" data-slot-locked-layout="true">Defined responsibilities</li>
-                            <li data-edit-slot="s8-slot-9" data-slot-type="text" data-slot-label="Streamlined workflows" data-slot-locked-layout="true">Streamlined workflows</li>
-                            <li data-edit-slot="s8-slot-10" data-slot-type="text" data-slot-label="Proactive planning" data-slot-locked-layout="true">Proactive planning</li>
-                            <li data-edit-slot="s8-slot-11" data-slot-type="text" data-slot-label="Cross-functional alignment" data-slot-locked-layout="true">Cross-functional alignment</li>
+                            <li data-edit-slot="s8-slot-6" data-slot-type="text" data-slot-label="Centralized knowledge base" data-slot-locked-layout="true">Centralized knowledge base</li>
+                            <li data-edit-slot="s8-slot-7" data-slot-type="text" data-slot-label="Defined responsibilities" data-slot-locked-layout="true">Defined responsibilities</li>
+                            <li data-edit-slot="s8-slot-8" data-slot-type="text" data-slot-label="Streamlined workflows" data-slot-locked-layout="true">Streamlined workflows</li>
+                            <li data-edit-slot="s8-slot-9" data-slot-type="text" data-slot-label="Proactive planning" data-slot-locked-layout="true">Proactive planning</li>
+                            <li data-edit-slot="s8-slot-10" data-slot-type="text" data-slot-label="Cross-functional alignment" data-slot-locked-layout="true">Cross-functional alignment</li>
                         </ul>
                     </div>
                 </div>
@@ -1913,22 +1946,22 @@
                 <div class="closing-cluster">
                     <div class="post-it post-it-yellow closing-main pin">
                         <h2 data-edit-slot="s9-title-1" data-slot-type="text" data-slot-label="Thanks for Sticking Around" data-slot-locked-layout="true">Thanks for Sticking Around</h2>
-                        <p class="handwritten" style="margin-top: 1rem;" data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="Every great idea starts with a little note." data-slot-locked-layout="true">Every great idea starts with a little note.</p>
+                        <p class="handwritten" style="margin-top: 1rem;" data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="Every great idea starts with a little note." data-slot-locked-layout="true">Every great idea starts with a little note.</p>
                     </div>
-                    <div class="post-it post-it-blue closing-accent-1 pin-blue" data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="Keep the ideas flowing!" data-slot-locked-layout="true">
-                        <p class="handwritten" data-edit-slot="s9-slot-6" data-slot-type="text" data-slot-label="Keep the ideas flowing!" data-slot-locked-layout="true">Keep the ideas flowing!</p>
+                    <div class="post-it post-it-blue closing-accent-1 pin-blue">
+                        <p class="handwritten" data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="Keep the ideas flowing!" data-slot-locked-layout="true">Keep the ideas flowing!</p>
                     </div>
-                    <div class="post-it post-it-pink closing-accent-2 pin" data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="Pin this somewhere safe." data-slot-locked-layout="true">
-                        <p class="handwritten" data-edit-slot="s9-slot-7" data-slot-type="text" data-slot-label="Pin this somewhere safe." data-slot-locked-layout="true">Pin this somewhere safe.</p>
+                    <div class="post-it post-it-pink closing-accent-2 pin">
+                        <p class="handwritten" data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="Pin this somewhere safe." data-slot-locked-layout="true">Pin this somewhere safe.</p>
                     </div>
-                    <div class="post-it post-it-green closing-accent-3 pin-green" data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="OK" data-slot-locked-layout="true">
-                        <p class="handwritten" data-edit-slot="s9-slot-8" data-slot-type="text" data-slot-label="OK" data-slot-locked-layout="true">OK</p>
+                    <div class="post-it post-it-green closing-accent-3 pin-green">
+                        <p class="handwritten" data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="OK" data-slot-locked-layout="true">OK</p>
                     </div>
                     <div class="post-it post-it-orange closing-accent-4 pin-gold">
                         <p class="handwritten">:)</p>
                     </div>
                 </div>
-                <p style="margin-top: 3rem; font-family: 'Zilla Slab', serif; font-style: italic; color: var(--ink-light); font-size: 1.1rem;" data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="Questions, thoughts, or just want to say hello?" data-slot-locked-layout="true">Questions, thoughts, or just want to say hello?</p>
+                <p style="margin-top: 3rem; font-family: 'Zilla Slab', serif; font-style: italic; color: var(--ink-light); font-size: 1.1rem;" data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="Questions, thoughts, or just want to say hello?" data-slot-locked-layout="true">Questions, thoughts, or just want to say hello?</p>
             </div>
             <svg class="doodle" style="top: 8%; right: 8%; width: 80px; height: 80px;" viewBox="0 0 80 80">
                 <polygon points="40,10 70,70 10,70" stroke="#2d2a26" stroke-width="3" fill="none" opacity="0.15"/>
@@ -2957,6 +2990,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2977,7 +3019,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2990,7 +3032,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -4038,12 +4080,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -4087,7 +4129,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

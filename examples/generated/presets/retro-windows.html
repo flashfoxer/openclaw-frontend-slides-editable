@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-retro-windows" data-template-source="retro-windows" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-retro-windows" data-template-source="retro-windows" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
 <meta charset="UTF-8">
@@ -575,6 +575,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1134,7 +1167,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1220,12 +1253,12 @@
     <div class="win-titlebar">
       <div class="win-title-left">
         <div class="win-icon">P</div>
-        <span data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="PRESENTATION.EXE" data-slot-locked-layout="true">PRESENTATION.EXE</span>
+        <span data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="PRESENTATION.EXE" data-slot-locked-layout="true">PRESENTATION.EXE</span>
       </div>
       <div class="win-buttons">
         <div class="win-btn">_</div>
-        <div class="win-btn" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div>
-        <div class="win-btn" data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div>
+        <div class="win-btn" data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div>
+        <div class="win-btn" data-edit-slot="s0-slot-5" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div>
       </div>
     </div>
     <div class="win-body flex flex-col items-center justify-center" style="padding: 40px;">
@@ -1238,20 +1271,20 @@
         </div>
       </div>
 
-      <p class="text-sm text-gray text-center mb-3" data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="Please wait while content loads..." data-slot-locked-layout="true">Please wait while content loads...</p>
+      <p class="text-sm text-gray text-center mb-3" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="Please wait while content loads..." data-slot-locked-layout="true">Please wait while content loads...</p>
 
       <div class="progress-bar mb-3" style="max-width: 480px;">
         <div class="progress-fill" style="width: 100%;"></div>
       </div>
 
-      <div class="flex gap-2 mt-2" data-edit-slot="s0-slot-5" data-slot-type="text" data-slot-label="OK Cancel Help" data-slot-locked-layout="true">
+      <div class="flex gap-2 mt-2" data-edit-slot="s0-slot-6" data-slot-type="text" data-slot-label="OK Cancel Help" data-slot-locked-layout="true">
         <button class="btn-retro">OK</button>
         <button class="btn-retro">Cancel</button>
         <button class="btn-retro">Help</button>
       </div>
 
       <hr class="retro" style="width: 100%; margin-top: 28px;">
-      <p class="text-xs text-gray" data-edit-slot="s0-slot-6" data-slot-type="text" data-slot-label="Version 1.0 &amp;bull; Build 2026.05.01 &amp;bull; All s" data-slot-locked-layout="true">Version 1.0 &bull; Build 2026.05.01 &bull; All systems operational</p>
+      <p class="text-xs text-gray" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="Version 1.0 &amp;bull; Build 2026.05.01 &amp;bull; All s" data-slot-locked-layout="true">Version 1.0 &bull; Build 2026.05.01 &bull; All systems operational</p>
     </div>
   </div>
 
@@ -1261,13 +1294,13 @@
 <section class="slide" id="slide-1" data-template-slide-index="2">
   <div class="win-window">
     <div class="win-titlebar">
-      <div class="win-title-left"><div class="win-icon">A</div><span data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="AGENDA.TXT" data-slot-locked-layout="true">AGENDA.TXT</span></div>
-      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
+      <div class="win-title-left"><div class="win-icon">A</div><span data-edit-slot="s1-slot-13" data-slot-type="text" data-slot-label="AGENDA.TXT" data-slot-locked-layout="true">AGENDA.TXT</span></div>
+      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s1-slot-14" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s1-slot-15" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
     </div>
     <div class="win-body">
       <div class="shrink-0">
-        <p class="text-lg text-blue" style="font-weight: bold;" data-edit-slot="s1-slot-6" data-slot-type="text" data-slot-label="Today&#x27;s Discussion Topics" data-slot-locked-layout="true">Today's Discussion Topics</p>
-        <p class="text-sm text-gray mb-1" data-edit-slot="s1-slot-7" data-slot-type="text" data-slot-label="Select an item to navigate. Use keyboard shortcu" data-slot-locked-layout="true">Select an item to navigate. Use keyboard shortcuts for faster access.</p>
+        <p class="text-lg text-blue" style="font-weight: bold;" data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="Today&#x27;s Discussion Topics" data-slot-locked-layout="true">Today's Discussion Topics</p>
+        <p class="text-sm text-gray mb-1" data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="Select an item to navigate. Use keyboard shortcu" data-slot-locked-layout="true">Select an item to navigate. Use keyboard shortcuts for faster access.</p>
         <hr class="retro">
       </div>
 
@@ -1276,11 +1309,11 @@
           <span class="group-box-title">Primary Items</span>
           <div class="flex-1 flex flex-col justify-center">
             <ul class="retro-list">
-              <li data-edit-slot="s1-slot-8" data-slot-type="text" data-slot-label="Executive Summary &amp;amp; Key Highlights" data-slot-locked-layout="true">Executive Summary &amp; Key Highlights</li>
-              <li data-edit-slot="s1-slot-9" data-slot-type="text" data-slot-label="Financial Performance Metrics" data-slot-locked-layout="true">Financial Performance Metrics</li>
-              <li data-edit-slot="s1-slot-10" data-slot-type="text" data-slot-label="Product Development Roadmap" data-slot-locked-layout="true">Product Development Roadmap</li>
-              <li data-edit-slot="s1-slot-11" data-slot-type="text" data-slot-label="Market Analysis &amp;amp; Competitive Landscape" data-slot-locked-layout="true">Market Analysis &amp; Competitive Landscape</li>
-              <li data-edit-slot="s1-slot-12" data-slot-type="text" data-slot-label="Customer Satisfaction Overview" data-slot-locked-layout="true">Customer Satisfaction Overview</li>
+              <li data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="Executive Summary &amp;amp; Key Highlights" data-slot-locked-layout="true">Executive Summary &amp; Key Highlights</li>
+              <li data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="Financial Performance Metrics" data-slot-locked-layout="true">Financial Performance Metrics</li>
+              <li data-edit-slot="s1-slot-5" data-slot-type="text" data-slot-label="Product Development Roadmap" data-slot-locked-layout="true">Product Development Roadmap</li>
+              <li data-edit-slot="s1-slot-6" data-slot-type="text" data-slot-label="Market Analysis &amp;amp; Competitive Landscape" data-slot-locked-layout="true">Market Analysis &amp; Competitive Landscape</li>
+              <li data-edit-slot="s1-slot-7" data-slot-type="text" data-slot-label="Customer Satisfaction Overview" data-slot-locked-layout="true">Customer Satisfaction Overview</li>
             </ul>
           </div>
         </div>
@@ -1288,11 +1321,11 @@
           <span class="group-box-title">Secondary Items</span>
           <div class="flex-1 flex flex-col justify-center">
             <ul class="retro-list">
-              <li data-edit-slot="s1-slot-13" data-slot-type="text" data-slot-label="Team Structure &amp;amp; Resource Allocation" data-slot-locked-layout="true">Team Structure &amp; Resource Allocation</li>
-              <li data-edit-slot="s1-slot-14" data-slot-type="text" data-slot-label="Risk Assessment Matrix" data-slot-locked-layout="true">Risk Assessment Matrix</li>
-              <li data-edit-slot="s1-slot-15" data-slot-type="text" data-slot-label="Strategic Initiatives for Next Quarter" data-slot-locked-layout="true">Strategic Initiatives for Next Quarter</li>
-              <li data-edit-slot="s1-slot-16" data-slot-type="text" data-slot-label="Budget Forecast &amp;amp; Allocation Plan" data-slot-locked-layout="true">Budget Forecast &amp; Allocation Plan</li>
-              <li data-edit-slot="s1-slot-17" data-slot-type="text" data-slot-label="Open Discussion &amp;amp; Q&amp;amp;A Session" data-slot-locked-layout="true">Open Discussion &amp; Q&amp;A Session</li>
+              <li data-edit-slot="s1-slot-8" data-slot-type="text" data-slot-label="Team Structure &amp;amp; Resource Allocation" data-slot-locked-layout="true">Team Structure &amp; Resource Allocation</li>
+              <li data-edit-slot="s1-slot-9" data-slot-type="text" data-slot-label="Risk Assessment Matrix" data-slot-locked-layout="true">Risk Assessment Matrix</li>
+              <li data-edit-slot="s1-slot-10" data-slot-type="text" data-slot-label="Strategic Initiatives for Next Quarter" data-slot-locked-layout="true">Strategic Initiatives for Next Quarter</li>
+              <li data-edit-slot="s1-slot-11" data-slot-type="text" data-slot-label="Budget Forecast &amp;amp; Allocation Plan" data-slot-locked-layout="true">Budget Forecast &amp; Allocation Plan</li>
+              <li data-edit-slot="s1-slot-12" data-slot-type="text" data-slot-label="Open Discussion &amp;amp; Q&amp;amp;A Session" data-slot-locked-layout="true">Open Discussion &amp; Q&amp;A Session</li>
             </ul>
           </div>
         </div>
@@ -1304,8 +1337,8 @@
           <span class="text-sm text-green" style="font-weight: bold;">READY</span>
         </div>
         <div class="flex items-center gap-5">
-          <div class="retro-check"><div class="check-box">x</div><span data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="Notify participants" data-slot-locked-layout="true">Notify participants</span></div>
-          <div class="retro-check"><div class="check-box"></div><span data-edit-slot="s1-slot-5" data-slot-type="text" data-slot-label="Record session" data-slot-locked-layout="true">Record session</span></div>
+          <div class="retro-check"><div class="check-box">x</div><span data-edit-slot="s1-slot-16" data-slot-type="text" data-slot-label="Notify participants" data-slot-locked-layout="true">Notify participants</span></div>
+          <div class="retro-check"><div class="check-box"></div><span data-edit-slot="s1-slot-17" data-slot-type="text" data-slot-label="Record session" data-slot-locked-layout="true">Record session</span></div>
         </div>
       </div>
 
@@ -1325,16 +1358,16 @@
 <section class="slide" id="slide-2" data-template-slide-index="3">
   <div class="win-window">
     <div class="win-titlebar">
-      <div class="win-title-left"><div class="win-icon">R</div><span data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="README.DOC" data-slot-locked-layout="true">README.DOC</span></div>
-      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
+      <div class="win-title-left"><div class="win-icon">R</div><span data-edit-slot="s2-slot-13" data-slot-type="text" data-slot-label="README.DOC" data-slot-locked-layout="true">README.DOC</span></div>
+      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s2-slot-14" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s2-slot-15" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
     </div>
     <div class="win-body">
       <div class="panel-raised mb-3 shrink-0" style="background: var(--white); padding: 18px;">
-        <p class="text-xl text-blue" style="font-size: 24px;" data-edit-slot="s2-slot-7" data-slot-type="text" data-slot-label="Executive Summary" data-slot-locked-layout="true">Executive Summary</p>
+        <p class="text-xl text-blue" style="font-size: 24px;" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Executive Summary" data-slot-locked-layout="true">Executive Summary</p>
       </div>
 
       <div class="flex-1 flex flex-col gap-4" style="min-height: 0;">
-        <p class="text-md" style="line-height: 1.7;" data-edit-slot="s2-slot-8" data-slot-type="text" data-slot-label="Lorem ipsum dolor sit amet, consectetur adipisci" data-slot-locked-layout="true">
+        <p class="text-md" style="line-height: 1.7;" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="Lorem ipsum dolor sit amet, consectetur adipisci" data-slot-locked-layout="true">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
         </p>
 
@@ -1342,7 +1375,7 @@
           <div class="group-box flex flex-col">
             <span class="group-box-title">Key Objectives</span>
             <div class="flex-1 flex flex-col justify-center">
-              <p class="text-md" style="line-height: 1.7;" data-edit-slot="s2-slot-9" data-slot-type="text" data-slot-label="Duis aute irure dolor in reprehenderit in volupt" data-slot-locked-layout="true">
+              <p class="text-md" style="line-height: 1.7;" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="Duis aute irure dolor in reprehenderit in volupt" data-slot-locked-layout="true">
                 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
               </p>
             </div>
@@ -1350,7 +1383,7 @@
           <div class="group-box flex flex-col">
             <span class="group-box-title">Primary Outcomes</span>
             <div class="flex-1 flex flex-col justify-center">
-              <p class="text-md" style="line-height: 1.7;" data-edit-slot="s2-slot-10" data-slot-type="text" data-slot-label="Sed ut perspiciatis unde omnis iste natus error " data-slot-locked-layout="true">
+              <p class="text-md" style="line-height: 1.7;" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="Sed ut perspiciatis unde omnis iste natus error " data-slot-locked-layout="true">
                 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
               </p>
             </div>
@@ -1359,10 +1392,10 @@
       </div>
 
       <div class="flex gap-4 mt-4 shrink-0">
-        <div class="panel-sunken flex-1 text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s2-slot-11" data-slot-type="text" data-slot-label="Prepared by" data-slot-locked-layout="true">Prepared by</p><p class="text-md" style="font-weight: bold;" data-edit-slot="s2-slot-12" data-slot-type="text" data-slot-label="Department Name" data-slot-locked-layout="true">Department Name</p></div>
-        <div class="panel-sunken flex-1 text-center" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="DateMay 01, 2026" data-slot-locked-layout="true"><p class="text-xs text-gray mb-1" data-edit-slot="s2-slot-13" data-slot-type="text" data-slot-label="Date" data-slot-locked-layout="true">Date</p><p class="text-md" style="font-weight: bold;" data-edit-slot="s2-slot-14" data-slot-type="text" data-slot-label="May 01, 2026" data-slot-locked-layout="true">May 01, 2026</p></div>
-        <div class="panel-sunken flex-1 text-center" data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="ClassificationInternal Use" data-slot-locked-layout="true"><p class="text-xs text-gray mb-1" data-edit-slot="s2-slot-15" data-slot-type="text" data-slot-label="Classification" data-slot-locked-layout="true">Classification</p><p class="text-md" style="font-weight: bold;" data-edit-slot="s2-slot-16" data-slot-type="text" data-slot-label="Internal Use" data-slot-locked-layout="true">Internal Use</p></div>
-        <div class="panel-sunken flex-1 text-center" data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="Review StatusApproved" data-slot-locked-layout="true"><p class="text-xs text-gray mb-1" data-edit-slot="s2-slot-17" data-slot-type="text" data-slot-label="Review Status" data-slot-locked-layout="true">Review Status</p><p class="text-md text-green" style="font-weight: bold;" data-edit-slot="s2-slot-18" data-slot-type="text" data-slot-label="Approved" data-slot-locked-layout="true">Approved</p></div>
+        <div class="panel-sunken flex-1 text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="Prepared by" data-slot-locked-layout="true">Prepared by</p><p class="text-md" style="font-weight: bold;" data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="Department Name" data-slot-locked-layout="true">Department Name</p></div>
+        <div class="panel-sunken flex-1 text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s2-slot-7" data-slot-type="text" data-slot-label="Date" data-slot-locked-layout="true">Date</p><p class="text-md" style="font-weight: bold;" data-edit-slot="s2-slot-8" data-slot-type="text" data-slot-label="May 01, 2026" data-slot-locked-layout="true">May 01, 2026</p></div>
+        <div class="panel-sunken flex-1 text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s2-slot-9" data-slot-type="text" data-slot-label="Classification" data-slot-locked-layout="true">Classification</p><p class="text-md" style="font-weight: bold;" data-edit-slot="s2-slot-10" data-slot-type="text" data-slot-label="Internal Use" data-slot-locked-layout="true">Internal Use</p></div>
+        <div class="panel-sunken flex-1 text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s2-slot-11" data-slot-type="text" data-slot-label="Review Status" data-slot-locked-layout="true">Review Status</p><p class="text-md text-green" style="font-weight: bold;" data-edit-slot="s2-slot-12" data-slot-type="text" data-slot-label="Approved" data-slot-locked-layout="true">Approved</p></div>
       </div>
     </div>
   </div>
@@ -1373,12 +1406,12 @@
 <section class="slide" id="slide-3" data-template-slide-index="4">
   <div class="win-window">
     <div class="win-titlebar">
-      <div class="win-title-left"><div class="win-icon">D</div><span data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="DATAVIEW.CSV" data-slot-locked-layout="true">DATAVIEW.CSV</span></div>
-      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
+      <div class="win-title-left"><div class="win-icon">D</div><span data-edit-slot="s3-slot-20" data-slot-type="text" data-slot-label="DATAVIEW.CSV" data-slot-locked-layout="true">DATAVIEW.CSV</span></div>
+      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s3-slot-21" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s3-slot-22" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
     </div>
     <div class="win-body">
       <div class="shrink-0 flex justify-between items-center mb-1">
-        <p class="text-lg text-blue" style="font-weight: bold;" data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Quarterly Revenue Comparison" data-slot-locked-layout="true">Quarterly Revenue Comparison</p>
+        <p class="text-lg text-blue" style="font-weight: bold;" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="Quarterly Revenue Comparison" data-slot-locked-layout="true">Quarterly Revenue Comparison</p>
         <div class="flex gap-2"><button class="btn-retro text-sm">Export</button><button class="btn-retro text-sm">Print</button></div>
       </div>
       <hr class="retro">
@@ -1399,18 +1432,18 @@
           <div class="group-box">
             <span class="group-box-title">Highlights</span>
             <ul class="retro-list">
-              <li data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="Q3 exceeded projections by 18%" data-slot-locked-layout="true">Q3 exceeded projections by 18%</li>
-              <li data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="Enterprise segment grew 24% YoY" data-slot-locked-layout="true">Enterprise segment grew 24% YoY</li>
-              <li data-edit-slot="s3-slot-7" data-slot-type="text" data-slot-label="Recurring revenue now at 62% of total" data-slot-locked-layout="true">Recurring revenue now at 62% of total</li>
+              <li data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Q3 exceeded projections by 18%" data-slot-locked-layout="true">Q3 exceeded projections by 18%</li>
+              <li data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Enterprise segment grew 24% YoY" data-slot-locked-layout="true">Enterprise segment grew 24% YoY</li>
+              <li data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Recurring revenue now at 62% of total" data-slot-locked-layout="true">Recurring revenue now at 62% of total</li>
             </ul>
           </div>
           <div class="panel-sunken flex-1" style="overflow: auto;">
             <table class="retro-table">
-              <tr><th data-edit-slot="s3-slot-8" data-slot-type="table-cell" data-slot-label="Quarter" data-slot-locked-layout="true">Quarter</th><th data-edit-slot="s3-slot-9" data-slot-type="table-cell" data-slot-label="Revenue" data-slot-locked-layout="true">Revenue</th><th data-edit-slot="s3-slot-10" data-slot-type="table-cell" data-slot-label="Growth" data-slot-locked-layout="true">Growth</th></tr>
-              <tr><td data-edit-slot="s3-slot-11" data-slot-type="table-cell" data-slot-label="Q1 2026" data-slot-locked-layout="true">Q1 2026</td><td data-edit-slot="s3-slot-12" data-slot-type="table-cell" data-slot-label="$1.2M" data-slot-locked-layout="true">$1.2M</td><td class="text-green" style="font-weight: bold;" data-edit-slot="s3-slot-13" data-slot-type="table-cell" data-slot-label="+5%" data-slot-locked-layout="true">+5%</td></tr>
-              <tr><td data-edit-slot="s3-slot-14" data-slot-type="table-cell" data-slot-label="Q2 2026" data-slot-locked-layout="true">Q2 2026</td><td data-edit-slot="s3-slot-15" data-slot-type="table-cell" data-slot-label="$1.5M" data-slot-locked-layout="true">$1.5M</td><td class="text-green" style="font-weight: bold;" data-edit-slot="s3-slot-16" data-slot-type="table-cell" data-slot-label="+12%" data-slot-locked-layout="true">+12%</td></tr>
-              <tr><td data-edit-slot="s3-slot-17" data-slot-type="table-cell" data-slot-label="Q3 2026" data-slot-locked-layout="true">Q3 2026</td><td data-edit-slot="s3-slot-18" data-slot-type="table-cell" data-slot-label="$1.9M" data-slot-locked-layout="true">$1.9M</td><td class="text-green" style="font-weight: bold;" data-edit-slot="s3-slot-19" data-slot-type="table-cell" data-slot-label="+18%" data-slot-locked-layout="true">+18%</td></tr>
-              <tr><td data-edit-slot="s3-slot-20" data-slot-type="table-cell" data-slot-label="Q4 2026" data-slot-locked-layout="true">Q4 2026</td><td data-edit-slot="s3-slot-21" data-slot-type="table-cell" data-slot-label="$2.1M" data-slot-locked-layout="true">$2.1M</td><td class="text-green" style="font-weight: bold;" data-edit-slot="s3-slot-22" data-slot-type="table-cell" data-slot-label="+22%" data-slot-locked-layout="true">+22%</td></tr>
+              <tr><th data-edit-slot="s3-slot-5" data-slot-type="table-cell" data-slot-label="Quarter" data-slot-locked-layout="true">Quarter</th><th data-edit-slot="s3-slot-6" data-slot-type="table-cell" data-slot-label="Revenue" data-slot-locked-layout="true">Revenue</th><th data-edit-slot="s3-slot-7" data-slot-type="table-cell" data-slot-label="Growth" data-slot-locked-layout="true">Growth</th></tr>
+              <tr><td data-edit-slot="s3-slot-8" data-slot-type="table-cell" data-slot-label="Q1 2026" data-slot-locked-layout="true">Q1 2026</td><td data-edit-slot="s3-slot-9" data-slot-type="table-cell" data-slot-label="$1.2M" data-slot-locked-layout="true">$1.2M</td><td class="text-green" style="font-weight: bold;" data-edit-slot="s3-slot-10" data-slot-type="table-cell" data-slot-label="+5%" data-slot-locked-layout="true">+5%</td></tr>
+              <tr><td data-edit-slot="s3-slot-11" data-slot-type="table-cell" data-slot-label="Q2 2026" data-slot-locked-layout="true">Q2 2026</td><td data-edit-slot="s3-slot-12" data-slot-type="table-cell" data-slot-label="$1.5M" data-slot-locked-layout="true">$1.5M</td><td class="text-green" style="font-weight: bold;" data-edit-slot="s3-slot-13" data-slot-type="table-cell" data-slot-label="+12%" data-slot-locked-layout="true">+12%</td></tr>
+              <tr><td data-edit-slot="s3-slot-14" data-slot-type="table-cell" data-slot-label="Q3 2026" data-slot-locked-layout="true">Q3 2026</td><td data-edit-slot="s3-slot-15" data-slot-type="table-cell" data-slot-label="$1.9M" data-slot-locked-layout="true">$1.9M</td><td class="text-green" style="font-weight: bold;" data-edit-slot="s3-slot-16" data-slot-type="table-cell" data-slot-label="+18%" data-slot-locked-layout="true">+18%</td></tr>
+              <tr><td data-edit-slot="s3-slot-17" data-slot-type="table-cell" data-slot-label="Q4 2026" data-slot-locked-layout="true">Q4 2026</td><td data-edit-slot="s3-slot-18" data-slot-type="table-cell" data-slot-label="$2.1M" data-slot-locked-layout="true">$2.1M</td><td class="text-green" style="font-weight: bold;" data-edit-slot="s3-slot-19" data-slot-type="table-cell" data-slot-label="+22%" data-slot-locked-layout="true">+22%</td></tr>
             </table>
           </div>
         </div>
@@ -1432,13 +1465,13 @@
 <section class="slide" id="slide-4" data-template-slide-index="5">
   <div class="win-window">
     <div class="win-titlebar">
-      <div class="win-title-left"><div class="win-icon">F</div><span data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="FEATURES.INI" data-slot-locked-layout="true">FEATURES.INI</span></div>
-      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
+      <div class="win-title-left"><div class="win-icon">F</div><span data-edit-slot="s4-slot-15" data-slot-type="text" data-slot-label="FEATURES.INI" data-slot-locked-layout="true">FEATURES.INI</span></div>
+      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s4-slot-16" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s4-slot-17" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
     </div>
     <div class="win-body">
       <div class="shrink-0">
-        <p class="text-lg text-blue" style="font-weight: bold;" data-edit-slot="s4-slot-14" data-slot-type="text" data-slot-label="Product Capabilities Overview" data-slot-locked-layout="true">Product Capabilities Overview</p>
-        <p class="text-sm text-gray mb-1" data-edit-slot="s4-slot-15" data-slot-type="text" data-slot-label="A detailed breakdown of current platform feature" data-slot-locked-layout="true">A detailed breakdown of current platform features and their implementation status.</p>
+        <p class="text-lg text-blue" style="font-weight: bold;" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="Product Capabilities Overview" data-slot-locked-layout="true">Product Capabilities Overview</p>
+        <p class="text-sm text-gray mb-1" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="A detailed breakdown of current platform feature" data-slot-locked-layout="true">A detailed breakdown of current platform features and their implementation status.</p>
         <hr class="retro">
       </div>
 
@@ -1448,27 +1481,27 @@
             <span class="group-box-title">Core Modules</span>
             <div class="flex-1 flex flex-col justify-around">
               <div>
-                <div class="retro-check mb-1"><div class="check-box">x</div><span class="text-sm" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="User Authentication Service" data-slot-locked-layout="true">User Authentication Service</span></div>
+                <div class="retro-check mb-1"><div class="check-box">x</div><span class="text-sm" data-edit-slot="s4-slot-18" data-slot-type="text" data-slot-label="User Authentication Service" data-slot-locked-layout="true">User Authentication Service</span></div>
                 <div class="progress-bar" style="height: 16px;"><div class="progress-fill" style="width: 100%;"></div></div>
               </div>
               <div>
-                <div class="retro-check mb-1"><div class="check-box">x</div><span class="text-sm" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="Data Processing Engine" data-slot-locked-layout="true">Data Processing Engine</span></div>
+                <div class="retro-check mb-1"><div class="check-box">x</div><span class="text-sm" data-edit-slot="s4-slot-19" data-slot-type="text" data-slot-label="Data Processing Engine" data-slot-locked-layout="true">Data Processing Engine</span></div>
                 <div class="progress-bar" style="height: 16px;"><div class="progress-fill" style="width: 92%;"></div></div>
               </div>
               <div>
-                <div class="retro-check mb-1"><div class="check-box">x</div><span class="text-sm" data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="Reporting Dashboard" data-slot-locked-layout="true">Reporting Dashboard</span></div>
+                <div class="retro-check mb-1"><div class="check-box">x</div><span class="text-sm" data-edit-slot="s4-slot-20" data-slot-type="text" data-slot-label="Reporting Dashboard" data-slot-locked-layout="true">Reporting Dashboard</span></div>
                 <div class="progress-bar" style="height: 16px;"><div class="progress-fill" style="width: 88%;"></div></div>
               </div>
               <div>
-                <div class="retro-check mb-1"><div class="check-box"></div><span class="text-sm" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="Advanced Analytics Suite" data-slot-locked-layout="true">Advanced Analytics Suite</span></div>
+                <div class="retro-check mb-1"><div class="check-box"></div><span class="text-sm" data-edit-slot="s4-slot-21" data-slot-type="text" data-slot-label="Advanced Analytics Suite" data-slot-locked-layout="true">Advanced Analytics Suite</span></div>
                 <div class="progress-bar" style="height: 16px;"><div class="progress-fill" style="width: 65%;"></div></div>
               </div>
             </div>
           </div>
           <div class="panel-raised shrink-0">
-            <p class="text-sm text-gray mb-1" data-edit-slot="s4-slot-16" data-slot-type="text" data-slot-label="Overall Completion" data-slot-locked-layout="true">Overall Completion</p>
+            <p class="text-sm text-gray mb-1" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="Overall Completion" data-slot-locked-layout="true">Overall Completion</p>
             <div class="progress-bar"><div class="progress-fill" style="width: 86%;"></div></div>
-            <p class="text-lg text-right mt-1" style="font-size: 20px; font-weight: bold;" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="86%" data-slot-locked-layout="true">86%</p>
+            <p class="text-lg text-right mt-1" style="font-size: 20px; font-weight: bold;" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="86%" data-slot-locked-layout="true">86%</p>
           </div>
         </div>
 
@@ -1476,16 +1509,16 @@
           <div class="group-box flex-1 flex flex-col">
             <span class="group-box-title">Module Details</span>
             <div class="flex-1 flex flex-col justify-around">
-              <div class="panel-sunken"><p class="text-sm" style="line-height: 1.6;" data-edit-slot="s4-slot-17" data-slot-type="text" data-slot-label="Auth Service: Supports SSO, MFA, and role-based " data-slot-locked-layout="true"><strong>Auth Service:</strong> Supports SSO, MFA, and role-based access control. Fully deployed across all regions with 99.99% uptime.</p></div>
-              <div class="panel-sunken" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="Data Engine: Handles 10M+ records daily with sub" data-slot-locked-layout="true"><p class="text-sm" style="line-height: 1.6;" data-edit-slot="s4-slot-18" data-slot-type="text" data-slot-label="Data Engine: Handles 10M+ records daily with sub" data-slot-locked-layout="true"><strong>Data Engine:</strong> Handles 10M+ records daily with sub-second query response times and automatic scaling.</p></div>
-              <div class="panel-sunken" data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="Dashboard: Real-time visualization with 25+ widg" data-slot-locked-layout="true"><p class="text-sm" style="line-height: 1.6;" data-edit-slot="s4-slot-19" data-slot-type="text" data-slot-label="Dashboard: Real-time visualization with 25+ widg" data-slot-locked-layout="true"><strong>Dashboard:</strong> Real-time visualization with 25+ widget types, custom layouts, and scheduled reports.</p></div>
-              <div class="panel-sunken" data-edit-slot="s4-slot-11" data-slot-type="text" data-slot-label="Analytics: Predictive modeling and trend forecas" data-slot-locked-layout="true"><p class="text-sm" style="line-height: 1.6;" data-edit-slot="s4-slot-20" data-slot-type="text" data-slot-label="Analytics: Predictive modeling and trend forecas" data-slot-locked-layout="true"><strong>Analytics:</strong> Predictive modeling and trend forecasting. Beta release scheduled for Q3 2026.</p></div>
+              <div class="panel-sunken"><p class="text-sm" style="line-height: 1.6;" data-edit-slot="s4-slot-5" data-slot-type="text" data-slot-label="Auth Service: Supports SSO, MFA, and role-based " data-slot-locked-layout="true"><strong>Auth Service:</strong> Supports SSO, MFA, and role-based access control. Fully deployed across all regions with 99.99% uptime.</p></div>
+              <div class="panel-sunken"><p class="text-sm" style="line-height: 1.6;" data-edit-slot="s4-slot-6" data-slot-type="text" data-slot-label="Data Engine: Handles 10M+ records daily with sub" data-slot-locked-layout="true"><strong>Data Engine:</strong> Handles 10M+ records daily with sub-second query response times and automatic scaling.</p></div>
+              <div class="panel-sunken"><p class="text-sm" style="line-height: 1.6;" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="Dashboard: Real-time visualization with 25+ widg" data-slot-locked-layout="true"><strong>Dashboard:</strong> Real-time visualization with 25+ widget types, custom layouts, and scheduled reports.</p></div>
+              <div class="panel-sunken"><p class="text-sm" style="line-height: 1.6;" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="Analytics: Predictive modeling and trend forecas" data-slot-locked-layout="true"><strong>Analytics:</strong> Predictive modeling and trend forecasting. Beta release scheduled for Q3 2026.</p></div>
             </div>
           </div>
           <div class="flex gap-3 shrink-0">
-            <div class="panel-sunken flex-1 text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s4-slot-21" data-slot-type="text" data-slot-label="Active" data-slot-locked-layout="true">Active</p><p class="text-lg" style="font-size: 22px; font-weight: bold; color: var(--blue-navy);" data-edit-slot="s4-slot-22" data-slot-type="text" data-slot-label="12" data-slot-locked-layout="true">12</p></div>
-            <div class="panel-sunken flex-1 text-center" data-edit-slot="s4-slot-12" data-slot-type="text" data-slot-label="In Dev3" data-slot-locked-layout="true"><p class="text-xs text-gray mb-1" data-edit-slot="s4-slot-23" data-slot-type="text" data-slot-label="In Dev" data-slot-locked-layout="true">In Dev</p><p class="text-lg" style="font-size: 22px; font-weight: bold; color: var(--blue-navy);" data-edit-slot="s4-slot-24" data-slot-type="text" data-slot-label="3" data-slot-locked-layout="true">3</p></div>
-            <div class="panel-sunken flex-1 text-center" data-edit-slot="s4-slot-13" data-slot-type="text" data-slot-label="Planned2" data-slot-locked-layout="true"><p class="text-xs text-gray mb-1" data-edit-slot="s4-slot-25" data-slot-type="text" data-slot-label="Planned" data-slot-locked-layout="true">Planned</p><p class="text-lg" style="font-size: 22px; font-weight: bold; color: var(--blue-navy);" data-edit-slot="s4-slot-26" data-slot-type="text" data-slot-label="2" data-slot-locked-layout="true">2</p></div>
+            <div class="panel-sunken flex-1 text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="Active" data-slot-locked-layout="true">Active</p><p class="text-lg" style="font-size: 22px; font-weight: bold; color: var(--blue-navy);" data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="12" data-slot-locked-layout="true">12</p></div>
+            <div class="panel-sunken flex-1 text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s4-slot-11" data-slot-type="text" data-slot-label="In Dev" data-slot-locked-layout="true">In Dev</p><p class="text-lg" style="font-size: 22px; font-weight: bold; color: var(--blue-navy);" data-edit-slot="s4-slot-12" data-slot-type="text" data-slot-label="3" data-slot-locked-layout="true">3</p></div>
+            <div class="panel-sunken flex-1 text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s4-slot-13" data-slot-type="text" data-slot-label="Planned" data-slot-locked-layout="true">Planned</p><p class="text-lg" style="font-size: 22px; font-weight: bold; color: var(--blue-navy);" data-edit-slot="s4-slot-14" data-slot-type="text" data-slot-label="2" data-slot-locked-layout="true">2</p></div>
           </div>
         </div>
       </div>
@@ -1498,12 +1531,12 @@
 <section class="slide" id="slide-5" data-template-slide-index="6">
   <div class="win-window">
     <div class="win-titlebar">
-      <div class="win-title-left"><div class="win-icon">G</div><span data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="GRAPHS.BMP" data-slot-locked-layout="true">GRAPHS.BMP</span></div>
-      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
+      <div class="win-title-left"><div class="win-icon">G</div><span data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="GRAPHS.BMP" data-slot-locked-layout="true">GRAPHS.BMP</span></div>
+      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
     </div>
     <div class="win-body">
       <div class="shrink-0">
-        <p class="text-lg text-blue mb-1" style="font-weight: bold;" data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="Market Segment Distribution" data-slot-locked-layout="true">Market Segment Distribution</p>
+        <p class="text-lg text-blue mb-1" style="font-weight: bold;" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Market Segment Distribution" data-slot-locked-layout="true">Market Segment Distribution</p>
         <hr class="retro">
       </div>
 
@@ -1526,25 +1559,25 @@
               <span class="text-md"><span style="color: var(--blue-navy);">&#9632;</span> Enterprise</span>
               <span class="text-md" style="font-weight: bold;">42%</span>
             </div>
-            <div class="flex justify-between items-center p-2 mb-1" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="&amp;#9632; Mid-Market 28%" data-slot-locked-layout="true">
+            <div class="flex justify-between items-center p-2 mb-1" data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="&amp;#9632; Mid-Market 28%" data-slot-locked-layout="true">
               <span class="text-md"><span style="color: var(--green-retro);">&#9632;</span> Mid-Market</span>
               <span class="text-md" style="font-weight: bold;">28%</span>
             </div>
-            <div class="flex justify-between items-center p-2 mb-1" style="background: rgba(0,0,128,0.06);" data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="&amp;#9632; Small Business 18%" data-slot-locked-layout="true">
+            <div class="flex justify-between items-center p-2 mb-1" style="background: rgba(0,0,128,0.06);" data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="&amp;#9632; Small Business 18%" data-slot-locked-layout="true">
               <span class="text-md"><span style="color: var(--cyan-retro);">&#9632;</span> Small Business</span>
               <span class="text-md" style="font-weight: bold;">18%</span>
             </div>
-            <div class="flex justify-between items-center p-2" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="&amp;#9632; Government 12%" data-slot-locked-layout="true">
+            <div class="flex justify-between items-center p-2" data-edit-slot="s5-slot-10" data-slot-type="text" data-slot-label="&amp;#9632; Government 12%" data-slot-locked-layout="true">
               <span class="text-md"><span style="color: var(--yellow-retro);">&#9632;</span> Government</span>
               <span class="text-md" style="font-weight: bold;">12%</span>
             </div>
           </div>
-          <div class="panel-raised flex-1 flex flex-col justify-center" data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Key Insight Enterprise clients continue to drive" data-slot-locked-layout="true">
-            <p class="text-md" style="font-weight: bold; margin-bottom: 8px;" data-edit-slot="s5-slot-10" data-slot-type="text" data-slot-label="Key Insight" data-slot-locked-layout="true">Key Insight</p>
-            <p class="text-sm" style="line-height: 1.6;" data-edit-slot="s5-slot-11" data-slot-type="text" data-slot-label="Enterprise clients continue to drive the majorit" data-slot-locked-layout="true">Enterprise clients continue to drive the majority of revenue, with a 15% increase in average contract value year-over-year. Mid-market segment shows the fastest growth rate at 32%.</p>
+          <div class="panel-raised flex-1 flex flex-col justify-center">
+            <p class="text-md" style="font-weight: bold; margin-bottom: 8px;" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Key Insight" data-slot-locked-layout="true">Key Insight</p>
+            <p class="text-sm" style="line-height: 1.6;" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Enterprise clients continue to drive the majorit" data-slot-locked-layout="true">Enterprise clients continue to drive the majority of revenue, with a 15% increase in average contract value year-over-year. Mid-market segment shows the fastest growth rate at 32%.</p>
           </div>
-          <div class="panel-sunken shrink-0" data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="Total Addressable Market: $4.2B &amp;bull; Our Share" data-slot-locked-layout="true">
-            <p class="text-sm text-gray" data-edit-slot="s5-slot-12" data-slot-type="text" data-slot-label="Total Addressable Market: $4.2B &amp;bull; Our Share" data-slot-locked-layout="true">Total Addressable Market: <strong>$4.2B</strong> &bull; Our Share: <strong>8.3%</strong></p>
+          <div class="panel-sunken shrink-0">
+            <p class="text-sm text-gray" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Total Addressable Market: $4.2B &amp;bull; Our Share" data-slot-locked-layout="true">Total Addressable Market: <strong>$4.2B</strong> &bull; Our Share: <strong>8.3%</strong></p>
           </div>
         </div>
       </div>
@@ -1557,45 +1590,45 @@
 <section class="slide" id="slide-6" data-template-slide-index="7">
   <div class="win-window">
     <div class="win-titlebar">
-      <div class="win-title-left"><div class="win-icon">M</div><span data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="METRICS.LOG" data-slot-locked-layout="true">METRICS.LOG</span></div>
-      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
+      <div class="win-title-left"><div class="win-icon">M</div><span data-edit-slot="s6-slot-15" data-slot-type="text" data-slot-label="METRICS.LOG" data-slot-locked-layout="true">METRICS.LOG</span></div>
+      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s6-slot-16" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s6-slot-17" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
     </div>
     <div class="win-body">
       <div class="shrink-0">
-        <p class="text-lg text-blue mb-1" style="font-weight: bold;" data-edit-slot="s6-slot-12" data-slot-type="text" data-slot-label="Performance Metrics Dashboard" data-slot-locked-layout="true">Performance Metrics Dashboard</p>
+        <p class="text-lg text-blue mb-1" style="font-weight: bold;" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="Performance Metrics Dashboard" data-slot-locked-layout="true">Performance Metrics Dashboard</p>
         <hr class="retro">
       </div>
 
       <div class="grid-4 gap-4 shrink-0 mt-2">
         <div class="group-box text-center">
           <span class="group-box-title">Revenue</span>
-          <p class="text-xl" style="font-size: 30px; margin: 10px 0; color: var(--blue-navy);" data-edit-slot="s6-slot-13" data-slot-type="text" data-slot-label="$2.1M" data-slot-locked-layout="true">$2.1M</p>
-          <p class="text-sm text-green" style="font-weight: bold;" data-edit-slot="s6-slot-14" data-slot-type="text" data-slot-label="&amp;#9650; +18.3%" data-slot-locked-layout="true">&#9650; +18.3%</p>
-          <p class="text-xs text-gray mt-1" data-edit-slot="s6-slot-15" data-slot-type="text" data-slot-label="vs previous quarter" data-slot-locked-layout="true">vs previous quarter</p>
+          <p class="text-xl" style="font-size: 30px; margin: 10px 0; color: var(--blue-navy);" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="$2.1M" data-slot-locked-layout="true">$2.1M</p>
+          <p class="text-sm text-green" style="font-weight: bold;" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="&amp;#9650; +18.3%" data-slot-locked-layout="true">&#9650; +18.3%</p>
+          <p class="text-xs text-gray mt-1" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="vs previous quarter" data-slot-locked-layout="true">vs previous quarter</p>
         </div>
-        <div class="group-box text-center" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Customers 1,482 &amp;#9650; +124 new this quarter" data-slot-locked-layout="true">
+        <div class="group-box text-center">
           <span class="group-box-title">Customers</span>
-          <p class="text-xl" style="font-size: 30px; margin: 10px 0; color: var(--blue-navy);" data-edit-slot="s6-slot-16" data-slot-type="text" data-slot-label="1,482" data-slot-locked-layout="true">1,482</p>
-          <p class="text-sm text-green" style="font-weight: bold;" data-edit-slot="s6-slot-17" data-slot-type="text" data-slot-label="&amp;#9650; +124" data-slot-locked-layout="true">&#9650; +124</p>
-          <p class="text-xs text-gray mt-1" data-edit-slot="s6-slot-18" data-slot-type="text" data-slot-label="new this quarter" data-slot-locked-layout="true">new this quarter</p>
+          <p class="text-xl" style="font-size: 30px; margin: 10px 0; color: var(--blue-navy);" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="1,482" data-slot-locked-layout="true">1,482</p>
+          <p class="text-sm text-green" style="font-weight: bold;" data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="&amp;#9650; +124" data-slot-locked-layout="true">&#9650; +124</p>
+          <p class="text-xs text-gray mt-1" data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="new this quarter" data-slot-locked-layout="true">new this quarter</p>
         </div>
-        <div class="group-box text-center" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Retention 94.2% &amp;#9650; +2.1% annual rate" data-slot-locked-layout="true">
+        <div class="group-box text-center">
           <span class="group-box-title">Retention</span>
-          <p class="text-xl" style="font-size: 30px; margin: 10px 0; color: var(--blue-navy);" data-edit-slot="s6-slot-19" data-slot-type="text" data-slot-label="94.2%" data-slot-locked-layout="true">94.2%</p>
-          <p class="text-sm text-green" style="font-weight: bold;" data-edit-slot="s6-slot-20" data-slot-type="text" data-slot-label="&amp;#9650; +2.1%" data-slot-locked-layout="true">&#9650; +2.1%</p>
-          <p class="text-xs text-gray mt-1" data-edit-slot="s6-slot-21" data-slot-type="text" data-slot-label="annual rate" data-slot-locked-layout="true">annual rate</p>
+          <p class="text-xl" style="font-size: 30px; margin: 10px 0; color: var(--blue-navy);" data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="94.2%" data-slot-locked-layout="true">94.2%</p>
+          <p class="text-sm text-green" style="font-weight: bold;" data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="&amp;#9650; +2.1%" data-slot-locked-layout="true">&#9650; +2.1%</p>
+          <p class="text-xs text-gray mt-1" data-edit-slot="s6-slot-10" data-slot-type="text" data-slot-label="annual rate" data-slot-locked-layout="true">annual rate</p>
         </div>
-        <div class="group-box text-center" data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="NPS Score 72 &amp;#9650; +5 industry avg: 45" data-slot-locked-layout="true">
+        <div class="group-box text-center">
           <span class="group-box-title">NPS Score</span>
-          <p class="text-xl" style="font-size: 30px; margin: 10px 0; color: var(--blue-navy);" data-edit-slot="s6-slot-22" data-slot-type="text" data-slot-label="72" data-slot-locked-layout="true">72</p>
-          <p class="text-sm text-green" style="font-weight: bold;" data-edit-slot="s6-slot-23" data-slot-type="text" data-slot-label="&amp;#9650; +5" data-slot-locked-layout="true">&#9650; +5</p>
-          <p class="text-xs text-gray mt-1" data-edit-slot="s6-slot-24" data-slot-type="text" data-slot-label="industry avg: 45" data-slot-locked-layout="true">industry avg: 45</p>
+          <p class="text-xl" style="font-size: 30px; margin: 10px 0; color: var(--blue-navy);" data-edit-slot="s6-slot-11" data-slot-type="text" data-slot-label="72" data-slot-locked-layout="true">72</p>
+          <p class="text-sm text-green" style="font-weight: bold;" data-edit-slot="s6-slot-12" data-slot-type="text" data-slot-label="&amp;#9650; +5" data-slot-locked-layout="true">&#9650; +5</p>
+          <p class="text-xs text-gray mt-1" data-edit-slot="s6-slot-13" data-slot-type="text" data-slot-label="industry avg: 45" data-slot-locked-layout="true">industry avg: 45</p>
         </div>
       </div>
 
       <div class="grid-2 gap-5 flex-1 mt-4" style="min-height: 0;">
         <div class="panel-raised" style="min-height: 0;">
-          <p class="text-sm" style="font-weight: bold; margin-bottom: 10px;" data-edit-slot="s6-slot-25" data-slot-type="text" data-slot-label="Monthly Active Users Trend" data-slot-locked-layout="true">Monthly Active Users Trend</p>
+          <p class="text-sm" style="font-weight: bold; margin-bottom: 10px;" data-edit-slot="s6-slot-14" data-slot-type="text" data-slot-label="Monthly Active Users Trend" data-slot-locked-layout="true">Monthly Active Users Trend</p>
           <div class="chart-container-sm"><div class="static-chart-replacement" role="img" aria-label="Static chart replacement for lineChart">
   <div class="static-chart-bars">
     <span class="static-chart-bar" style="--v:72%"><b data-edit-slot="s6-chart-1-a" data-slot-type="metric" data-slot-label="Chart value A" data-slot-locked-layout="true">72</b></span>
@@ -1611,13 +1644,13 @@
             <span class="group-box-title">Operational KPIs</span>
             <div class="flex-1 flex flex-col justify-around" style="min-height: 0;">
               <div class="flex justify-between text-sm"><span>Avg. Response Time</span><span style="font-weight: bold;">124ms</span></div>
-              <div class="flex justify-between text-sm" data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="System Uptime99.97%" data-slot-locked-layout="true"><span>System Uptime</span><span class="text-green" style="font-weight: bold;">99.97%</span></div>
-              <div class="flex justify-between text-sm" data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="Support Tickets342 (-12%)" data-slot-locked-layout="true"><span>Support Tickets</span><span style="font-weight: bold;">342 (-12%)</span></div>
-              <div class="flex justify-between text-sm" data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="Feature Adoption68%" data-slot-locked-layout="true"><span>Feature Adoption</span><span style="font-weight: bold;">68%</span></div>
-              <div class="flex justify-between text-sm" data-edit-slot="s6-slot-10" data-slot-type="text" data-slot-label="API Calls / Day4.2M" data-slot-locked-layout="true"><span>API Calls / Day</span><span style="font-weight: bold;">4.2M</span></div>
+              <div class="flex justify-between text-sm" data-edit-slot="s6-slot-18" data-slot-type="text" data-slot-label="System Uptime99.97%" data-slot-locked-layout="true"><span>System Uptime</span><span class="text-green" style="font-weight: bold;">99.97%</span></div>
+              <div class="flex justify-between text-sm" data-edit-slot="s6-slot-19" data-slot-type="text" data-slot-label="Support Tickets342 (-12%)" data-slot-locked-layout="true"><span>Support Tickets</span><span style="font-weight: bold;">342 (-12%)</span></div>
+              <div class="flex justify-between text-sm" data-edit-slot="s6-slot-20" data-slot-type="text" data-slot-label="Feature Adoption68%" data-slot-locked-layout="true"><span>Feature Adoption</span><span style="font-weight: bold;">68%</span></div>
+              <div class="flex justify-between text-sm" data-edit-slot="s6-slot-21" data-slot-type="text" data-slot-label="API Calls / Day4.2M" data-slot-locked-layout="true"><span>API Calls / Day</span><span style="font-weight: bold;">4.2M</span></div>
             </div>
           </div>
-          <div class="panel-sunken shrink-0 flex items-center justify-between" data-edit-slot="s6-slot-11" data-slot-type="text" data-slot-label="All systems operational &amp;#9679; LIVE" data-slot-locked-layout="true">
+          <div class="panel-sunken shrink-0 flex items-center justify-between" data-edit-slot="s6-slot-22" data-slot-type="text" data-slot-label="All systems operational &amp;#9679; LIVE" data-slot-locked-layout="true">
             <span class="text-sm text-gray">All systems operational</span>
             <span class="text-sm text-green" style="font-weight: bold;">&#9679; LIVE</span>
           </div>
@@ -1632,45 +1665,45 @@
 <section class="slide" id="slide-7" data-template-slide-index="8">
   <div class="win-window">
     <div class="win-titlebar">
-      <div class="win-title-left"><div class="win-icon">E</div><span data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="EXPLORER.EXE" data-slot-locked-layout="true">EXPLORER.EXE</span></div>
-      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
+      <div class="win-title-left"><div class="win-icon">E</div><span data-edit-slot="s7-slot-20" data-slot-type="text" data-slot-label="EXPLORER.EXE" data-slot-locked-layout="true">EXPLORER.EXE</span></div>
+      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s7-slot-21" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s7-slot-22" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
     </div>
     <div class="win-body">
       <div class="shrink-0">
-        <p class="text-lg text-blue mb-1" style="font-weight: bold;" data-edit-slot="s7-slot-20" data-slot-type="text" data-slot-label="Organizational Structure" data-slot-locked-layout="true">Organizational Structure</p>
+        <p class="text-lg text-blue mb-1" style="font-weight: bold;" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Organizational Structure" data-slot-locked-layout="true">Organizational Structure</p>
         <hr class="retro">
       </div>
 
       <div class="grid-2 gap-5 flex-1 mt-2" style="min-height: 0;">
         <div class="panel-sunken flex flex-col" style="background: var(--white); min-height: 0;">
-          <p class="text-sm text-gray mb-2 shrink-0" data-edit-slot="s7-slot-21" data-slot-type="text" data-slot-label="C:\ORG\STRUCTURE" data-slot-locked-layout="true">C:\ORG\STRUCTURE</p>
+          <p class="text-sm text-gray mb-2 shrink-0" data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="C:\ORG\STRUCTURE" data-slot-locked-layout="true">C:\ORG\STRUCTURE</p>
           <div class="flex-1 flex flex-col justify-around" style="overflow: auto;">
             <div>
               <div class="tree-item"><span class="tree-icon">-</span>&#128193; <strong>Executive Leadership</strong></div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="+&amp;#128193; Office of the CEO" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Office of the CEO</div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="+&amp;#128193; Chief of Staff" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Chief of Staff</div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="-&amp;#128193; Board Relations" data-slot-locked-layout="true"><span class="tree-icon">-</span>&#128193; Board Relations</div>
-              <div class="tree-item" style="padding-left: 44px;" data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="&amp;nbsp;&amp;#128196; Governance" data-slot-locked-layout="true"><span class="tree-icon">&nbsp;</span>&#128196; Governance</div>
-              <div class="tree-item" style="padding-left: 44px;" data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="&amp;nbsp;&amp;#128196; Committees" data-slot-locked-layout="true"><span class="tree-icon">&nbsp;</span>&#128196; Committees</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-23" data-slot-type="text" data-slot-label="+&amp;#128193; Office of the CEO" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Office of the CEO</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-24" data-slot-type="text" data-slot-label="+&amp;#128193; Chief of Staff" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Chief of Staff</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-25" data-slot-type="text" data-slot-label="-&amp;#128193; Board Relations" data-slot-locked-layout="true"><span class="tree-icon">-</span>&#128193; Board Relations</div>
+              <div class="tree-item" style="padding-left: 44px;" data-edit-slot="s7-slot-26" data-slot-type="text" data-slot-label="&amp;nbsp;&amp;#128196; Governance" data-slot-locked-layout="true"><span class="tree-icon">&nbsp;</span>&#128196; Governance</div>
+              <div class="tree-item" style="padding-left: 44px;" data-edit-slot="s7-slot-27" data-slot-type="text" data-slot-label="&amp;nbsp;&amp;#128196; Committees" data-slot-locked-layout="true"><span class="tree-icon">&nbsp;</span>&#128196; Committees</div>
             </div>
             <div>
               <div class="tree-item"><span class="tree-icon">-</span>&#128193; <strong>Engineering</strong></div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="+&amp;#128193; Platform Team" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Platform Team</div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="+&amp;#128193; Product Engineering" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Product Engineering</div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="+&amp;#128193; Infrastructure" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Infrastructure</div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-12" data-slot-type="text" data-slot-label="+&amp;#128193; QA &amp;amp; DevOps" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; QA &amp; DevOps</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-28" data-slot-type="text" data-slot-label="+&amp;#128193; Platform Team" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Platform Team</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-29" data-slot-type="text" data-slot-label="+&amp;#128193; Product Engineering" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Product Engineering</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-30" data-slot-type="text" data-slot-label="+&amp;#128193; Infrastructure" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Infrastructure</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-31" data-slot-type="text" data-slot-label="+&amp;#128193; QA &amp;amp; DevOps" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; QA &amp; DevOps</div>
             </div>
             <div>
               <div class="tree-item"><span class="tree-icon">-</span>&#128193; <strong>Commercial</strong></div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-13" data-slot-type="text" data-slot-label="+&amp;#128193; Sales" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Sales</div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-14" data-slot-type="text" data-slot-label="+&amp;#128193; Marketing" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Marketing</div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-15" data-slot-type="text" data-slot-label="+&amp;#128193; Customer Success" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Customer Success</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-32" data-slot-type="text" data-slot-label="+&amp;#128193; Sales" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Sales</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-33" data-slot-type="text" data-slot-label="+&amp;#128193; Marketing" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Marketing</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-34" data-slot-type="text" data-slot-label="+&amp;#128193; Customer Success" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Customer Success</div>
             </div>
             <div>
               <div class="tree-item"><span class="tree-icon">-</span>&#128193; <strong>Operations</strong></div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-16" data-slot-type="text" data-slot-label="+&amp;#128193; Finance" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Finance</div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-17" data-slot-type="text" data-slot-label="+&amp;#128193; Legal &amp;amp; Compliance" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Legal &amp; Compliance</div>
-              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-18" data-slot-type="text" data-slot-label="+&amp;#128193; People &amp;amp; Culture" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; People &amp; Culture</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-35" data-slot-type="text" data-slot-label="+&amp;#128193; Finance" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Finance</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-36" data-slot-type="text" data-slot-label="+&amp;#128193; Legal &amp;amp; Compliance" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; Legal &amp; Compliance</div>
+              <div class="tree-item" style="padding-left: 24px;" data-edit-slot="s7-slot-37" data-slot-type="text" data-slot-label="+&amp;#128193; People &amp;amp; Culture" data-slot-locked-layout="true"><span class="tree-icon">+</span>&#128193; People &amp; Culture</div>
             </div>
           </div>
         </div>
@@ -1680,24 +1713,24 @@
             <span class="group-box-title">Department Headcount</span>
             <div class="flex-1" style="overflow: auto;">
               <table class="retro-table">
-                <tr><th data-edit-slot="s7-slot-22" data-slot-type="table-cell" data-slot-label="Department" data-slot-locked-layout="true">Department</th><th data-edit-slot="s7-slot-23" data-slot-type="table-cell" data-slot-label="Headcount" data-slot-locked-layout="true">Headcount</th><th data-edit-slot="s7-slot-24" data-slot-type="table-cell" data-slot-label="Open Roles" data-slot-locked-layout="true">Open Roles</th></tr>
-                <tr><td data-edit-slot="s7-slot-25" data-slot-type="table-cell" data-slot-label="Engineering" data-slot-locked-layout="true">Engineering</td><td data-edit-slot="s7-slot-26" data-slot-type="table-cell" data-slot-label="84" data-slot-locked-layout="true">84</td><td data-edit-slot="s7-slot-27" data-slot-type="table-cell" data-slot-label="12" data-slot-locked-layout="true">12</td></tr>
-                <tr><td data-edit-slot="s7-slot-28" data-slot-type="table-cell" data-slot-label="Commercial" data-slot-locked-layout="true">Commercial</td><td data-edit-slot="s7-slot-29" data-slot-type="table-cell" data-slot-label="56" data-slot-locked-layout="true">56</td><td data-edit-slot="s7-slot-30" data-slot-type="table-cell" data-slot-label="8" data-slot-locked-layout="true">8</td></tr>
-                <tr><td data-edit-slot="s7-slot-31" data-slot-type="table-cell" data-slot-label="Operations" data-slot-locked-layout="true">Operations</td><td data-edit-slot="s7-slot-32" data-slot-type="table-cell" data-slot-label="32" data-slot-locked-layout="true">32</td><td data-edit-slot="s7-slot-33" data-slot-type="table-cell" data-slot-label="4" data-slot-locked-layout="true">4</td></tr>
-                <tr><td data-edit-slot="s7-slot-34" data-slot-type="table-cell" data-slot-label="Leadership" data-slot-locked-layout="true">Leadership</td><td data-edit-slot="s7-slot-35" data-slot-type="table-cell" data-slot-label="8" data-slot-locked-layout="true">8</td><td data-edit-slot="s7-slot-36" data-slot-type="table-cell" data-slot-label="0" data-slot-locked-layout="true">0</td></tr>
+                <tr><th data-edit-slot="s7-slot-3" data-slot-type="table-cell" data-slot-label="Department" data-slot-locked-layout="true">Department</th><th data-edit-slot="s7-slot-4" data-slot-type="table-cell" data-slot-label="Headcount" data-slot-locked-layout="true">Headcount</th><th data-edit-slot="s7-slot-5" data-slot-type="table-cell" data-slot-label="Open Roles" data-slot-locked-layout="true">Open Roles</th></tr>
+                <tr><td data-edit-slot="s7-slot-6" data-slot-type="table-cell" data-slot-label="Engineering" data-slot-locked-layout="true">Engineering</td><td data-edit-slot="s7-slot-7" data-slot-type="table-cell" data-slot-label="84" data-slot-locked-layout="true">84</td><td data-edit-slot="s7-slot-8" data-slot-type="table-cell" data-slot-label="12" data-slot-locked-layout="true">12</td></tr>
+                <tr><td data-edit-slot="s7-slot-9" data-slot-type="table-cell" data-slot-label="Commercial" data-slot-locked-layout="true">Commercial</td><td data-edit-slot="s7-slot-10" data-slot-type="table-cell" data-slot-label="56" data-slot-locked-layout="true">56</td><td data-edit-slot="s7-slot-11" data-slot-type="table-cell" data-slot-label="8" data-slot-locked-layout="true">8</td></tr>
+                <tr><td data-edit-slot="s7-slot-12" data-slot-type="table-cell" data-slot-label="Operations" data-slot-locked-layout="true">Operations</td><td data-edit-slot="s7-slot-13" data-slot-type="table-cell" data-slot-label="32" data-slot-locked-layout="true">32</td><td data-edit-slot="s7-slot-14" data-slot-type="table-cell" data-slot-label="4" data-slot-locked-layout="true">4</td></tr>
+                <tr><td data-edit-slot="s7-slot-15" data-slot-type="table-cell" data-slot-label="Leadership" data-slot-locked-layout="true">Leadership</td><td data-edit-slot="s7-slot-16" data-slot-type="table-cell" data-slot-label="8" data-slot-locked-layout="true">8</td><td data-edit-slot="s7-slot-17" data-slot-type="table-cell" data-slot-label="0" data-slot-locked-layout="true">0</td></tr>
               </table>
             </div>
           </div>
           <div class="panel-raised flex-1 flex flex-col justify-center">
-            <p class="text-sm" style="font-weight: bold; margin-bottom: 10px;" data-edit-slot="s7-slot-37" data-slot-type="text" data-slot-label="Growth Plan" data-slot-locked-layout="true">Growth Plan</p>
-            <p class="text-sm" style="line-height: 1.6; margin-bottom: 10px;" data-edit-slot="s7-slot-38" data-slot-type="text" data-slot-label="Planning to expand engineering by 25% and commer" data-slot-locked-layout="true">Planning to expand engineering by 25% and commercial teams by 18% over the next two quarters to support projected growth.</p>
+            <p class="text-sm" style="font-weight: bold; margin-bottom: 10px;" data-edit-slot="s7-slot-18" data-slot-type="text" data-slot-label="Growth Plan" data-slot-locked-layout="true">Growth Plan</p>
+            <p class="text-sm" style="line-height: 1.6; margin-bottom: 10px;" data-edit-slot="s7-slot-19" data-slot-type="text" data-slot-label="Planning to expand engineering by 25% and commer" data-slot-locked-layout="true">Planning to expand engineering by 25% and commercial teams by 18% over the next two quarters to support projected growth.</p>
             <div class="flex gap-2">
               <span class="text-xs panel-sunken p-1">Engineering: +21</span>
               <span class="text-xs panel-sunken p-1">Sales: +10</span>
               <span class="text-xs panel-sunken p-1">Support: +6</span>
             </div>
           </div>
-          <div class="panel-sunken shrink-0 flex items-center justify-between" data-edit-slot="s7-slot-19" data-slot-type="text" data-slot-label="Total Organization 180 employees" data-slot-locked-layout="true">
+          <div class="panel-sunken shrink-0 flex items-center justify-between" data-edit-slot="s7-slot-38" data-slot-type="text" data-slot-label="Total Organization 180 employees" data-slot-locked-layout="true">
             <span class="text-sm text-gray">Total Organization</span>
             <span class="text-lg text-blue" style="font-weight: bold;">180 employees</span>
           </div>
@@ -1712,12 +1745,12 @@
 <section class="slide" id="slide-8" data-template-slide-index="9">
   <div class="win-window">
     <div class="win-titlebar">
-      <div class="win-title-left"><div class="win-icon">T</div><span data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="TIMELINE.PRJ" data-slot-locked-layout="true">TIMELINE.PRJ</span></div>
-      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
+      <div class="win-title-left"><div class="win-icon">T</div><span data-edit-slot="s8-slot-23" data-slot-type="text" data-slot-label="TIMELINE.PRJ" data-slot-locked-layout="true">TIMELINE.PRJ</span></div>
+      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s8-slot-24" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s8-slot-25" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
     </div>
     <div class="win-body">
       <div class="shrink-0">
-        <p class="text-lg text-blue mb-1" style="font-weight: bold;" data-edit-slot="s8-slot-19" data-slot-type="text" data-slot-label="Project Roadmap 2026" data-slot-locked-layout="true">Project Roadmap 2026</p>
+        <p class="text-lg text-blue mb-1" style="font-weight: bold;" data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="Project Roadmap 2026" data-slot-locked-layout="true">Project Roadmap 2026</p>
         <hr class="retro">
       </div>
 
@@ -1727,9 +1760,9 @@
           <div class="p-2">
             <div class="retro-check mb-1"><div class="check-box">x</div><strong> Completed</strong></div>
             <ul class="retro-list">
-              <li data-edit-slot="s8-slot-4" data-slot-type="text" data-slot-label="Platform v2.0 release" data-slot-locked-layout="true">Platform v2.0 release</li>
-              <li data-edit-slot="s8-slot-5" data-slot-type="text" data-slot-label="Mobile app launch" data-slot-locked-layout="true">Mobile app launch</li>
-              <li data-edit-slot="s8-slot-6" data-slot-type="text" data-slot-label="Partner integrations" data-slot-locked-layout="true">Partner integrations</li>
+              <li data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="Platform v2.0 release" data-slot-locked-layout="true">Platform v2.0 release</li>
+              <li data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="Mobile app launch" data-slot-locked-layout="true">Mobile app launch</li>
+              <li data-edit-slot="s8-slot-4" data-slot-type="text" data-slot-label="Partner integrations" data-slot-locked-layout="true">Partner integrations</li>
             </ul>
           </div>
         </div>
@@ -1738,9 +1771,9 @@
           <div class="p-2">
             <div class="retro-check mb-1"><div class="check-box">x</div><strong> Completed</strong></div>
             <ul class="retro-list">
-              <li data-edit-slot="s8-slot-7" data-slot-type="text" data-slot-label="Analytics dashboard" data-slot-locked-layout="true">Analytics dashboard</li>
-              <li data-edit-slot="s8-slot-8" data-slot-type="text" data-slot-label="API marketplace" data-slot-locked-layout="true">API marketplace</li>
-              <li data-edit-slot="s8-slot-9" data-slot-type="text" data-slot-label="Regional expansion EU" data-slot-locked-layout="true">Regional expansion EU</li>
+              <li data-edit-slot="s8-slot-5" data-slot-type="text" data-slot-label="Analytics dashboard" data-slot-locked-layout="true">Analytics dashboard</li>
+              <li data-edit-slot="s8-slot-6" data-slot-type="text" data-slot-label="API marketplace" data-slot-locked-layout="true">API marketplace</li>
+              <li data-edit-slot="s8-slot-7" data-slot-type="text" data-slot-label="Regional expansion EU" data-slot-locked-layout="true">Regional expansion EU</li>
             </ul>
           </div>
         </div>
@@ -1749,9 +1782,9 @@
           <div class="p-2">
             <div class="retro-check mb-1"><div class="check-box"></div><strong> In Progress</strong></div>
             <ul class="retro-list">
-              <li data-edit-slot="s8-slot-10" data-slot-type="text" data-slot-label="AI assistant beta" data-slot-locked-layout="true">AI assistant beta</li>
-              <li data-edit-slot="s8-slot-11" data-slot-type="text" data-slot-label="Enterprise security" data-slot-locked-layout="true">Enterprise security</li>
-              <li data-edit-slot="s8-slot-12" data-slot-type="text" data-slot-label="Team expansion" data-slot-locked-layout="true">Team expansion</li>
+              <li data-edit-slot="s8-slot-8" data-slot-type="text" data-slot-label="AI assistant beta" data-slot-locked-layout="true">AI assistant beta</li>
+              <li data-edit-slot="s8-slot-9" data-slot-type="text" data-slot-label="Enterprise security" data-slot-locked-layout="true">Enterprise security</li>
+              <li data-edit-slot="s8-slot-10" data-slot-type="text" data-slot-label="Team expansion" data-slot-locked-layout="true">Team expansion</li>
             </ul>
           </div>
         </div>
@@ -1760,37 +1793,37 @@
           <div class="p-2">
             <div class="retro-check mb-1"><div class="check-box"></div><strong> Planned</strong></div>
             <ul class="retro-list">
-              <li data-edit-slot="s8-slot-13" data-slot-type="text" data-slot-label="Global data centers" data-slot-locked-layout="true">Global data centers</li>
-              <li data-edit-slot="s8-slot-14" data-slot-type="text" data-slot-label="Advanced reporting" data-slot-locked-layout="true">Advanced reporting</li>
-              <li data-edit-slot="s8-slot-15" data-slot-type="text" data-slot-label="Series C prep" data-slot-locked-layout="true">Series C prep</li>
+              <li data-edit-slot="s8-slot-11" data-slot-type="text" data-slot-label="Global data centers" data-slot-locked-layout="true">Global data centers</li>
+              <li data-edit-slot="s8-slot-12" data-slot-type="text" data-slot-label="Advanced reporting" data-slot-locked-layout="true">Advanced reporting</li>
+              <li data-edit-slot="s8-slot-13" data-slot-type="text" data-slot-label="Series C prep" data-slot-locked-layout="true">Series C prep</li>
             </ul>
           </div>
         </div>
       </div>
 
       <div class="panel-raised mt-4 shrink-0">
-        <p class="text-sm" style="font-weight: bold; margin-bottom: 10px;" data-edit-slot="s8-slot-20" data-slot-type="text" data-slot-label="Current Milestone: Q3 2026" data-slot-locked-layout="true">Current Milestone: Q3 2026</p>
+        <p class="text-sm" style="font-weight: bold; margin-bottom: 10px;" data-edit-slot="s8-slot-14" data-slot-type="text" data-slot-label="Current Milestone: Q3 2026" data-slot-locked-layout="true">Current Milestone: Q3 2026</p>
         <div class="flex gap-4 items-center">
           <div class="flex-1"><div class="progress-bar"><div class="progress-fill" style="width: 55%;"></div></div></div>
-          <div style="text-align: right;" data-edit-slot="s8-slot-16" data-slot-type="text" data-slot-label="55%6 of 11 milestones" data-slot-locked-layout="true"><p class="text-md" style="font-weight: bold;" data-edit-slot="s8-slot-21" data-slot-type="text" data-slot-label="55%" data-slot-locked-layout="true">55%</p><p class="text-xs text-gray" data-edit-slot="s8-slot-22" data-slot-type="text" data-slot-label="6 of 11 milestones" data-slot-locked-layout="true">6 of 11 milestones</p></div>
+          <div style="text-align: right;"><p class="text-md" style="font-weight: bold;" data-edit-slot="s8-slot-15" data-slot-type="text" data-slot-label="55%" data-slot-locked-layout="true">55%</p><p class="text-xs text-gray" data-edit-slot="s8-slot-16" data-slot-type="text" data-slot-label="6 of 11 milestones" data-slot-locked-layout="true">6 of 11 milestones</p></div>
         </div>
       </div>
 
       <div class="grid-3 gap-4 flex-1 mt-4" style="align-content: start;">
         <div class="group-box text-center">
           <span class="group-box-title">Risk Level</span>
-          <p class="text-lg text-yellow-retro" style="font-weight: bold; margin-top: 6px;" data-edit-slot="s8-slot-23" data-slot-type="text" data-slot-label="MODERATE" data-slot-locked-layout="true">MODERATE</p>
-          <p class="text-xs text-gray" data-edit-slot="s8-slot-24" data-slot-type="text" data-slot-label="2 risks identified" data-slot-locked-layout="true">2 risks identified</p>
+          <p class="text-lg text-yellow-retro" style="font-weight: bold; margin-top: 6px;" data-edit-slot="s8-slot-17" data-slot-type="text" data-slot-label="MODERATE" data-slot-locked-layout="true">MODERATE</p>
+          <p class="text-xs text-gray" data-edit-slot="s8-slot-18" data-slot-type="text" data-slot-label="2 risks identified" data-slot-locked-layout="true">2 risks identified</p>
         </div>
-        <div class="group-box text-center" data-edit-slot="s8-slot-17" data-slot-type="text" data-slot-label="Budget Status ON TRACK $1.2M remaining" data-slot-locked-layout="true">
+        <div class="group-box text-center">
           <span class="group-box-title">Budget Status</span>
-          <p class="text-lg text-green" style="font-weight: bold; margin-top: 6px;" data-edit-slot="s8-slot-25" data-slot-type="text" data-slot-label="ON TRACK" data-slot-locked-layout="true">ON TRACK</p>
-          <p class="text-xs text-gray" data-edit-slot="s8-slot-26" data-slot-type="text" data-slot-label="$1.2M remaining" data-slot-locked-layout="true">$1.2M remaining</p>
+          <p class="text-lg text-green" style="font-weight: bold; margin-top: 6px;" data-edit-slot="s8-slot-19" data-slot-type="text" data-slot-label="ON TRACK" data-slot-locked-layout="true">ON TRACK</p>
+          <p class="text-xs text-gray" data-edit-slot="s8-slot-20" data-slot-type="text" data-slot-label="$1.2M remaining" data-slot-locked-layout="true">$1.2M remaining</p>
         </div>
-        <div class="group-box text-center" data-edit-slot="s8-slot-18" data-slot-type="text" data-slot-label="Next Review JUL 15 Q3 checkpoint" data-slot-locked-layout="true">
+        <div class="group-box text-center">
           <span class="group-box-title">Next Review</span>
-          <p class="text-lg text-blue" style="font-weight: bold; margin-top: 6px;" data-edit-slot="s8-slot-27" data-slot-type="text" data-slot-label="JUL 15" data-slot-locked-layout="true">JUL 15</p>
-          <p class="text-xs text-gray" data-edit-slot="s8-slot-28" data-slot-type="text" data-slot-label="Q3 checkpoint" data-slot-locked-layout="true">Q3 checkpoint</p>
+          <p class="text-lg text-blue" style="font-weight: bold; margin-top: 6px;" data-edit-slot="s8-slot-21" data-slot-type="text" data-slot-label="JUL 15" data-slot-locked-layout="true">JUL 15</p>
+          <p class="text-xs text-gray" data-edit-slot="s8-slot-22" data-slot-type="text" data-slot-label="Q3 checkpoint" data-slot-locked-layout="true">Q3 checkpoint</p>
         </div>
       </div>
     </div>
@@ -1802,13 +1835,13 @@
 <section class="slide" id="slide-9" data-template-slide-index="10">
   <div class="win-window" style="max-width: 680px;">
     <div class="win-titlebar">
-      <div class="win-title-left"><div class="win-icon">?</div><span data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="SHUTDOWN.EXE" data-slot-locked-layout="true">SHUTDOWN.EXE</span></div>
-      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
+      <div class="win-title-left"><div class="win-icon">?</div><span data-edit-slot="s9-slot-9" data-slot-type="text" data-slot-label="SHUTDOWN.EXE" data-slot-locked-layout="true">SHUTDOWN.EXE</span></div>
+      <div class="win-buttons"><div class="win-btn">_</div><div class="win-btn" data-edit-slot="s9-slot-10" data-slot-type="text" data-slot-label="[]" data-slot-locked-layout="true">[]</div><div class="win-btn" data-edit-slot="s9-slot-11" data-slot-type="text" data-slot-label="X" data-slot-locked-layout="true">X</div></div>
     </div>
     <div class="win-body flex flex-col items-center justify-center" style="padding: 40px;">
       <div style="font-size: 52px; margin-bottom: 20px;">&#x1F4A4;</div>
       <h2 class="pixel-font text-blue text-center" style="font-size: 20px; margin-bottom: 20px; line-height: 1.8;" data-edit-slot="s9-title-1" data-slot-type="text" data-slot-label="THANK YOU FOR WATCHING" data-slot-locked-layout="true">THANK YOU FOR WATCHING</h2>
-      <p class="text-md text-center mb-3" style="line-height: 1.7;" data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="Lorem ipsum dolor sit amet, consectetur adipisci" data-slot-locked-layout="true">
+      <p class="text-md text-center mb-3" style="line-height: 1.7;" data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="Lorem ipsum dolor sit amet, consectetur adipisci" data-slot-locked-layout="true">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br>
         Questions and feedback are always welcome.
       </p>
@@ -1820,14 +1853,14 @@
       </div>
 
       <div class="flex gap-4 mb-3 items-center">
-        <div class="text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s9-slot-9" data-slot-type="text" data-slot-label="Email" data-slot-locked-layout="true">Email</p><p class="text-sm" style="font-weight: bold;" data-edit-slot="s9-slot-10" data-slot-type="text" data-slot-label="hello@example.com" data-slot-locked-layout="true">hello@example.com</p></div>
+        <div class="text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="Email" data-slot-locked-layout="true">Email</p><p class="text-sm" style="font-weight: bold;" data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="hello@example.com" data-slot-locked-layout="true">hello@example.com</p></div>
         <div class="separator"></div>
-        <div class="text-center" data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="Phone+1 (555) 000-0000" data-slot-locked-layout="true"><p class="text-xs text-gray mb-1" data-edit-slot="s9-slot-11" data-slot-type="text" data-slot-label="Phone" data-slot-locked-layout="true">Phone</p><p class="text-sm" style="font-weight: bold;" data-edit-slot="s9-slot-12" data-slot-type="text" data-slot-label="+1 (555) 000-0000" data-slot-locked-layout="true">+1 (555) 000-0000</p></div>
+        <div class="text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="Phone" data-slot-locked-layout="true">Phone</p><p class="text-sm" style="font-weight: bold;" data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="+1 (555) 000-0000" data-slot-locked-layout="true">+1 (555) 000-0000</p></div>
         <div class="separator"></div>
-        <div class="text-center" data-edit-slot="s9-slot-6" data-slot-type="text" data-slot-label="Websitewww.example.com" data-slot-locked-layout="true"><p class="text-xs text-gray mb-1" data-edit-slot="s9-slot-13" data-slot-type="text" data-slot-label="Website" data-slot-locked-layout="true">Website</p><p class="text-sm" style="font-weight: bold;" data-edit-slot="s9-slot-14" data-slot-type="text" data-slot-label="www.example.com" data-slot-locked-layout="true">www.example.com</p></div>
+        <div class="text-center"><p class="text-xs text-gray mb-1" data-edit-slot="s9-slot-6" data-slot-type="text" data-slot-label="Website" data-slot-locked-layout="true">Website</p><p class="text-sm" style="font-weight: bold;" data-edit-slot="s9-slot-7" data-slot-type="text" data-slot-label="www.example.com" data-slot-locked-layout="true">www.example.com</p></div>
       </div>
 
-      <div class="flex gap-2 mt-2" data-edit-slot="s9-slot-7" data-slot-type="text" data-slot-label="Restart Contact End Session" data-slot-locked-layout="true">
+      <div class="flex gap-2 mt-2" data-edit-slot="s9-slot-12" data-slot-type="text" data-slot-label="Restart Contact End Session" data-slot-locked-layout="true">
         <button class="btn-retro">Restart</button>
         <button class="btn-retro">Contact</button>
         <button class="btn-retro">End Session</button>
@@ -2858,6 +2891,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2878,7 +2920,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2891,7 +2933,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -3939,12 +3981,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -3988,7 +4030,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

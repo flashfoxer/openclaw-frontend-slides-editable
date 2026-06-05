@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-peoples-platform" data-template-source="peoples-platform" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-peoples-platform" data-template-source="peoples-platform" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
 <meta charset="utf-8" />
@@ -532,6 +532,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1091,7 +1124,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1231,15 +1264,15 @@
   <div class="body">
     <div class="kicker">★ ★ ★&nbsp;&nbsp;OUR THESIS&nbsp;&nbsp;★ ★ ★</div>
     <h1 data-edit-slot="s2-title-1" data-slot-type="text" data-slot-label="The product gets simpler as the team gets braver" data-slot-locked-layout="true">
-      The product gets <span class="scriptline" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="simpler" data-slot-locked-layout="true">simpler</span><br/>
-      as the team gets <span class="y" data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="braver" data-slot-locked-layout="true">braver</span> —<br/>
+      The product gets <span class="scriptline" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="simpler" data-slot-locked-layout="true">simpler</span><br/>
+      as the team gets <span class="y" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="braver" data-slot-locked-layout="true">braver</span> —<br/>
       not the other way around.
     </h1>
     <div class="underline"></div>
   </div>
   <div class="footrow">
     <div>— PARAGRAPH 01 —</div>
-    <div data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="SET IN ALFA SLAB" data-slot-locked-layout="true">SET IN ALFA SLAB</div>
+    <div data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="SET IN ALFA SLAB" data-slot-locked-layout="true">SET IN ALFA SLAB</div>
   </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -1253,21 +1286,21 @@
   <div class="grid">
     <div class="col">
       <div class="num">01</div>
-      <div class="tag" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="— FOCUS —" data-slot-locked-layout="true">— FOCUS —</div>
+      <div class="tag" data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="— FOCUS —" data-slot-locked-layout="true">— FOCUS —</div>
       <h3 data-edit-slot="s3-title-2" data-slot-type="text" data-slot-label="Ship the core flow." data-slot-locked-layout="true">Ship the<br/>core flow.</h3>
-      <p data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Cut three legacy paths and double down on the on" data-slot-locked-layout="true">Cut three legacy paths and double down on the one that drives ninety percent of activations.</p>
+      <p data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="Cut three legacy paths and double down on the on" data-slot-locked-layout="true">Cut three legacy paths and double down on the one that drives ninety percent of activations.</p>
     </div>
     <div class="col alt">
       <div class="num">02</div>
-      <div class="tag" data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="— LEARN —" data-slot-locked-layout="true">— LEARN —</div>
+      <div class="tag" data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="— LEARN —" data-slot-locked-layout="true">— LEARN —</div>
       <h3 data-edit-slot="s3-title-3" data-slot-type="text" data-slot-label="Talk to ten teams." data-slot-locked-layout="true">Talk to<br/>ten teams.</h3>
-      <p data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Standing weekly research with target customers. " data-slot-locked-layout="true">Standing weekly research with target customers. Findings briefed every Friday in a one-page memo.</p>
+      <p data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Standing weekly research with target customers. " data-slot-locked-layout="true">Standing weekly research with target customers. Findings briefed every Friday in a one-page memo.</p>
     </div>
     <div class="col">
       <div class="num">03</div>
-      <div class="tag" data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="— SHIP —" data-slot-locked-layout="true">— SHIP —</div>
+      <div class="tag" data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="— SHIP —" data-slot-locked-layout="true">— SHIP —</div>
       <h3 data-edit-slot="s3-title-4" data-slot-type="text" data-slot-label="One launch, not five." data-slot-locked-layout="true">One launch,<br/>not five.</h3>
-      <p data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="Combine the four small drops on the calendar int" data-slot-locked-layout="true">Combine the four small drops on the calendar into a single, well-told release with shared positioning.</p>
+      <p data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Combine the four small drops on the calendar int" data-slot-locked-layout="true">Combine the four small drops on the calendar into a single, well-told release with shared positioning.</p>
     </div>
   </div>
 
@@ -1277,18 +1310,18 @@
 <section class="s-stat grain slide" data-screen-label="05 Stat" id="slide-4" data-template-slide-index="5">
   <div class="topbar">
     <div>— BY THE NUMBERS —</div>
-    <div data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="05 / 10" data-slot-locked-layout="true">05 / 10</div>
-    <div data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="SECTION 02 / DATA" data-slot-locked-layout="true">SECTION 02 / DATA</div>
+    <div data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="05 / 10" data-slot-locked-layout="true">05 / 10</div>
+    <div data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="SECTION 02 / DATA" data-slot-locked-layout="true">SECTION 02 / DATA</div>
   </div>
   <div class="stat">
     <div class="num">63<sup>%</sup></div>
     <div class="desc">
       <h3 data-edit-slot="s4-title-1" data-slot-type="text" data-slot-label="of customers recommend us after onboarding." data-slot-locked-layout="true">of customers<br/><span class="accent">recommend us</span> after onboarding.</h3>
-      <p data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="Net promoter scores climbed eighteen points afte" data-slot-locked-layout="true">Net promoter scores climbed eighteen points after we shipped the redesigned first-run experience in March, the largest single-quarter jump on record for the product.</p>
+      <p data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="Net promoter scores climbed eighteen points afte" data-slot-locked-layout="true">Net promoter scores climbed eighteen points after we shipped the redesigned first-run experience in March, the largest single-quarter jump on record for the product.</p>
       <div class="source">SOURCE — INTERNAL NPS, Q1 2026</div>
     </div>
   </div>
-  <div class="ribbon" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="★ FOCUS ★ LEARN ★ SHIP ★ FOCUS ★ LEARN ★ SHIP" data-slot-locked-layout="true">
+  <div class="ribbon" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="★ FOCUS ★ LEARN ★ SHIP ★ FOCUS ★ LEARN ★ SHIP" data-slot-locked-layout="true">
     <span>★ FOCUS</span>
     <span>★ LEARN</span>
     <span>★ SHIP</span>
@@ -1397,41 +1430,41 @@
   <div class="nodes">
     <div class="node">
       <div class="dot"></div>
-      <div class="when" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="MAY" data-slot-locked-layout="true">MAY</div>
+      <div class="when" data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="MAY" data-slot-locked-layout="true">MAY</div>
       <h4 data-edit-slot="s7-title-2" data-slot-type="text" data-slot-label="Kickoff" data-slot-locked-layout="true">Kickoff</h4>
-      <p data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="Charter the workstreams, lock owners, and publis" data-slot-locked-layout="true">Charter the workstreams, lock owners, and publish the shared scorecard.</p>
+      <p data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Charter the workstreams, lock owners, and publis" data-slot-locked-layout="true">Charter the workstreams, lock owners, and publish the shared scorecard.</p>
     </div>
     <div class="node alt">
       <div class="dot"></div>
-      <div class="when" data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="JUNE" data-slot-locked-layout="true">JUNE</div>
+      <div class="when" data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="JUNE" data-slot-locked-layout="true">JUNE</div>
       <h4 data-edit-slot="s7-title-3" data-slot-type="text" data-slot-label="Beta opens" data-slot-locked-layout="true">Beta opens</h4>
-      <p data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Onboard the first ten design partners on the new" data-slot-locked-layout="true">Onboard the first ten design partners on the new core flow.</p>
+      <p data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="Onboard the first ten design partners on the new" data-slot-locked-layout="true">Onboard the first ten design partners on the new core flow.</p>
     </div>
     <div class="node">
       <div class="dot"></div>
-      <div class="when" data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="AUGUST" data-slot-locked-layout="true">AUGUST</div>
+      <div class="when" data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="AUGUST" data-slot-locked-layout="true">AUGUST</div>
       <h4 data-edit-slot="s7-title-4" data-slot-type="text" data-slot-label="Launch" data-slot-locked-layout="true">Launch</h4>
-      <p data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="Public release, marketing site refresh, and sale" data-slot-locked-layout="true">Public release, marketing site refresh, and sales enablement complete.</p>
+      <p data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Public release, marketing site refresh, and sale" data-slot-locked-layout="true">Public release, marketing site refresh, and sales enablement complete.</p>
     </div>
     <div class="node alt">
       <div class="dot"></div>
-      <div class="when" data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="OCTOBER" data-slot-locked-layout="true">OCTOBER</div>
+      <div class="when" data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="OCTOBER" data-slot-locked-layout="true">OCTOBER</div>
       <h4 data-edit-slot="s7-title-5" data-slot-type="text" data-slot-label="Scale" data-slot-locked-layout="true">Scale</h4>
-      <p data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="Roll the changes to the long tail and retire the" data-slot-locked-layout="true">Roll the changes to the long tail and retire the legacy paths for good.</p>
+      <p data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Roll the changes to the long tail and retire the" data-slot-locked-layout="true">Roll the changes to the long tail and retire the legacy paths for good.</p>
     </div>
   </div>
   <div class="below">
     <div class="kpi">
-      <div class="label" data-edit-slot="s7-slot-12" data-slot-type="text" data-slot-label="— TIME-TO-VALUE —" data-slot-locked-layout="true">— TIME-TO-VALUE —</div>
-      <div class="v" data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="30m" data-slot-locked-layout="true">30m</div>
+      <div class="label" data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="— TIME-TO-VALUE —" data-slot-locked-layout="true">— TIME-TO-VALUE —</div>
+      <div class="v" data-edit-slot="s7-slot-12" data-slot-type="text" data-slot-label="30m" data-slot-locked-layout="true">30m</div>
     </div>
     <div class="kpi alt">
-      <div class="label" data-edit-slot="s7-slot-13" data-slot-type="text" data-slot-label="— ACTIVATION RATE —" data-slot-locked-layout="true">— ACTIVATION RATE —</div>
-      <div class="v" data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="+24%" data-slot-locked-layout="true">+24%</div>
+      <div class="label" data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="— ACTIVATION RATE —" data-slot-locked-layout="true">— ACTIVATION RATE —</div>
+      <div class="v" data-edit-slot="s7-slot-13" data-slot-type="text" data-slot-label="+24%" data-slot-locked-layout="true">+24%</div>
     </div>
     <div class="kpi">
-      <div class="label" data-edit-slot="s7-slot-14" data-slot-type="text" data-slot-label="— REVENUE LIFT —" data-slot-locked-layout="true">— REVENUE LIFT —</div>
-      <div class="v" data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="$1.4M" data-slot-locked-layout="true">$1.4M</div>
+      <div class="label" data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="— REVENUE LIFT —" data-slot-locked-layout="true">— REVENUE LIFT —</div>
+      <div class="v" data-edit-slot="s7-slot-14" data-slot-type="text" data-slot-label="$1.4M" data-slot-locked-layout="true">$1.4M</div>
     </div>
   </div>
 
@@ -2515,6 +2548,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2535,7 +2577,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2548,7 +2590,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -3596,12 +3638,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -3645,7 +3687,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

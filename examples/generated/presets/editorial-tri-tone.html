@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-editorial-tri-tone" data-template-source="editorial-tri-tone" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-editorial-tri-tone" data-template-source="editorial-tri-tone" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
 <meta charset="utf-8" />
@@ -396,6 +396,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -955,7 +988,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1070,24 +1103,24 @@
 <section class="s-manifesto slide" data-screen-label="02 Manifesto" id="slide-1" data-template-slide-index="2">
     <div class="left">
       <div>
-        <div class="label" style="margin-bottom:32px; color: var(--burgundy);" data-edit-slot="s1-slot-8" data-slot-type="text" data-slot-label="Chapter One · Manifesto" data-slot-locked-layout="true">Chapter One · Manifesto</div>
-        <div class="chapter" data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="01" data-slot-locked-layout="true">01<sup></sup></div>
+        <div class="label" style="margin-bottom:32px; color: var(--burgundy);" data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="Chapter One · Manifesto" data-slot-locked-layout="true">Chapter One · Manifesto</div>
+        <div class="chapter" data-edit-slot="s1-slot-5" data-slot-type="text" data-slot-label="01" data-slot-locked-layout="true">01<sup></sup></div>
       </div>
-      <div class="lede" data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="Placeholder lede sets the tone for the whole doc" data-slot-locked-layout="true">
+      <div class="lede" data-edit-slot="s1-slot-6" data-slot-type="text" data-slot-label="Placeholder lede sets the tone for the whole doc" data-slot-locked-layout="true">
         Placeholder lede sets the tone for the whole document. A short, declarative sentence followed by an <em>aside in italic</em> that carries the warmth.
       </div>
-      <div class="mono" style="font-size:24px; letter-spacing:0.12em; opacity:0.6; text-transform:uppercase;" data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="Page 002 / 016 &amp;nbsp;·&amp;nbsp; Read Time 04:30" data-slot-locked-layout="true">Page 002 / 016 &nbsp;·&nbsp; Read Time 04:30</div>
+      <div class="mono" style="font-size:24px; letter-spacing:0.12em; opacity:0.6; text-transform:uppercase;" data-edit-slot="s1-slot-7" data-slot-type="text" data-slot-label="Page 002 / 016 &amp;nbsp;·&amp;nbsp; Read Time 04:30" data-slot-locked-layout="true">Page 002 / 016 &nbsp;·&nbsp; Read Time 04:30</div>
     </div>
     <div class="right">
       <div>
         <h3 data-edit-slot="s1-title-1" data-slot-type="text" data-slot-label="An opening note" data-slot-locked-layout="true">An opening note</h3>
-        <p data-edit-slot="s1-slot-5" data-slot-type="text" data-slot-label="Lorem ipsum dolor sit amet, consectetur adipisci" data-slot-locked-layout="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-        <p data-edit-slot="s1-slot-6" data-slot-type="text" data-slot-label="Maecenas faucibus mollis interdum. Nullam quis r" data-slot-locked-layout="true">Maecenas faucibus mollis interdum. Nullam quis risus eget urna mollis ornare vel eu leo. Donec ullamcorper nulla non metus auctor fringilla.</p>
-        <p data-edit-slot="s1-slot-7" data-slot-type="text" data-slot-label="Vestibulum id ligula porta felis euismod semper." data-slot-locked-layout="true">Vestibulum id ligula porta felis euismod semper. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+        <p data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="Lorem ipsum dolor sit amet, consectetur adipisci" data-slot-locked-layout="true">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
+        <p data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="Maecenas faucibus mollis interdum. Nullam quis r" data-slot-locked-layout="true">Maecenas faucibus mollis interdum. Nullam quis risus eget urna mollis ornare vel eu leo. Donec ullamcorper nulla non metus auctor fringilla.</p>
+        <p data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="Vestibulum id ligula porta felis euismod semper." data-slot-locked-layout="true">Vestibulum id ligula porta felis euismod semper. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
       </div>
       <div>
         <div class="signature">— with warmth,</div>
-        <div style="font-family:'JetBrains Mono', monospace; font-size:24px; letter-spacing:0.18em; text-transform:uppercase; margin-top: 12px; color: var(--butter);" data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="The Editorial Desk" data-slot-locked-layout="true">The Editorial Desk</div>
+        <div style="font-family:'JetBrains Mono', monospace; font-size:24px; letter-spacing:0.18em; text-transform:uppercase; margin-top: 12px; color: var(--butter);" data-edit-slot="s1-slot-8" data-slot-type="text" data-slot-label="The Editorial Desk" data-slot-locked-layout="true">The Editorial Desk</div>
       </div>
     </div>
 
@@ -1149,7 +1182,7 @@
     <div class="toprow">
       <div>
         <div class="kicker">§ 04 — Headline Figure</div>
-        <div class="serif" style="font-size: 48px; margin-top: 16px; color: var(--pink);" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="A portrait, in numbers." data-slot-locked-layout="true">A portrait, in numbers.</div>
+        <div class="serif" style="font-size: 48px; margin-top: 16px; color: var(--pink);" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="A portrait, in numbers." data-slot-locked-layout="true">A portrait, in numbers.</div>
       </div>
       <div class="swatches">
         <i style="background:var(--pink)"></i>
@@ -1160,12 +1193,12 @@
       </div>
     </div>
 
-    <div class="figure" style="margin-left:0px; max-width: 900px;" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="72%" data-slot-locked-layout="true">
+    <div class="figure" style="margin-left:0px; max-width: 900px;" data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="72%" data-slot-locked-layout="true">
       <span>72</span><span class="pct">%</span>
     </div>
     <div style="position:absolute; left:64px; bottom:80px; max-width: 900px;">
       <div class="kicker" style="color:var(--butter);">What this measures</div>
-      <p style="font-size:24px; line-height:1.45; margin-top:18px; opacity:0.9;" data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Placeholder annotation. A short, candid sentence" data-slot-locked-layout="true">Placeholder annotation. A short, candid sentence about what the figure means and, more importantly, what it doesn't. Survey of n=842, fielded in placeholder month, weighted to placeholder population.</p>
+      <p style="font-size:24px; line-height:1.45; margin-top:18px; opacity:0.9;" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="Placeholder annotation. A short, candid sentence" data-slot-locked-layout="true">Placeholder annotation. A short, candid sentence about what the figure means and, more importantly, what it doesn't. Survey of n=842, fielded in placeholder month, weighted to placeholder population.</p>
     </div>
 
     <div class="breakdown">
@@ -1251,16 +1284,16 @@
 
 <section class="s-chart slide" data-screen-label="06 Composition" id="slide-5" data-template-slide-index="6">
     <div class="l">
-      <div class="label" style="color:var(--butter); margin-bottom: 20px;" data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="§ 06 — Composition" data-slot-locked-layout="true">§ 06 — Composition</div>
+      <div class="label" style="color:var(--butter); margin-bottom: 20px;" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="§ 06 — Composition" data-slot-locked-layout="true">§ 06 — Composition</div>
       <h2 data-edit-slot="s5-title-1" data-slot-type="text" data-slot-label="How the days arrange themselves." data-slot-locked-layout="true">How the days <em>arrange themselves.</em></h2>
       <p class="lede" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="A placeholder description for the chart on the r" data-slot-locked-layout="true">A placeholder description for the chart on the right. Speak to the shape of the data — what rises, what plateaus — not the precise figures. Methodology and a one-line caveat live at the bottom.</p>
       <div class="legend">
         <div class="item"><i style="background:var(--pink); border:1px solid var(--burgundy);"></i> Studio hours, deep work <span class="cat">Series A</span></div>
-        <div class="item" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Salon &amp;amp; conversation Series B" data-slot-locked-layout="true"><i style="background:var(--butter); border:2px solid var(--burgundy); border-radius:999px;"></i> Salon &amp; conversation <span class="cat">Series B</span></div>
-        <div class="item" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Reading, drift, walking Series C" data-slot-locked-layout="true"><i style="background:var(--burgundy);"></i> Reading, drift, walking <span class="cat">Series C</span></div>
-        <div class="item" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Correspondence, admin Series D" data-slot-locked-layout="true"><i style="background:transparent; border-top: 3px dotted var(--butter); border-radius:0; height: 0;"></i> Correspondence, admin <span class="cat">Series D</span></div>
+        <div class="item" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Salon &amp;amp; conversation Series B" data-slot-locked-layout="true"><i style="background:var(--butter); border:2px solid var(--burgundy); border-radius:999px;"></i> Salon &amp; conversation <span class="cat">Series B</span></div>
+        <div class="item" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Reading, drift, walking Series C" data-slot-locked-layout="true"><i style="background:var(--burgundy);"></i> Reading, drift, walking <span class="cat">Series C</span></div>
+        <div class="item" data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Correspondence, admin Series D" data-slot-locked-layout="true"><i style="background:transparent; border-top: 3px dotted var(--butter); border-radius:0; height: 0;"></i> Correspondence, admin <span class="cat">Series D</span></div>
       </div>
-      <div class="mono" style="margin-top: 40px; font-size:24px; letter-spacing:0.1em; text-transform:uppercase; opacity:0.5;" data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Source: internal logs · self-reported · n = 24 w" data-slot-locked-layout="true">Source: internal logs · self-reported · n = 24 weeks</div>
+      <div class="mono" style="margin-top: 40px; font-size:24px; letter-spacing:0.1em; text-transform:uppercase; opacity:0.5;" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Source: internal logs · self-reported · n = 24 w" data-slot-locked-layout="true">Source: internal logs · self-reported · n = 24 weeks</div>
     </div>
     <div class="r">
       <div class="head">
@@ -1317,7 +1350,7 @@
         <path d="M 90 350 L 200 345 L 310 348 L 420 338 L 530 340 L 640 332"
               fill="none" stroke="#7A1F35" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round" stroke-opacity="0.6"/>
       </svg>
-      <div class="xax" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="W·01W·05W·09W·13W·17W·24" data-slot-locked-layout="true">
+      <div class="xax" data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="W·01W·05W·09W·13W·17W·24" data-slot-locked-layout="true">
         <span>W·01</span><span>W·05</span><span>W·09</span><span>W·13</span><span>W·17</span><span>W·24</span>
       </div>
     </div>
@@ -1329,21 +1362,21 @@
     <div class="l">
       <div class="top">
         <div class="mono" style="font-size:24px; letter-spacing:0.18em; text-transform:uppercase; color: var(--burgundy);">§ 07 — In their words</div>
-        <div class="mark" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="&amp;ldquo;" data-slot-locked-layout="true">&ldquo;</div>
+        <div class="mark" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="&amp;ldquo;" data-slot-locked-layout="true">&ldquo;</div>
       </div>
-      <blockquote data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="A placeholder pull-quote, set in italic with one" data-slot-locked-layout="true">
+      <blockquote data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="A placeholder pull-quote, set in italic with one" data-slot-locked-layout="true">
         A placeholder pull-quote, set in italic with one phrase rendered as <b>bold sans</b> for emphasis, the way good editorial designers have always done it.
       </blockquote>
       <div class="attribution">
         <div class="avatar"></div>
-        <div class="who" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="A. Placeholder-Surname Editor-at-large · Sister " data-slot-locked-layout="true">
+        <div class="who">
           A. Placeholder-Surname
-          <small data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Editor-at-large · Sister Publication" data-slot-locked-layout="true">Editor-at-large · Sister Publication</small>
+          <small data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Editor-at-large · Sister Publication" data-slot-locked-layout="true">Editor-at-large · Sister Publication</small>
         </div>
       </div>
     </div>
     <div class="r">
-      <div class="label" style="color: var(--butter);" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Three short reads" data-slot-locked-layout="true">Three short reads</div>
+      <div class="label" style="color: var(--butter);" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Three short reads" data-slot-locked-layout="true">Three short reads</div>
       <h3 data-edit-slot="s6-title-1" data-slot-type="text" data-slot-label="Voices, lightly edited &amp;mdash; from the readersh" data-slot-locked-layout="true">Voices, lightly edited &mdash; from the readership.</h3>
       <div class="endorsements">
         <div class="row">
@@ -1377,19 +1410,19 @@
     <div class="top">
       <div>
         <div class="kicker">§ 08 — Colophon &amp; Index</div>
-        <div class="serif" style="font-size:48px; color:var(--pink); margin-top:12px;" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Until the next volume." data-slot-locked-layout="true">Until the next volume.</div>
+        <div class="serif" style="font-size:48px; color:var(--pink); margin-top:12px;" data-edit-slot="s7-slot-13" data-slot-type="text" data-slot-label="Until the next volume." data-slot-locked-layout="true">Until the next volume.</div>
       </div>
-      <div class="mono" style="font-size:24px; letter-spacing:0.15em; text-transform:uppercase; opacity:0.7; text-align:right; line-height:1.4;" data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="End of issue No. 04 · 016 pp." data-slot-locked-layout="true">
+      <div class="mono" style="font-size:24px; letter-spacing:0.15em; text-transform:uppercase; opacity:0.7; text-align:right; line-height:1.4;" data-edit-slot="s7-slot-14" data-slot-type="text" data-slot-label="End of issue No. 04 · 016 pp." data-slot-locked-layout="true">
         End of issue<br/>
         <span style="opacity:0.5;">No. 04 · 016 pp.</span>
       </div>
     </div>
 
-    <div class="big" data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Fin." data-slot-locked-layout="true">
+    <div class="big" data-edit-slot="s7-slot-15" data-slot-type="text" data-slot-label="Fin." data-slot-locked-layout="true">
       Fin<em>.</em>
     </div>
 
-    <div class="corner-pills" data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="issue 04 spring volume colophon" data-slot-locked-layout="true">
+    <div class="corner-pills" data-edit-slot="s7-slot-16" data-slot-type="text" data-slot-label="issue 04 spring volume colophon" data-slot-locked-layout="true">
       <span class="pill" style="background:var(--burgundy); color:var(--cream); font-size:24px; padding: 12px 28px;">issue 04</span>
       <span class="pill" style="background:var(--lime); color:var(--ink); font-size:24px; padding: 12px 28px;">spring volume</span>
       <span class="pill" style="background:var(--butter); color:var(--ink); font-size:24px; padding: 12px 28px;">colophon</span>
@@ -1398,27 +1431,27 @@
     <div class="grid">
       <div class="col">
         <h6>Editorial</h6>
-        <p data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="A. Placeholder" data-slot-locked-layout="true">A. Placeholder</p>
-        <p data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="B. Placeholder" data-slot-locked-layout="true">B. Placeholder</p>
-        <p data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="C. Placeholder" data-slot-locked-layout="true">C. Placeholder</p>
+        <p data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="A. Placeholder" data-slot-locked-layout="true">A. Placeholder</p>
+        <p data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="B. Placeholder" data-slot-locked-layout="true">B. Placeholder</p>
+        <p data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="C. Placeholder" data-slot-locked-layout="true">C. Placeholder</p>
       </div>
-      <div class="col" data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="Type Bricolage Grotesque Instrument Serif JetBra" data-slot-locked-layout="true">
+      <div class="col">
         <h6>Type</h6>
-        <p data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="Bricolage Grotesque" data-slot-locked-layout="true">Bricolage Grotesque</p>
-        <p data-edit-slot="s7-slot-12" data-slot-type="text" data-slot-label="Instrument Serif" data-slot-locked-layout="true">Instrument Serif</p>
-        <p data-edit-slot="s7-slot-13" data-slot-type="text" data-slot-label="JetBrains Mono" data-slot-locked-layout="true">JetBrains Mono</p>
+        <p data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Bricolage Grotesque" data-slot-locked-layout="true">Bricolage Grotesque</p>
+        <p data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="Instrument Serif" data-slot-locked-layout="true">Instrument Serif</p>
+        <p data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="JetBrains Mono" data-slot-locked-layout="true">JetBrains Mono</p>
       </div>
-      <div class="col" data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="Printed by Placeholder Press City &amp;amp; State Re" data-slot-locked-layout="true">
+      <div class="col">
         <h6>Printed by</h6>
-        <p data-edit-slot="s7-slot-14" data-slot-type="text" data-slot-label="Placeholder Press" data-slot-locked-layout="true">Placeholder Press</p>
-        <p data-edit-slot="s7-slot-15" data-slot-type="text" data-slot-label="City &amp;amp; State" data-slot-locked-layout="true">City &amp; State</p>
-        <p data-edit-slot="s7-slot-16" data-slot-type="text" data-slot-label="Recycled stock, 120gsm" data-slot-locked-layout="true">Recycled stock, 120gsm</p>
+        <p data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="Placeholder Press" data-slot-locked-layout="true">Placeholder Press</p>
+        <p data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="City &amp;amp; State" data-slot-locked-layout="true">City &amp; State</p>
+        <p data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="Recycled stock, 120gsm" data-slot-locked-layout="true">Recycled stock, 120gsm</p>
       </div>
-      <div class="col" data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="Correspondence desk@placeholder.studio P.O. Box " data-slot-locked-layout="true">
+      <div class="col">
         <h6>Correspondence</h6>
-        <p data-edit-slot="s7-slot-17" data-slot-type="text" data-slot-label="desk@placeholder.studio" data-slot-locked-layout="true">desk@placeholder.studio</p>
-        <p data-edit-slot="s7-slot-18" data-slot-type="text" data-slot-label="P.O. Box 0000" data-slot-locked-layout="true">P.O. Box 0000</p>
-        <p data-edit-slot="s7-slot-19" data-slot-type="text" data-slot-label="Routing No. 04 / 26" data-slot-locked-layout="true">Routing No. 04 / 26</p>
+        <p data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="desk@placeholder.studio" data-slot-locked-layout="true">desk@placeholder.studio</p>
+        <p data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="P.O. Box 0000" data-slot-locked-layout="true">P.O. Box 0000</p>
+        <p data-edit-slot="s7-slot-12" data-slot-type="text" data-slot-label="Routing No. 04 / 26" data-slot-locked-layout="true">Routing No. 04 / 26</p>
       </div>
     </div>
 
@@ -2442,6 +2475,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2462,7 +2504,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2475,7 +2517,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -3523,12 +3565,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -3572,7 +3614,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

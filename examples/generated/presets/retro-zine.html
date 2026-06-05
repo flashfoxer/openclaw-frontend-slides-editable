@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-retro-zine" data-template-source="retro-zine" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-retro-zine" data-template-source="retro-zine" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
   <meta charset="UTF-8">
@@ -803,6 +803,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1362,7 +1395,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1536,9 +1569,9 @@
       </div>
       <div class="visual-overlay stamp">
         <h2 data-edit-slot="s4-title-1" data-slot-type="text" data-slot-label="Q3 Target" data-slot-locked-layout="true">Q3<br>Target</h2>
-        <p data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="$18M ARR by December" data-slot-locked-layout="true">$18M ARR by December</p>
+        <p data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="$18M ARR by December" data-slot-locked-layout="true">$18M ARR by December</p>
       </div>
-      <div class="visual-caption" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="Fiscal year ending March 2027" data-slot-locked-layout="true">Fiscal year ending March 2027</div>
+      <div class="visual-caption" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="Fiscal year ending March 2027" data-slot-locked-layout="true">Fiscal year ending March 2027</div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
@@ -1599,7 +1632,7 @@
   </section>
 
 <section class="slide slide-collage" data-index="7" id="slide-7" data-template-slide-index="8">
-      <div class="collage-header" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Capabilities" data-slot-locked-layout="true">Capabilities</div>
+      <div class="collage-header" data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="Capabilities" data-slot-locked-layout="true">Capabilities</div>
       <div class="collage-container">
         <div class="tape" style="top: 12%; left: 30%; transform: rotate(-25deg);"></div>
         <div class="tape" style="top: 10%; right: 22%; transform: rotate(35deg);"></div>
@@ -1608,19 +1641,19 @@
 
         <div class="collage-piece piece-1">
           <h3 data-edit-slot="s7-title-1" data-slot-type="text" data-slot-label="Strategy" data-slot-locked-layout="true">Strategy</h3>
-          <p data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="Market analysis, competitive positioning, and ro" data-slot-locked-layout="true">Market analysis, competitive positioning, and roadmaps that bridge ambition with execution.</p>
+          <p data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Market analysis, competitive positioning, and ro" data-slot-locked-layout="true">Market analysis, competitive positioning, and roadmaps that bridge ambition with execution.</p>
         </div>
         <div class="collage-piece piece-2">
           <h3 data-edit-slot="s7-title-2" data-slot-type="text" data-slot-label="Design" data-slot-locked-layout="true">Design</h3>
-          <p data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Product design, brand systems, and user experien" data-slot-locked-layout="true">Product design, brand systems, and user experiences that make complexity feel effortless.</p>
+          <p data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="Product design, brand systems, and user experien" data-slot-locked-layout="true">Product design, brand systems, and user experiences that make complexity feel effortless.</p>
         </div>
         <div class="collage-piece piece-3">
           <h3 data-edit-slot="s7-title-3" data-slot-type="text" data-slot-label="Engineering" data-slot-locked-layout="true">Engineering</h3>
-          <p data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Scalable architecture, robust APIs, and infrastr" data-slot-locked-layout="true">Scalable architecture, robust APIs, and infrastructure that grows with your demand.</p>
+          <p data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Scalable architecture, robust APIs, and infrastr" data-slot-locked-layout="true">Scalable architecture, robust APIs, and infrastructure that grows with your demand.</p>
         </div>
         <div class="collage-piece piece-4">
           <h3 data-edit-slot="s7-title-4" data-slot-type="text" data-slot-label="Growth" data-slot-locked-layout="true">Growth</h3>
-          <p data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="Go-to-market planning, partner programs, and rev" data-slot-locked-layout="true">Go-to-market planning, partner programs, and revenue operations that accelerate traction.</p>
+          <p data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Go-to-market planning, partner programs, and rev" data-slot-locked-layout="true">Go-to-market planning, partner programs, and revenue operations that accelerate traction.</p>
         </div>
       </div>
 
@@ -2686,6 +2719,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2706,7 +2748,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2719,7 +2761,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -3767,12 +3809,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -3816,7 +3858,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-signal-gold" data-template-source="signal" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-signal-gold" data-template-source="signal" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
     <meta charset="UTF-8" />
@@ -1441,6 +1441,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -2000,7 +2033,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -2084,7 +2117,7 @@
 <section class="slide dark slide--cover" id="slide-0" data-template-slide-index="1">
         <div class="cover-body">
           <!-- Session stamp: condensed mono label top-left -->
-          <div class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="[Period] · [Audience] · [Deck Type]" data-slot-locked-layout="true">
+          <div class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="[Period] · [Audience] · [Deck Type]" data-slot-locked-layout="true">
             [Period] · [Audience] · [Deck Type]
           </div>
 
@@ -2113,9 +2146,9 @@
           </p>
 
           <!-- Meta bar: name left, version right -->
-          <div class="cover-meta" data-anim="fade-in" data-delay="4" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="[Author Name] · [Role] [Version] · [Status] · [P" data-slot-locked-layout="true">
-            <span class="label muted" data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="[Author Name] · [Role]" data-slot-locked-layout="true">[Author Name] · [Role]</span>
-            <span class="label muted" data-edit-slot="s0-slot-5" data-slot-type="text" data-slot-label="[Version] · [Status] · [Period]" data-slot-locked-layout="true">[Version] · [Status] · [Period]</span>
+          <div class="cover-meta" data-anim="fade-in" data-delay="4">
+            <span class="label muted" data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="[Author Name] · [Role]" data-slot-locked-layout="true">[Author Name] · [Role]</span>
+            <span class="label muted" data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="[Version] · [Status] · [Period]" data-slot-locked-layout="true">[Version] · [Status] · [Period]</span>
           </div>
         </div>
 
@@ -2124,7 +2157,7 @@
 
 <section class="slide dark slide--chapter" id="slide-1" data-template-slide-index="2">
         <!-- Chapter number: mono label -->
-        <div class="chapter-num" data-anim="fade-in" data-delay="0" data-edit-slot="s1-slot-1" data-slot-type="metric" data-slot-label="01 · [Section]" data-slot-locked-layout="true">
+        <div class="chapter-num" data-anim="fade-in" data-delay="0" data-edit-slot="s1-slot-2" data-slot-type="metric" data-slot-label="01 · [Section]" data-slot-locked-layout="true">
           01 · [Section]
         </div>
         <!-- Gold rule -->
@@ -2144,7 +2177,7 @@
           style="max-width: 50%"
           data-anim="fade-up"
           data-delay="3"
-         data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="A brief setup sentence that explains what this s" data-slot-locked-layout="true">
+         data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="A brief setup sentence that explains what this s" data-slot-locked-layout="true">
           A brief setup sentence that explains what this section covers and why
           it matters.
         </p>
@@ -2154,10 +2187,10 @@
 
 <section class="slide dark slide--statement" id="slide-2" data-template-slide-index="3">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="[Slide Label] 03" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="[Slide Label]" data-slot-locked-layout="true">[Slide Label]</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="03" data-slot-locked-layout="true">03</span>
+             data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="[Slide Label]" data-slot-locked-layout="true">[Slide Label]</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="03" data-slot-locked-layout="true">03</span>
         </div>
 
         <div class="slide-body">
@@ -2181,9 +2214,9 @@
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s2-slot-2" data-slot-type="text" data-slot-label="03 / 18" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label muted"></span>
-          <span class="label muted" data-edit-slot="s2-slot-5" data-slot-type="text" data-slot-label="03 / 18" data-slot-locked-layout="true">03 / 18</span>
+          <span class="label muted" data-edit-slot="s2-slot-3" data-slot-type="text" data-slot-label="03 / 18" data-slot-locked-layout="true">03 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2191,19 +2224,19 @@
 
 <section class="slide light slide--split" id="slide-3" data-template-slide-index="4">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="[Category] · [Topic] 04" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s3-slot-8" data-slot-type="text" data-slot-label="[Category] · [Topic]" data-slot-locked-layout="true">[Category] · [Topic]</span>
+             data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="[Category] · [Topic]" data-slot-locked-layout="true">[Category] · [Topic]</span>
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s3-slot-9" data-slot-type="text" data-slot-label="04" data-slot-locked-layout="true">04</span>
+             data-edit-slot="s3-slot-7" data-slot-type="text" data-slot-label="04" data-slot-locked-layout="true">04</span>
         </div>
 
         <div class="slide-body">
@@ -2213,15 +2246,15 @@
             <h2 class="h2" data-edit-slot="s3-title-1" data-slot-type="text" data-slot-label="Main headline for a split-layout slide" data-slot-locked-layout="true">
               Main headline for a split-layout slide
             </h2>
-            <p class="lead" style="color: var(--c-fg-light-2)" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Use this paragraph for the core explanation. Kee" data-slot-locked-layout="true">
+            <p class="lead" style="color: var(--c-fg-light-2)" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="Use this paragraph for the core explanation. Kee" data-slot-locked-layout="true">
               Use this paragraph for the core explanation. Keep it short,
               specific, and easy to scan.
             </p>
             <!-- Bullet list -->
             <ul class="bullet-list" style="font-size: var(--sz-body)">
-              <li data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="First supporting point with concise context" data-slot-locked-layout="true">First supporting point with concise context</li>
-              <li data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Second supporting point with concise context" data-slot-locked-layout="true">Second supporting point with concise context</li>
-              <li data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="Third supporting point with concise context" data-slot-locked-layout="true">Third supporting point with concise context</li>
+              <li data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="First supporting point with concise context" data-slot-locked-layout="true">First supporting point with concise context</li>
+              <li data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Second supporting point with concise context" data-slot-locked-layout="true">Second supporting point with concise context</li>
+              <li data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Third supporting point with concise context" data-slot-locked-layout="true">Third supporting point with concise context</li>
             </ul>
           </div>
 
@@ -2254,15 +2287,15 @@
                 >Image Placeholder</span
               >
             </div>
-            <p class="img-caption" style="color: var(--c-fg-light-3)" data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="[Caption for image]" data-slot-locked-layout="true">
+            <p class="img-caption" style="color: var(--c-fg-light-3)" data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="[Caption for image]" data-slot-locked-layout="true">
               [Caption for image]
             </p>
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s3-slot-7" data-slot-type="text" data-slot-label="04 / 18" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label" style="color: var(--c-fg-light-2)"></span>
-          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s3-slot-10" data-slot-type="text" data-slot-label="04 / 18" data-slot-locked-layout="true">04 / 18</span>
+          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s3-slot-8" data-slot-type="text" data-slot-label="04 / 18" data-slot-locked-layout="true">04 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2270,10 +2303,10 @@
 
 <section class="slide dark slide--stats" id="slide-4" data-template-slide-index="5">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="[Category] · [Metrics] 05" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="[Category] · [Metrics]" data-slot-locked-layout="true">[Category] · [Metrics]</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="05" data-slot-locked-layout="true">05</span>
+             data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="[Category] · [Metrics]" data-slot-locked-layout="true">[Category] · [Metrics]</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="05" data-slot-locked-layout="true">05</span>
         </div>
 
         <div class="slide-body">
@@ -2286,31 +2319,31 @@
           <div class="stats-grid" data-anim="fade-up" data-delay="2">
             <div class="stat-card">
               <div class="stat-value">[X]%</div>
-              <div class="stat-label" data-edit-slot="s4-slot-2" data-slot-type="metric" data-slot-label="Short description of the first metric and its me" data-slot-locked-layout="true">
+              <div class="stat-label" data-edit-slot="s4-slot-3" data-slot-type="metric" data-slot-label="Short description of the first metric and its me" data-slot-locked-layout="true">
                 Short description of the first metric and its meaning
               </div>
-              <div class="stat-note" data-edit-slot="s4-slot-3" data-slot-type="metric" data-slot-label="[Source] · [Date]" data-slot-locked-layout="true">[Source] · [Date]</div>
+              <div class="stat-note" data-edit-slot="s4-slot-4" data-slot-type="metric" data-slot-label="[Source] · [Date]" data-slot-locked-layout="true">[Source] · [Date]</div>
             </div>
             <div class="stat-card">
               <div class="stat-value">[Y]×</div>
-              <div class="stat-label" data-edit-slot="s4-slot-4" data-slot-type="metric" data-slot-label="Short description of the second metric and its m" data-slot-locked-layout="true">
+              <div class="stat-label" data-edit-slot="s4-slot-5" data-slot-type="metric" data-slot-label="Short description of the second metric and its m" data-slot-locked-layout="true">
                 Short description of the second metric and its meaning
               </div>
-              <div class="stat-note" data-edit-slot="s4-slot-5" data-slot-type="metric" data-slot-label="[Method or source]" data-slot-locked-layout="true">[Method or source]</div>
+              <div class="stat-note" data-edit-slot="s4-slot-6" data-slot-type="metric" data-slot-label="[Method or source]" data-slot-locked-layout="true">[Method or source]</div>
             </div>
             <div class="stat-card">
               <div class="stat-value">[Z]</div>
-              <div class="stat-label" data-edit-slot="s4-slot-6" data-slot-type="metric" data-slot-label="Short description of the third metric and its me" data-slot-locked-layout="true">
+              <div class="stat-label" data-edit-slot="s4-slot-7" data-slot-type="metric" data-slot-label="Short description of the third metric and its me" data-slot-locked-layout="true">
                 Short description of the third metric and its meaning
               </div>
-              <div class="stat-note" data-edit-slot="s4-slot-7" data-slot-type="metric" data-slot-label="[Benchmark]" data-slot-locked-layout="true">[Benchmark]</div>
+              <div class="stat-note" data-edit-slot="s4-slot-8" data-slot-type="metric" data-slot-label="[Benchmark]" data-slot-locked-layout="true">[Benchmark]</div>
             </div>
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="05 / 18" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label muted"></span>
-          <span class="label muted" data-edit-slot="s4-slot-11" data-slot-type="text" data-slot-label="05 / 18" data-slot-locked-layout="true">05 / 18</span>
+          <span class="label muted" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="05 / 18" data-slot-locked-layout="true">05 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2326,9 +2359,9 @@
         </p>
 
         <!-- Attribution -->
-        <div class="quote-attr" data-anim="fade-up" data-delay="3" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="[Source Name] [Source Role] · [Context]" data-slot-locked-layout="true">
-          <span class="label accent" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="[Source Name]" data-slot-locked-layout="true">[Source Name]</span>
-          <span class="label muted" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="[Source Role] · [Context]" data-slot-locked-layout="true">[Source Role] · [Context]</span>
+        <div class="quote-attr" data-anim="fade-up" data-delay="3">
+          <span class="label accent" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="[Source Name]" data-slot-locked-layout="true">[Source Name]</span>
+          <span class="label muted" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="[Source Role] · [Context]" data-slot-locked-layout="true">[Source Role] · [Context]</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2336,19 +2369,19 @@
 
 <section class="slide light slide--list" id="slide-6" data-template-slide-index="7">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="[Framework] 07" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="[Framework]" data-slot-locked-layout="true">[Framework]</span>
+             data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="[Framework]" data-slot-locked-layout="true">[Framework]</span>
           <span
             class="label"
             style="color: var(--c-fg-light-2)"
             data-anim="fade-in"
             data-delay="0"
-             data-edit-slot="s6-slot-10" data-slot-type="text" data-slot-label="07" data-slot-locked-layout="true">07</span>
+             data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="07" data-slot-locked-layout="true">07</span>
         </div>
 
         <div class="slide-body">
@@ -2358,7 +2391,7 @@
             <h2 class="h2" data-edit-slot="s6-title-1" data-slot-type="text" data-slot-label="Five principles that shape the recommended appro" data-slot-locked-layout="true">
               Five principles that shape the <em>recommended</em> approach
             </h2>
-            <p class="body" style="color: var(--c-fg-light-2)" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Use this sentence to introduce the list and clar" data-slot-locked-layout="true">
+            <p class="body" style="color: var(--c-fg-light-2)" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="Use this sentence to introduce the list and clar" data-slot-locked-layout="true">
               Use this sentence to introduce the list and clarify how the
               points should be read.
             </p>
@@ -2366,23 +2399,23 @@
 
           <!-- Right column: bullets -->
           <ul class="bullet-list" data-anim="fade-up" data-delay="2">
-            <li data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="First principle written as a complete sentence" data-slot-locked-layout="true">
+            <li data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="First principle written as a complete sentence" data-slot-locked-layout="true">
               First principle written as a complete sentence
             </li>
-            <li data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Second principle written as a complete sentence" data-slot-locked-layout="true">
+            <li data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Second principle written as a complete sentence" data-slot-locked-layout="true">
               Second principle written as a complete sentence
             </li>
-            <li data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Third principle written as a complete sentence" data-slot-locked-layout="true">
+            <li data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Third principle written as a complete sentence" data-slot-locked-layout="true">
               Third principle written as a complete sentence
             </li>
-            <li data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="Fourth principle written as a complete sentence" data-slot-locked-layout="true">Fourth principle written as a complete sentence</li>
-            <li data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="Fifth principle written as a complete sentence" data-slot-locked-layout="true">Fifth principle written as a complete sentence</li>
+            <li data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Fourth principle written as a complete sentence" data-slot-locked-layout="true">Fourth principle written as a complete sentence</li>
+            <li data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="Fifth principle written as a complete sentence" data-slot-locked-layout="true">Fifth principle written as a complete sentence</li>
           </ul>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="07 / 18" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label" style="color: var(--c-fg-light-2)"></span>
-          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s6-slot-11" data-slot-type="text" data-slot-label="07 / 18" data-slot-locked-layout="true">07 / 18</span>
+          <span class="label" style="color: var(--c-fg-light-2)" data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="07 / 18" data-slot-locked-layout="true">07 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2390,10 +2423,10 @@
 
 <section class="slide dark slide--compare" id="slide-7" data-template-slide-index="8">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="[Before] · [After] 08" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="[Before] · [After]" data-slot-locked-layout="true">[Before] · [After]</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s7-slot-12" data-slot-type="text" data-slot-label="08" data-slot-locked-layout="true">08</span>
+             data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="[Before] · [After]" data-slot-locked-layout="true">[Before] · [After]</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="08" data-slot-locked-layout="true">08</span>
         </div>
 
         <div class="slide-body">
@@ -2403,14 +2436,14 @@
             <h3 class="h3" data-edit-slot="s7-title-1" data-slot-type="text" data-slot-label="Headline describing the current state" data-slot-locked-layout="true">
               Headline describing the current state
             </h3>
-            <p class="lead" style="color: var(--c-fg-2)" data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="Describe the current approach, the friction it c" data-slot-locked-layout="true">
+            <p class="lead" style="color: var(--c-fg-2)" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Describe the current approach, the friction it c" data-slot-locked-layout="true">
               Describe the current approach, the friction it creates, and why it
               needs to change.
             </p>
             <ul class="bullet-list" style="font-size: var(--sz-body)">
+              <li data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="Current limitation or source of friction" data-slot-locked-layout="true">Current limitation or source of friction</li>
               <li data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Current limitation or source of friction" data-slot-locked-layout="true">Current limitation or source of friction</li>
               <li data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Current limitation or source of friction" data-slot-locked-layout="true">Current limitation or source of friction</li>
-              <li data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="Current limitation or source of friction" data-slot-locked-layout="true">Current limitation or source of friction</li>
             </ul>
           </div>
 
@@ -2420,21 +2453,21 @@
             <h3 class="h3" data-edit-slot="s7-title-2" data-slot-type="text" data-slot-label="Headline describing the proposed approach" data-slot-locked-layout="true">
               Headline describing the proposed <em>approach</em>
             </h3>
-            <p class="lead" style="color: var(--c-fg-2)" data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="Describe the improved approach, the behavior it " data-slot-locked-layout="true">
+            <p class="lead" style="color: var(--c-fg-2)" data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="Describe the improved approach, the behavior it " data-slot-locked-layout="true">
               Describe the improved approach, the behavior it enables, and the
               outcome it supports.
             </p>
             <ul class="bullet-list" style="font-size: var(--sz-body)">
+              <li data-edit-slot="s7-slot-6" data-slot-type="text" data-slot-label="Expected improvement or capability" data-slot-locked-layout="true">Expected improvement or capability</li>
               <li data-edit-slot="s7-slot-7" data-slot-type="text" data-slot-label="Expected improvement or capability" data-slot-locked-layout="true">Expected improvement or capability</li>
               <li data-edit-slot="s7-slot-8" data-slot-type="text" data-slot-label="Expected improvement or capability" data-slot-locked-layout="true">Expected improvement or capability</li>
-              <li data-edit-slot="s7-slot-9" data-slot-type="text" data-slot-label="Expected improvement or capability" data-slot-locked-layout="true">Expected improvement or capability</li>
             </ul>
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s7-slot-10" data-slot-type="text" data-slot-label="08 / 18" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label muted"></span>
-          <span class="label muted" data-edit-slot="s7-slot-13" data-slot-type="text" data-slot-label="08 / 18" data-slot-locked-layout="true">08 / 18</span>
+          <span class="label muted" data-edit-slot="s7-slot-11" data-slot-type="text" data-slot-label="08 / 18" data-slot-locked-layout="true">08 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2442,16 +2475,16 @@
 
 <section class="slide dark slide--editorial" id="slide-8" data-template-slide-index="9">
         <!-- Chrome: section marker left, issue ID right -->
-        <div class="slide-chrome" data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="— § [Section] [Deck Name] · [Period] · [Year]" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s8-slot-14" data-slot-type="text" data-slot-label="— § [Section]" data-slot-locked-layout="true">— § [Section]</span>
+             data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="— § [Section]" data-slot-locked-layout="true">— § [Section]</span>
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s8-slot-15" data-slot-type="text" data-slot-label="[Deck Name] · [Period] · [Year]" data-slot-locked-layout="true">[Deck Name] · [Period] · <span class="accent">[Year]</span></span
+             data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="[Deck Name] · [Period] · [Year]" data-slot-locked-layout="true">[Deck Name] · [Period] · <span class="accent">[Year]</span></span
           >
         </div>
 
         <!-- Week stamp: condensed mono with accent number -->
-        <div class="editorial-stamp" data-anim="fade-in" data-delay="1" data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="[Issue] [N] · [Review Label]" data-slot-locked-layout="true">
+        <div class="editorial-stamp" data-anim="fade-in" data-delay="1" data-edit-slot="s8-slot-5" data-slot-type="text" data-slot-label="[Issue] [N] · [Review Label]" data-slot-locked-layout="true">
           [Issue] <span class="accent">[N]</span> · [Review Label]
         </div>
 
@@ -2473,35 +2506,35 @@
                   <em>Short implication.</em></span
                 >
               </div>
-              <div class="log-row" data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="[Date] Second event or observation appears. Shor" data-slot-locked-layout="true">
+              <div class="log-row" data-edit-slot="s8-slot-6" data-slot-type="text" data-slot-label="[Date] Second event or observation appears. Shor" data-slot-locked-layout="true">
                 <span class="log-dt">[Date]</span>
                 <span class="log-dd"
                   >Second event or observation appears.
                   <em>Short implication.</em></span
                 >
               </div>
-              <div class="log-row" data-edit-slot="s8-slot-4" data-slot-type="text" data-slot-label="[Date] Third event or observation appears. Short" data-slot-locked-layout="true">
+              <div class="log-row" data-edit-slot="s8-slot-7" data-slot-type="text" data-slot-label="[Date] Third event or observation appears. Short" data-slot-locked-layout="true">
                 <span class="log-dt">[Date]</span>
                 <span class="log-dd"
                   >Third event or observation appears.
                   <em>Short implication.</em></span
                 >
               </div>
-              <div class="log-row" data-edit-slot="s8-slot-5" data-slot-type="text" data-slot-label="[Date] Fourth event adds context. A key pattern " data-slot-locked-layout="true">
+              <div class="log-row" data-edit-slot="s8-slot-8" data-slot-type="text" data-slot-label="[Date] Fourth event adds context. A key pattern " data-slot-locked-layout="true">
                 <span class="log-dt">[Date]</span>
                 <span class="log-dd"
                   >Fourth event adds context. A key pattern <em>holds</em>
                   across the data.</span
                 >
               </div>
-              <div class="log-row" data-edit-slot="s8-slot-6" data-slot-type="text" data-slot-label="[Date] Fifth event confirms part of the hypothes" data-slot-locked-layout="true">
+              <div class="log-row" data-edit-slot="s8-slot-9" data-slot-type="text" data-slot-label="[Date] Fifth event confirms part of the hypothes" data-slot-locked-layout="true">
                 <span class="log-dt">[Date]</span>
                 <span class="log-dd"
                   >Fifth event confirms part of the hypothesis and challenges
                   another <em>assumption.</em></span
                 >
               </div>
-              <div class="log-row" data-edit-slot="s8-slot-7" data-slot-type="text" data-slot-label="[Date] Final event closes the sequence and clari" data-slot-locked-layout="true">
+              <div class="log-row" data-edit-slot="s8-slot-10" data-slot-type="text" data-slot-label="[Date] Final event closes the sequence and clari" data-slot-locked-layout="true">
                 <span class="log-dt">[Date]</span>
                 <span class="log-dd"
                   >Final event closes the sequence and <em>clarifies</em> the
@@ -2518,23 +2551,23 @@
             <div class="stat-4">
               <div class="stat-4-cell">
                 <div class="stat-4-val">[A]<em>%</em></div>
-                <div class="stat-4-label" data-edit-slot="s8-slot-8" data-slot-type="metric" data-slot-label="Metric label · [Segment] · [Period]" data-slot-locked-layout="true">Metric label · [Segment] · [Period]</div>
+                <div class="stat-4-label" data-edit-slot="s8-slot-11" data-slot-type="metric" data-slot-label="Metric label · [Segment] · [Period]" data-slot-locked-layout="true">Metric label · [Segment] · [Period]</div>
               </div>
               <div class="stat-4-cell">
                 <div class="stat-4-val">[B]<em>x</em></div>
-                <div class="stat-4-label" data-edit-slot="s8-slot-9" data-slot-type="metric" data-slot-label="Metric label vs. comparison period" data-slot-locked-layout="true">
+                <div class="stat-4-label" data-edit-slot="s8-slot-12" data-slot-type="metric" data-slot-label="Metric label vs. comparison period" data-slot-locked-layout="true">
                   Metric label vs. comparison period
                 </div>
               </div>
               <div class="stat-4-cell">
                 <div class="stat-4-val">[C]<em>pt</em></div>
-                <div class="stat-4-label" data-edit-slot="s8-slot-10" data-slot-type="metric" data-slot-label="Metric label · [Segment]" data-slot-locked-layout="true">
+                <div class="stat-4-label" data-edit-slot="s8-slot-13" data-slot-type="metric" data-slot-label="Metric label · [Segment]" data-slot-locked-layout="true">
                   Metric label · [Segment]
                 </div>
               </div>
               <div class="stat-4-cell">
                 <div class="stat-4-val">+<em>[D]</em></div>
-                <div class="stat-4-label" data-edit-slot="s8-slot-11" data-slot-type="metric" data-slot-label="Net change across selected group" data-slot-locked-layout="true">
+                <div class="stat-4-label" data-edit-slot="s8-slot-14" data-slot-type="metric" data-slot-label="Net change across selected group" data-slot-locked-layout="true">
                   Net change across selected group
                 </div>
               </div>
@@ -2543,16 +2576,16 @@
         </div>
 
         <!-- Analysis line below the columns -->
-        <div class="editorial-analysis" data-anim="fade-in" data-delay="4" data-edit-slot="s8-slot-12" data-slot-type="text" data-slot-label="Use this analysis line to synthesize the sequenc" data-slot-locked-layout="true">
+        <div class="editorial-analysis" data-anim="fade-in" data-delay="4" data-edit-slot="s8-slot-15" data-slot-type="text" data-slot-label="Use this analysis line to synthesize the sequenc" data-slot-locked-layout="true">
           Use this analysis line to synthesize the sequence above. Explain what
           changed, why it matters, and what decision should follow.
         </div>
 
         <!-- Footer: sources left, page right -->
-        <div class="slide-foot" data-edit-slot="s8-slot-13" data-slot-type="text" data-slot-label="Sources: [Source A] · [Source B] · [Source C] · " data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label muted"
-             data-edit-slot="s8-slot-16" data-slot-type="text" data-slot-label="Sources: [Source A] · [Source B] · [Source C] · " data-slot-locked-layout="true">Sources: [Source A] · [Source B] · [Source C] · [Source D]</span>
-          <span class="label muted" data-edit-slot="s8-slot-17" data-slot-type="text" data-slot-label="09 / 18" data-slot-locked-layout="true">09 / 18</span>
+             data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="Sources: [Source A] · [Source B] · [Source C] · " data-slot-locked-layout="true">Sources: [Source A] · [Source B] · [Source C] · [Source D]</span>
+          <span class="label muted" data-edit-slot="s8-slot-4" data-slot-type="text" data-slot-label="09 / 18" data-slot-locked-layout="true">09 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2560,10 +2593,10 @@
 
 <section class="slide dark slide--dense" id="slide-9" data-template-slide-index="10">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="[Deep Dive] 10" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s9-slot-9" data-slot-type="text" data-slot-label="[Deep Dive]" data-slot-locked-layout="true">[Deep Dive]</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s9-slot-10" data-slot-type="text" data-slot-label="10" data-slot-locked-layout="true">10</span>
+             data-edit-slot="s9-slot-7" data-slot-type="text" data-slot-label="[Deep Dive]" data-slot-locked-layout="true">[Deep Dive]</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s9-slot-8" data-slot-type="text" data-slot-label="10" data-slot-locked-layout="true">10</span>
         </div>
 
         <!-- Headline with italic gold emphasis -->
@@ -2576,16 +2609,16 @@
           <!-- Left column -->
           <div class="dense-col">
             <h4 data-edit-slot="s9-title-2" data-slot-type="text" data-slot-label="[Argument A]" data-slot-locked-layout="true">[Argument A]</h4>
-            <p data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="Use this paragraph to explain the first side of " data-slot-locked-layout="true">
+            <p data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="Use this paragraph to explain the first side of " data-slot-locked-layout="true">
               Use this paragraph to explain the first side of the argument.
               Include one <em>emphasized phrase</em> when a key idea needs
               extra weight.
             </p>
-            <p data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="Add a second paragraph with supporting evidence," data-slot-locked-layout="true">
+            <p data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="Add a second paragraph with supporting evidence," data-slot-locked-layout="true">
               Add a second paragraph with supporting evidence, operational
               detail, or a short example that strengthens the case.
             </p>
-            <p data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="Close the column with the implication. Make the " data-slot-locked-layout="true">
+            <p data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="Close the column with the implication. Make the " data-slot-locked-layout="true">
               Close the column with the implication. Make the logic clear
               enough that the reader understands the recommended action.
             </p>
@@ -2594,35 +2627,35 @@
           <!-- Right column -->
           <div class="dense-col">
             <h4 data-edit-slot="s9-title-3" data-slot-type="text" data-slot-label="[Argument B]" data-slot-locked-layout="true">[Argument B]</h4>
-            <p data-edit-slot="s9-slot-6" data-slot-type="text" data-slot-label="Use this paragraph to explain the second side of" data-slot-locked-layout="true">
+            <p data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="Use this paragraph to explain the second side of" data-slot-locked-layout="true">
               Use this paragraph to explain the second side of the argument.
               Highlight the contrasting principle with an
               <em>emphasized phrase.</em>
             </p>
-            <p data-edit-slot="s9-slot-7" data-slot-type="text" data-slot-label="Add a second paragraph with supporting detail. T" data-slot-locked-layout="true">
+            <p data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="Add a second paragraph with supporting detail. T" data-slot-locked-layout="true">
               Add a second paragraph with supporting detail. This column should
               feel like a deliberate counterweight to the first column.
             </p>
-            <p data-edit-slot="s9-slot-8" data-slot-type="text" data-slot-label="Close with the practical takeaway, linking the a" data-slot-locked-layout="true">
+            <p data-edit-slot="s9-slot-6" data-slot-type="text" data-slot-label="Close with the practical takeaway, linking the a" data-slot-locked-layout="true">
               Close with the practical takeaway, linking the argument back to
               the decision the deck is meant to support.
             </p>
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="[Analysis Label] · [Period] 10 / 18" data-slot-locked-layout="true">
-          <span class="label muted" data-edit-slot="s9-slot-11" data-slot-type="text" data-slot-label="[Analysis Label] · [Period]" data-slot-locked-layout="true">[Analysis Label] · [Period]</span>
-          <span class="label muted" data-edit-slot="s9-slot-12" data-slot-type="text" data-slot-label="10 / 18" data-slot-locked-layout="true">10 / 18</span>
+        <div class="slide-foot">
+          <span class="label muted" data-edit-slot="s9-slot-9" data-slot-type="text" data-slot-label="[Analysis Label] · [Period]" data-slot-locked-layout="true">[Analysis Label] · [Period]</span>
+          <span class="label muted" data-edit-slot="s9-slot-10" data-slot-type="text" data-slot-label="10 / 18" data-slot-locked-layout="true">10 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide dark slide--statement" id="slide-10" data-template-slide-index="11">
-        <div class="slide-chrome" data-edit-slot="s10-slot-1" data-slot-type="text" data-slot-label="[Perspective] 11" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s10-slot-3" data-slot-type="text" data-slot-label="[Perspective]" data-slot-locked-layout="true">[Perspective]</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s10-slot-4" data-slot-type="text" data-slot-label="11" data-slot-locked-layout="true">11</span>
+             data-edit-slot="s10-slot-1" data-slot-type="text" data-slot-label="[Perspective]" data-slot-locked-layout="true">[Perspective]</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s10-slot-2" data-slot-type="text" data-slot-label="11" data-slot-locked-layout="true">11</span>
         </div>
         <div class="slide-body">
           <div class="statement-body">
@@ -2641,9 +2674,9 @@
             </h1>
           </div>
         </div>
-        <div class="slide-foot" data-edit-slot="s10-slot-2" data-slot-type="text" data-slot-label="11 / 18" data-slot-locked-layout="true">
+        <div class="slide-foot">
           <span class="label muted"></span>
-          <span class="label muted" data-edit-slot="s10-slot-5" data-slot-type="text" data-slot-label="11 / 18" data-slot-locked-layout="true">11 / 18</span>
+          <span class="label muted" data-edit-slot="s10-slot-3" data-slot-type="text" data-slot-label="11 / 18" data-slot-locked-layout="true">11 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2651,7 +2684,7 @@
 
 <section class="slide dark slide--end" id="slide-11" data-template-slide-index="12">
         <!-- Kicker: organization placeholder -->
-        <div class="kicker" data-anim="fade-in" data-delay="0" data-edit-slot="s11-slot-1" data-slot-type="text" data-slot-label="[Organization]" data-slot-locked-layout="true">
+        <div class="kicker" data-anim="fade-in" data-delay="0" data-edit-slot="s11-slot-2" data-slot-type="text" data-slot-label="[Organization]" data-slot-locked-layout="true">
           [Organization]
         </div>
 
@@ -2674,7 +2707,7 @@
           style="max-width: 42%"
           data-anim="fade-up"
           data-delay="3"
-         data-edit-slot="s11-slot-2" data-slot-type="text" data-slot-label="[Author Name] · [email@example.com] · [website.e" data-slot-locked-layout="true">
+         data-edit-slot="s11-slot-1" data-slot-type="text" data-slot-label="[Author Name] · [email@example.com] · [website.e" data-slot-locked-layout="true">
           [Author Name] · [email@example.com] · [website.example]
         </p>
 
@@ -2683,8 +2716,8 @@
 
 <section class="slide slide--chart dark" id="slide-12" data-template-slide-index="13">
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s12-slot-1" data-slot-type="text" data-slot-label="§ [Metrics]" data-slot-locked-layout="true">§ [Metrics]</span>
-          <span class="label muted" data-edit-slot="s12-slot-2" data-slot-type="text" data-slot-label="13" data-slot-locked-layout="true">13</span>
+          <span class="label muted" data-edit-slot="s12-slot-2" data-slot-type="text" data-slot-label="§ [Metrics]" data-slot-locked-layout="true">§ [Metrics]</span>
+          <span class="label muted" data-edit-slot="s12-slot-3" data-slot-type="text" data-slot-label="13" data-slot-locked-layout="true">13</span>
         </header>
         <div class="slide-body">
           <div class="chart-header">
@@ -2700,38 +2733,38 @@
               <div class="bar-col">
                 <span class="bar-val">[A]</span>
                 <div class="bar-fill" style="height: 9vh"></div>
-                <span class="bar-x-label" data-edit-slot="s12-slot-3" data-slot-type="text" data-slot-label="[T1]" data-slot-locked-layout="true">[T1]</span>
+                <span class="bar-x-label" data-edit-slot="s12-slot-6" data-slot-type="text" data-slot-label="[T1]" data-slot-locked-layout="true">[T1]</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">[B]</span>
                 <div class="bar-fill" style="height: 14vh"></div>
-                <span class="bar-x-label" data-edit-slot="s12-slot-4" data-slot-type="text" data-slot-label="[T2]" data-slot-locked-layout="true">[T2]</span>
+                <span class="bar-x-label" data-edit-slot="s12-slot-7" data-slot-type="text" data-slot-label="[T2]" data-slot-locked-layout="true">[T2]</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">[C]</span>
                 <div class="bar-fill" style="height: 20vh"></div>
-                <span class="bar-x-label" data-edit-slot="s12-slot-5" data-slot-type="text" data-slot-label="[T3]" data-slot-locked-layout="true">[T3]</span>
+                <span class="bar-x-label" data-edit-slot="s12-slot-8" data-slot-type="text" data-slot-label="[T3]" data-slot-locked-layout="true">[T3]</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">[D]</span>
                 <div class="bar-fill" style="height: 26vh"></div>
-                <span class="bar-x-label" data-edit-slot="s12-slot-6" data-slot-type="text" data-slot-label="[T4]" data-slot-locked-layout="true">[T4]</span>
+                <span class="bar-x-label" data-edit-slot="s12-slot-9" data-slot-type="text" data-slot-label="[T4]" data-slot-locked-layout="true">[T4]</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val hi">[E]</span>
                 <div class="bar-fill accent" style="height: 30vh"></div>
-                <span class="bar-x-label" data-edit-slot="s12-slot-7" data-slot-type="text" data-slot-label="[T5]" data-slot-locked-layout="true">[T5]</span>
+                <span class="bar-x-label" data-edit-slot="s12-slot-10" data-slot-type="text" data-slot-label="[T5]" data-slot-locked-layout="true">[T5]</span>
               </div>
             </div>
             <div class="chart-baseline"></div>
           </div>
-          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s12-slot-8" data-slot-type="text" data-slot-label="Source: [Source] · [Period]" data-slot-locked-layout="true">
+          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s12-slot-1" data-slot-type="text" data-slot-label="Source: [Source] · [Period]" data-slot-locked-layout="true">
             Source: [Source] · [Period]
           </p>
         </div>
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s12-slot-9" data-slot-type="text" data-slot-label="[Organization] · [Period]" data-slot-locked-layout="true">[Organization] · [Period]</span>
-          <span class="label muted" data-edit-slot="s12-slot-10" data-slot-type="text" data-slot-label="13 / 18" data-slot-locked-layout="true">13 / 18</span>
+          <span class="label muted" data-edit-slot="s12-slot-4" data-slot-type="text" data-slot-label="[Organization] · [Period]" data-slot-locked-layout="true">[Organization] · [Period]</span>
+          <span class="label muted" data-edit-slot="s12-slot-5" data-slot-type="text" data-slot-label="13 / 18" data-slot-locked-layout="true">13 / 18</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2790,10 +2823,10 @@
 
 <section class="slide dark slide--pie" id="slide-14" data-template-slide-index="15">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s14-slot-1" data-slot-type="text" data-slot-label="[Breakdown] 15" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s14-slot-13" data-slot-type="text" data-slot-label="[Breakdown]" data-slot-locked-layout="true">[Breakdown]</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s14-slot-14" data-slot-type="text" data-slot-label="15" data-slot-locked-layout="true">15</span>
+             data-edit-slot="s14-slot-2" data-slot-type="text" data-slot-label="[Breakdown]" data-slot-locked-layout="true">[Breakdown]</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s14-slot-3" data-slot-type="text" data-slot-label="15" data-slot-locked-layout="true">15</span>
         </div>
 
         <div class="slide-body">
@@ -2824,36 +2857,36 @@
                   class="pie-swatch"
                   style="background: var(--c-accent)"
                 ></div>
-                <span class="pie-item-label" data-edit-slot="s14-slot-2" data-slot-type="text" data-slot-label="Category A" data-slot-locked-layout="true">Category A</span>
-                <span class="pie-item-val" data-edit-slot="s14-slot-3" data-slot-type="text" data-slot-label="35%" data-slot-locked-layout="true">35%</span>
+                <span class="pie-item-label" data-edit-slot="s14-slot-6" data-slot-type="text" data-slot-label="Category A" data-slot-locked-layout="true">Category A</span>
+                <span class="pie-item-val" data-edit-slot="s14-slot-7" data-slot-type="text" data-slot-label="35%" data-slot-locked-layout="true">35%</span>
               </div>
               <div class="pie-item">
                 <div class="pie-swatch" style="background: #3d5475"></div>
-                <span class="pie-item-label" data-edit-slot="s14-slot-4" data-slot-type="text" data-slot-label="Category B" data-slot-locked-layout="true">Category B</span>
-                <span class="pie-item-val" data-edit-slot="s14-slot-5" data-slot-type="text" data-slot-label="30%" data-slot-locked-layout="true">30%</span>
+                <span class="pie-item-label" data-edit-slot="s14-slot-8" data-slot-type="text" data-slot-label="Category B" data-slot-locked-layout="true">Category B</span>
+                <span class="pie-item-val" data-edit-slot="s14-slot-9" data-slot-type="text" data-slot-label="30%" data-slot-locked-layout="true">30%</span>
               </div>
               <div class="pie-item">
                 <div class="pie-swatch" style="background: #526880"></div>
-                <span class="pie-item-label" data-edit-slot="s14-slot-6" data-slot-type="text" data-slot-label="Category C" data-slot-locked-layout="true">Category C</span>
-                <span class="pie-item-val" data-edit-slot="s14-slot-7" data-slot-type="text" data-slot-label="22%" data-slot-locked-layout="true">22%</span>
+                <span class="pie-item-label" data-edit-slot="s14-slot-10" data-slot-type="text" data-slot-label="Category C" data-slot-locked-layout="true">Category C</span>
+                <span class="pie-item-val" data-edit-slot="s14-slot-11" data-slot-type="text" data-slot-label="22%" data-slot-locked-layout="true">22%</span>
               </div>
               <div class="pie-item">
                 <div class="pie-swatch" style="background: #2d3f55"></div>
-                <span class="pie-item-label" data-edit-slot="s14-slot-8" data-slot-type="text" data-slot-label="Category D" data-slot-locked-layout="true">Category D</span>
-                <span class="pie-item-val" data-edit-slot="s14-slot-9" data-slot-type="text" data-slot-label="13%" data-slot-locked-layout="true">13%</span>
+                <span class="pie-item-label" data-edit-slot="s14-slot-12" data-slot-type="text" data-slot-label="Category D" data-slot-locked-layout="true">Category D</span>
+                <span class="pie-item-val" data-edit-slot="s14-slot-13" data-slot-type="text" data-slot-label="13%" data-slot-locked-layout="true">13%</span>
               </div>
-              <div class="pie-total" data-edit-slot="s14-slot-10" data-slot-type="text" data-slot-label="Total: [N] · As of [Period]" data-slot-locked-layout="true">Total: [N] · As of [Period]</div>
+              <div class="pie-total" data-edit-slot="s14-slot-14" data-slot-type="text" data-slot-label="Total: [N] · As of [Period]" data-slot-locked-layout="true">Total: [N] · As of [Period]</div>
             </div>
           </div>
 
-          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s14-slot-11" data-slot-type="text" data-slot-label="Source: [Source] · [Period]" data-slot-locked-layout="true">
+          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s14-slot-1" data-slot-type="text" data-slot-label="Source: [Source] · [Period]" data-slot-locked-layout="true">
             Source: [Source] · [Period]
           </p>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s14-slot-12" data-slot-type="text" data-slot-label="[Organization] · [Period] 15 / 18" data-slot-locked-layout="true">
-          <span class="label muted" data-edit-slot="s14-slot-15" data-slot-type="text" data-slot-label="[Organization] · [Period]" data-slot-locked-layout="true">[Organization] · [Period]</span>
-          <span class="label muted" data-edit-slot="s14-slot-16" data-slot-type="text" data-slot-label="15 / 18" data-slot-locked-layout="true">15 / 18</span>
+        <div class="slide-foot">
+          <span class="label muted" data-edit-slot="s14-slot-4" data-slot-type="text" data-slot-label="[Organization] · [Period]" data-slot-locked-layout="true">[Organization] · [Period]</span>
+          <span class="label muted" data-edit-slot="s14-slot-5" data-slot-type="text" data-slot-label="15 / 18" data-slot-locked-layout="true">15 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2861,10 +2894,10 @@
 
 <section class="slide dark slide--pyramid" id="slide-15" data-template-slide-index="16">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s15-slot-1" data-slot-type="text" data-slot-label="[Hierarchy] 16" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s15-slot-7" data-slot-type="text" data-slot-label="[Hierarchy]" data-slot-locked-layout="true">[Hierarchy]</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s15-slot-8" data-slot-type="text" data-slot-label="16" data-slot-locked-layout="true">16</span>
+             data-edit-slot="s15-slot-1" data-slot-type="text" data-slot-label="[Hierarchy]" data-slot-locked-layout="true">[Hierarchy]</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s15-slot-2" data-slot-type="text" data-slot-label="16" data-slot-locked-layout="true">16</span>
         </div>
 
         <div class="slide-body">
@@ -2881,21 +2914,21 @@
                 >Highest-order principle or decision criterion</span
               >
             </div>
-            <div class="pyr-level" data-edit-slot="s15-slot-2" data-slot-type="text" data-slot-label="Level Two Second-order principle or decision cri" data-slot-locked-layout="true">
+            <div class="pyr-level" data-edit-slot="s15-slot-5" data-slot-type="text" data-slot-label="Level Two Second-order principle or decision cri" data-slot-locked-layout="true">
               <span class="pyr-name">Level Two</span>
               <span class="pyr-desc"
                 >Second-order principle or decision criterion</span
               >
             </div>
-            <div class="pyr-level" data-edit-slot="s15-slot-3" data-slot-type="text" data-slot-label="Level Three Third-order principle or decision cr" data-slot-locked-layout="true">
+            <div class="pyr-level" data-edit-slot="s15-slot-6" data-slot-type="text" data-slot-label="Level Three Third-order principle or decision cr" data-slot-locked-layout="true">
               <span class="pyr-name">Level Three</span>
               <span class="pyr-desc">Third-order principle or decision criterion</span>
             </div>
-            <div class="pyr-level" data-edit-slot="s15-slot-4" data-slot-type="text" data-slot-label="Level Four Supporting layer or operating standar" data-slot-locked-layout="true">
+            <div class="pyr-level" data-edit-slot="s15-slot-7" data-slot-type="text" data-slot-label="Level Four Supporting layer or operating standar" data-slot-locked-layout="true">
               <span class="pyr-name">Level Four</span>
               <span class="pyr-desc">Supporting layer or operating standard</span>
             </div>
-            <div class="pyr-level" data-edit-slot="s15-slot-5" data-slot-type="text" data-slot-label="Level Five Foundation layer or ongoing practice" data-slot-locked-layout="true">
+            <div class="pyr-level" data-edit-slot="s15-slot-8" data-slot-type="text" data-slot-label="Level Five Foundation layer or ongoing practice" data-slot-locked-layout="true">
               <span class="pyr-name">Level Five</span>
               <span class="pyr-desc"
                 >Foundation layer or ongoing practice</span
@@ -2904,9 +2937,9 @@
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s15-slot-6" data-slot-type="text" data-slot-label="[Organization] · [Period] 16 / 18" data-slot-locked-layout="true">
-          <span class="label muted" data-edit-slot="s15-slot-9" data-slot-type="text" data-slot-label="[Organization] · [Period]" data-slot-locked-layout="true">[Organization] · [Period]</span>
-          <span class="label muted" data-edit-slot="s15-slot-10" data-slot-type="text" data-slot-label="16 / 18" data-slot-locked-layout="true">16 / 18</span>
+        <div class="slide-foot">
+          <span class="label muted" data-edit-slot="s15-slot-3" data-slot-type="text" data-slot-label="[Organization] · [Period]" data-slot-locked-layout="true">[Organization] · [Period]</span>
+          <span class="label muted" data-edit-slot="s15-slot-4" data-slot-type="text" data-slot-label="16 / 18" data-slot-locked-layout="true">16 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2914,10 +2947,10 @@
 
 <section class="slide dark slide--vtimeline" id="slide-16" data-template-slide-index="17">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s16-slot-1" data-slot-type="text" data-slot-label="[Timeline] 17" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s16-slot-10" data-slot-type="text" data-slot-label="[Timeline]" data-slot-locked-layout="true">[Timeline]</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s16-slot-11" data-slot-type="text" data-slot-label="17" data-slot-locked-layout="true">17</span>
+             data-edit-slot="s16-slot-5" data-slot-type="text" data-slot-label="[Timeline]" data-slot-locked-layout="true">[Timeline]</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s16-slot-6" data-slot-type="text" data-slot-label="17" data-slot-locked-layout="true">17</span>
         </div>
 
         <!-- Section headline with italic em -->
@@ -2932,47 +2965,47 @@
           <div class="vt-spine"></div>
           <div class="vt-content">
             <div class="vt-title">Milestone One</div>
-            <p class="vt-body" data-edit-slot="s16-slot-2" data-slot-type="text" data-slot-label="Describe the first milestone and the outcome it " data-slot-locked-layout="true">
+            <p class="vt-body" data-edit-slot="s16-slot-1" data-slot-type="text" data-slot-label="Describe the first milestone and the outcome it " data-slot-locked-layout="true">
               Describe the first milestone and the outcome it produced.
             </p>
           </div>
 
           <!-- Event 2 -->
-          <div class="vt-date" data-edit-slot="s16-slot-3" data-slot-type="text" data-slot-label="[Year 2]" data-slot-locked-layout="true">[Year 2]</div>
+          <div class="vt-date" data-edit-slot="s16-slot-9" data-slot-type="text" data-slot-label="[Year 2]" data-slot-locked-layout="true">[Year 2]</div>
           <div class="vt-spine"></div>
           <div class="vt-content">
             <div class="vt-title">Milestone Two</div>
-            <p class="vt-body" data-edit-slot="s16-slot-4" data-slot-type="text" data-slot-label="Describe the second milestone. Use emphasis for " data-slot-locked-layout="true">
+            <p class="vt-body" data-edit-slot="s16-slot-2" data-slot-type="text" data-slot-label="Describe the second milestone. Use emphasis for " data-slot-locked-layout="true">
               Describe the second milestone. Use <em>emphasis</em> for the key
               implication.
             </p>
           </div>
 
           <!-- Event 3 -->
-          <div class="vt-date" data-edit-slot="s16-slot-5" data-slot-type="text" data-slot-label="[Year 3]" data-slot-locked-layout="true">[Year 3]</div>
+          <div class="vt-date" data-edit-slot="s16-slot-10" data-slot-type="text" data-slot-label="[Year 3]" data-slot-locked-layout="true">[Year 3]</div>
           <div class="vt-spine"></div>
           <div class="vt-content">
             <div class="vt-title">Milestone Three</div>
-            <p class="vt-body" data-edit-slot="s16-slot-6" data-slot-type="text" data-slot-label="Describe the third milestone and how the scope c" data-slot-locked-layout="true">
+            <p class="vt-body" data-edit-slot="s16-slot-3" data-slot-type="text" data-slot-label="Describe the third milestone and how the scope c" data-slot-locked-layout="true">
               Describe the third milestone and how the scope changed.
             </p>
           </div>
 
           <!-- Event 4 -->
-          <div class="vt-date" data-edit-slot="s16-slot-7" data-slot-type="text" data-slot-label="[Year 4]" data-slot-locked-layout="true">[Year 4]</div>
+          <div class="vt-date" data-edit-slot="s16-slot-11" data-slot-type="text" data-slot-label="[Year 4]" data-slot-locked-layout="true">[Year 4]</div>
           <div class="vt-spine"></div>
           <div class="vt-content">
             <div class="vt-title">Milestone Four</div>
-            <p class="vt-body" data-edit-slot="s16-slot-8" data-slot-type="text" data-slot-label="Describe the current milestone and the focus are" data-slot-locked-layout="true">
+            <p class="vt-body" data-edit-slot="s16-slot-4" data-slot-type="text" data-slot-label="Describe the current milestone and the focus are" data-slot-locked-layout="true">
               Describe the current milestone and the <em>focus area</em> it
               represents.
             </p>
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s16-slot-9" data-slot-type="text" data-slot-label="[Organization] · [Period] 17 / 18" data-slot-locked-layout="true">
-          <span class="label muted" data-edit-slot="s16-slot-12" data-slot-type="text" data-slot-label="[Organization] · [Period]" data-slot-locked-layout="true">[Organization] · [Period]</span>
-          <span class="label muted" data-edit-slot="s16-slot-13" data-slot-type="text" data-slot-label="17 / 18" data-slot-locked-layout="true">17 / 18</span>
+        <div class="slide-foot">
+          <span class="label muted" data-edit-slot="s16-slot-7" data-slot-type="text" data-slot-label="[Organization] · [Period]" data-slot-locked-layout="true">[Organization] · [Period]</span>
+          <span class="label muted" data-edit-slot="s16-slot-8" data-slot-type="text" data-slot-label="17 / 18" data-slot-locked-layout="true">17 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2980,10 +3013,10 @@
 
 <section class="slide dark slide--cycle" id="slide-17" data-template-slide-index="18">
         <!-- Chrome bar -->
-        <div class="slide-chrome" data-edit-slot="s17-slot-1" data-slot-type="text" data-slot-label="[Process] 18" data-slot-locked-layout="true">
+        <div class="slide-chrome">
           <span class="label muted" data-anim="fade-in" data-delay="0"
-             data-edit-slot="s17-slot-11" data-slot-type="text" data-slot-label="[Process]" data-slot-locked-layout="true">[Process]</span>
-          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s17-slot-12" data-slot-type="text" data-slot-label="18" data-slot-locked-layout="true">18</span>
+             data-edit-slot="s17-slot-1" data-slot-type="text" data-slot-label="[Process]" data-slot-locked-layout="true">[Process]</span>
+          <span class="label muted" data-anim="fade-in" data-delay="0" data-edit-slot="s17-slot-2" data-slot-type="text" data-slot-label="18" data-slot-locked-layout="true">18</span>
         </div>
 
         <div class="slide-body">
@@ -2997,8 +3030,8 @@
             <!-- Step 01: top-left -->
             <div class="cycle-step">
               <div class="cycle-num">01</div>
-              <div class="cycle-title" data-edit-slot="s17-slot-2" data-slot-type="text" data-slot-label="Step One" data-slot-locked-layout="true">Step One</div>
-              <div class="cycle-desc" data-edit-slot="s17-slot-3" data-slot-type="text" data-slot-label="Describe how the cycle begins and what input sta" data-slot-locked-layout="true">
+              <div class="cycle-title" data-edit-slot="s17-slot-5" data-slot-type="text" data-slot-label="Step One" data-slot-locked-layout="true">Step One</div>
+              <div class="cycle-desc" data-edit-slot="s17-slot-6" data-slot-type="text" data-slot-label="Describe how the cycle begins and what input sta" data-slot-locked-layout="true">
                 Describe how the cycle begins and what input starts the work.
               </div>
             </div>
@@ -3009,8 +3042,8 @@
             <!-- Step 02: top-right -->
             <div class="cycle-step">
               <div class="cycle-num">02</div>
-              <div class="cycle-title" data-edit-slot="s17-slot-4" data-slot-type="text" data-slot-label="Step Two" data-slot-locked-layout="true">Step Two</div>
-              <div class="cycle-desc" data-edit-slot="s17-slot-5" data-slot-type="text" data-slot-label="Describe how the input is examined, refined, or " data-slot-locked-layout="true">
+              <div class="cycle-title" data-edit-slot="s17-slot-7" data-slot-type="text" data-slot-label="Step Two" data-slot-locked-layout="true">Step Two</div>
+              <div class="cycle-desc" data-edit-slot="s17-slot-8" data-slot-type="text" data-slot-label="Describe how the input is examined, refined, or " data-slot-locked-layout="true">
                 Describe how the input is examined, refined, or validated.
               </div>
             </div>
@@ -3027,8 +3060,8 @@
             <!-- Step 04: bottom-left -->
             <div class="cycle-step">
               <div class="cycle-num">04</div>
-              <div class="cycle-title" data-edit-slot="s17-slot-6" data-slot-type="text" data-slot-label="Step Four" data-slot-locked-layout="true">Step Four</div>
-              <div class="cycle-desc" data-edit-slot="s17-slot-7" data-slot-type="text" data-slot-label="Describe how the result is implemented, supporte" data-slot-locked-layout="true">
+              <div class="cycle-title" data-edit-slot="s17-slot-9" data-slot-type="text" data-slot-label="Step Four" data-slot-locked-layout="true">Step Four</div>
+              <div class="cycle-desc" data-edit-slot="s17-slot-10" data-slot-type="text" data-slot-label="Describe how the result is implemented, supporte" data-slot-locked-layout="true">
                 Describe how the result is implemented, supported, or improved.
               </div>
             </div>
@@ -3039,8 +3072,8 @@
             <!-- Step 03: bottom-right -->
             <div class="cycle-step">
               <div class="cycle-num">03</div>
-              <div class="cycle-title" data-edit-slot="s17-slot-8" data-slot-type="text" data-slot-label="Step Three" data-slot-locked-layout="true">Step Three</div>
-              <div class="cycle-desc" data-edit-slot="s17-slot-9" data-slot-type="text" data-slot-label="Describe the decision point and the criteria use" data-slot-locked-layout="true">
+              <div class="cycle-title" data-edit-slot="s17-slot-11" data-slot-type="text" data-slot-label="Step Three" data-slot-locked-layout="true">Step Three</div>
+              <div class="cycle-desc" data-edit-slot="s17-slot-12" data-slot-type="text" data-slot-label="Describe the decision point and the criteria use" data-slot-locked-layout="true">
                 Describe the decision point and the criteria used to move
                 forward.
               </div>
@@ -3048,9 +3081,9 @@
           </div>
         </div>
 
-        <div class="slide-foot" data-edit-slot="s17-slot-10" data-slot-type="text" data-slot-label="[Organization] · [Period] 18 / 18" data-slot-locked-layout="true">
-          <span class="label muted" data-edit-slot="s17-slot-13" data-slot-type="text" data-slot-label="[Organization] · [Period]" data-slot-locked-layout="true">[Organization] · [Period]</span>
-          <span class="label muted" data-edit-slot="s17-slot-14" data-slot-type="text" data-slot-label="18 / 18" data-slot-locked-layout="true">18 / 18</span>
+        <div class="slide-foot">
+          <span class="label muted" data-edit-slot="s17-slot-3" data-slot-type="text" data-slot-label="[Organization] · [Period]" data-slot-locked-layout="true">[Organization] · [Period]</span>
+          <span class="label muted" data-edit-slot="s17-slot-4" data-slot-type="text" data-slot-label="18 / 18" data-slot-locked-layout="true">18 / 18</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -4073,6 +4106,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -4093,7 +4135,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -4106,7 +4148,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -5154,12 +5196,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -5203,7 +5245,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

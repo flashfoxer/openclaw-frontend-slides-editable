@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-raw-grid" data-template-source="raw-grid" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-raw-grid" data-template-source="raw-grid" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
 <meta charset="UTF-8">
@@ -759,6 +759,39 @@ html, body {
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1318,7 +1351,7 @@ html, body {
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1404,13 +1437,13 @@ html, body {
     <div class="s1-left">
       <div class="s1-brand">
         <div class="s1-logo-box">RG</div>
-        <span class="s1-brand-text" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="RAW GRID" data-slot-locked-layout="true">RAW GRID</span>
+        <span class="s1-brand-text" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="RAW GRID" data-slot-locked-layout="true">RAW GRID</span>
       </div>
       <div class="s1-headline">
         <div class="t-display">Cities.<br>Startups.</div>
       </div>
-      <div class="s1-cta" data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="Discover All Startups" data-slot-locked-layout="true">
-        <span class="label arrow" data-edit-slot="s0-slot-9" data-slot-type="text" data-slot-label="Discover All Startups" data-slot-locked-layout="true">Discover All Startups</span>
+      <div class="s1-cta">
+        <span class="label arrow" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="Discover All Startups" data-slot-locked-layout="true">Discover All Startups</span>
       </div>
     </div>
     <div class="s1-right">
@@ -1432,21 +1465,21 @@ html, body {
     <div class="s2-left">
       <div class="s2-meta">
         <div class="line"></div>
-        <span class="t-caption" data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="About The Platform" data-slot-locked-layout="true">About The Platform</span>
+        <span class="t-caption" data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="About The Platform" data-slot-locked-layout="true">About The Platform</span>
       </div>
-      <div class="t-headline" style="margin-bottom: 24px;" data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="Connecting Founders With Opportunity" data-slot-locked-layout="true">Connecting Founders With Opportunity</div>
-      <p class="t-body" style="max-width: 420px;" data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="A centralized ecosystem designed to bridge the g" data-slot-locked-layout="true">A centralized ecosystem designed to bridge the gap between emerging ventures and the resources they need to scale effectively across global markets.</p>
+      <div class="t-headline" style="margin-bottom: 24px;" data-edit-slot="s1-slot-5" data-slot-type="text" data-slot-label="Connecting Founders With Opportunity" data-slot-locked-layout="true">Connecting Founders With Opportunity</div>
+      <p class="t-body" style="max-width: 420px;" data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="A centralized ecosystem designed to bridge the g" data-slot-locked-layout="true">A centralized ecosystem designed to bridge the gap between emerging ventures and the resources they need to scale effectively across global markets.</p>
     </div>
     <div class="s2-right">
       <div class="s2-block">
         <span class="t-number">250+</span>
         <span class="t-subtitle" style="margin-top: 8px;">Active Startups</span>
-        <p class="t-body" style="margin-top: 12px; opacity: 0.7;" data-edit-slot="s1-slot-5" data-slot-type="text" data-slot-label="Ventures currently enrolled and scaling through " data-slot-locked-layout="true">Ventures currently enrolled and scaling through our network.</p>
+        <p class="t-body" style="margin-top: 12px; opacity: 0.7;" data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="Ventures currently enrolled and scaling through " data-slot-locked-layout="true">Ventures currently enrolled and scaling through our network.</p>
       </div>
-      <div class="s2-block bg-green" data-edit-slot="s1-slot-4" data-slot-type="text" data-slot-label="14 Cities Covered Metropolitan tech hubs across " data-slot-locked-layout="true">
+      <div class="s2-block bg-green">
         <span class="t-number">14</span>
         <span class="t-subtitle" style="margin-top: 8px;">Cities Covered</span>
-        <p class="t-body" style="margin-top: 12px; opacity: 0.7;" data-edit-slot="s1-slot-6" data-slot-type="text" data-slot-label="Metropolitan tech hubs across North America and " data-slot-locked-layout="true">Metropolitan tech hubs across North America and Europe.</p>
+        <p class="t-body" style="margin-top: 12px; opacity: 0.7;" data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="Metropolitan tech hubs across North America and " data-slot-locked-layout="true">Metropolitan tech hubs across North America and Europe.</p>
       </div>
     </div>
   </div>
@@ -1458,7 +1491,7 @@ html, body {
   <div class="slide-content">
     <div class="s3-header">
       <span class="t-title">Quarterly Growth Metrics</span>
-      <span class="label" data-edit-slot="s2-slot-4" data-slot-type="text" data-slot-label="Fiscal Year 2026" data-slot-locked-layout="true">Fiscal Year 2026</span>
+      <span class="label" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Fiscal Year 2026" data-slot-locked-layout="true">Fiscal Year 2026</span>
     </div>
     <div class="s3-body">
       <div class="s3-chart-area">
@@ -1483,15 +1516,15 @@ html, body {
       <div class="s3-insights">
         <div class="s3-stat-box">
           <div class="s3-stat-number">+47%</div>
-          <div class="s3-stat-label" data-edit-slot="s2-slot-1" data-slot-type="metric" data-slot-label="Year over Year Growth" data-slot-locked-layout="true">Year over Year Growth</div>
+          <div class="s3-stat-label" data-edit-slot="s2-slot-2" data-slot-type="metric" data-slot-label="Year over Year Growth" data-slot-locked-layout="true">Year over Year Growth</div>
         </div>
         <div class="s3-stat-box bg-green">
           <div class="s3-stat-number">$27.6M</div>
-          <div class="s3-stat-label" data-edit-slot="s2-slot-2" data-slot-type="metric" data-slot-label="Total Annual Revenue" data-slot-locked-layout="true">Total Annual Revenue</div>
+          <div class="s3-stat-label" data-edit-slot="s2-slot-3" data-slot-type="metric" data-slot-label="Total Annual Revenue" data-slot-locked-layout="true">Total Annual Revenue</div>
         </div>
         <div class="s3-stat-box bg-pink">
           <div class="s3-stat-number">12.4K</div>
-          <div class="s3-stat-label" data-edit-slot="s2-slot-3" data-slot-type="metric" data-slot-label="New User Signups" data-slot-locked-layout="true">New User Signups</div>
+          <div class="s3-stat-label" data-edit-slot="s2-slot-4" data-slot-type="metric" data-slot-label="New User Signups" data-slot-locked-layout="true">New User Signups</div>
         </div>
       </div>
     </div>
@@ -1559,10 +1592,10 @@ html, body {
       <div class="s5-image-placeholder">[ Image Placeholder ]</div>
     </div>
     <div class="s5-text-area">
-      <div class="label s5-badge" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="Featured" data-slot-locked-layout="true">Featured</div>
-      <div class="t-headline" style="margin-bottom: 20px;" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="The Founders Lab" data-slot-locked-layout="true">The Founders Lab</div>
-      <p class="t-body" style="margin-bottom: 20px;" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="An intensive twelve-week program designed to tak" data-slot-locked-layout="true">An intensive twelve-week program designed to take early-stage concepts and transform them into market-ready products with validated traction.</p>
-      <p class="t-body" style="opacity: 0.7; margin-bottom: 32px;" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="Cohots launch every quarter with dedicated works" data-slot-locked-layout="true">Cohots launch every quarter with dedicated workspace, engineering support, and direct pipeline to investor demo days.</p>
+      <div class="label s5-badge" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="Featured" data-slot-locked-layout="true">Featured</div>
+      <div class="t-headline" style="margin-bottom: 20px;" data-edit-slot="s4-slot-4" data-slot-type="text" data-slot-label="The Founders Lab" data-slot-locked-layout="true">The Founders Lab</div>
+      <p class="t-body" style="margin-bottom: 20px;" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="An intensive twelve-week program designed to tak" data-slot-locked-layout="true">An intensive twelve-week program designed to take early-stage concepts and transform them into market-ready products with validated traction.</p>
+      <p class="t-body" style="opacity: 0.7; margin-bottom: 32px;" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="Cohots launch every quarter with dedicated works" data-slot-locked-layout="true">Cohots launch every quarter with dedicated workspace, engineering support, and direct pipeline to investor demo days.</p>
       <div class="line"></div>
     </div>
   </div>
@@ -1579,25 +1612,25 @@ html, body {
       <div class="s6-step">
         <span class="s6-step-num">01</span>
         <div class="s6-connector">&rarr;</div>
-        <div class="t-subtitle s6-step-title" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Submit" data-slot-locked-layout="true">Submit</div>
-        <p class="t-body" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Complete the online application with your pitch " data-slot-locked-layout="true">Complete the online application with your pitch deck and team overview.</p>
+        <div class="t-subtitle s6-step-title" data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Submit" data-slot-locked-layout="true">Submit</div>
+        <p class="t-body" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Complete the online application with your pitch " data-slot-locked-layout="true">Complete the online application with your pitch deck and team overview.</p>
       </div>
       <div class="s6-step">
         <span class="s6-step-num">02</span>
         <div class="s6-connector">&rarr;</div>
-        <div class="t-subtitle s6-step-title" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Review" data-slot-locked-layout="true">Review</div>
-        <p class="t-body" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Our committee evaluates fit, market potential, a" data-slot-locked-layout="true">Our committee evaluates fit, market potential, and team capability.</p>
+        <div class="t-subtitle s6-step-title" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Review" data-slot-locked-layout="true">Review</div>
+        <p class="t-body" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Our committee evaluates fit, market potential, a" data-slot-locked-layout="true">Our committee evaluates fit, market potential, and team capability.</p>
       </div>
       <div class="s6-step">
         <span class="s6-step-num">03</span>
         <div class="s6-connector">&rarr;</div>
-        <div class="t-subtitle s6-step-title" data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Interview" data-slot-locked-layout="true">Interview</div>
-        <p class="t-body" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Shortlisted teams present to our panel of partne" data-slot-locked-layout="true">Shortlisted teams present to our panel of partners and alumni founders.</p>
+        <div class="t-subtitle s6-step-title" data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Interview" data-slot-locked-layout="true">Interview</div>
+        <p class="t-body" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Shortlisted teams present to our panel of partne" data-slot-locked-layout="true">Shortlisted teams present to our panel of partners and alumni founders.</p>
       </div>
       <div class="s6-step">
         <span class="s6-step-num">04</span>
         <div class="t-subtitle s6-step-title">Onboard</div>
-        <p class="t-body" data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Accepted ventures join the next cohort with full" data-slot-locked-layout="true">Accepted ventures join the next cohort with full access to all resources.</p>
+        <p class="t-body" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Accepted ventures join the next cohort with full" data-slot-locked-layout="true">Accepted ventures join the next cohort with full access to all resources.</p>
       </div>
     </div>
   </div>
@@ -1617,7 +1650,7 @@ html, body {
         </svg>
         <div class="s7-donut-center">
           <div class="s7-donut-value">63%</div>
-          <div class="s7-donut-label" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="Market Share" data-slot-locked-layout="true">Market Share</div>
+          <div class="s7-donut-label" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Market Share" data-slot-locked-layout="true">Market Share</div>
         </div>
       </div>
       <div class="s7-legend">
@@ -1631,28 +1664,28 @@ html, body {
         <div class="s7-metric-num">89%</div>
         <div class="s7-metric-info">
           <div class="t-subtitle s7-metric-title">Retention Rate</div>
-          <p class="t-caption" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Founders who renew after year one" data-slot-locked-layout="true">Founders who renew after year one</p>
+          <p class="t-caption" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="Founders who renew after year one" data-slot-locked-layout="true">Founders who renew after year one</p>
         </div>
       </div>
       <div class="s7-metric-row bg-green">
         <div class="s7-metric-num">3.2x</div>
         <div class="s7-metric-info">
           <div class="t-subtitle s7-metric-title">Average ROI</div>
-          <p class="t-caption" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Return on capital invested" data-slot-locked-layout="true">Return on capital invested</p>
+          <p class="t-caption" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Return on capital invested" data-slot-locked-layout="true">Return on capital invested</p>
         </div>
       </div>
       <div class="s7-metric-row">
         <div class="s7-metric-num">156</div>
         <div class="s7-metric-info">
           <div class="t-subtitle s7-metric-title">Jobs Created</div>
-          <p class="t-caption" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Net new positions this quarter" data-slot-locked-layout="true">Net new positions this quarter</p>
+          <p class="t-caption" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Net new positions this quarter" data-slot-locked-layout="true">Net new positions this quarter</p>
         </div>
       </div>
       <div class="s7-metric-row bg-pink">
         <div class="s7-metric-num">$42M</div>
         <div class="s7-metric-info">
           <div class="t-subtitle s7-metric-title">Capital Deployed</div>
-          <p class="t-caption" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Total funding distributed to date" data-slot-locked-layout="true">Total funding distributed to date</p>
+          <p class="t-caption" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Total funding distributed to date" data-slot-locked-layout="true">Total funding distributed to date</p>
         </div>
       </div>
     </div>
@@ -1759,15 +1792,15 @@ html, body {
     <div class="s10-left">
       <div class="t-display" style="margin-bottom: 24px;">Let's<br>Build.</div>
       <p class="t-body" style="margin-bottom: 32px; max-width: 380px;" data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="Ready to take your venture to the next level? Jo" data-slot-locked-layout="true">Ready to take your venture to the next level? Join the Raw Grid community and start scaling today.</p>
-      <span class="label arrow" data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="Get Started Now" data-slot-locked-layout="true">Get Started Now</span>
+      <span class="label arrow" data-edit-slot="s9-slot-6" data-slot-type="text" data-slot-label="Get Started Now" data-slot-locked-layout="true">Get Started Now</span>
     </div>
     <div class="s10-right">
       <div class="s10-r-top">
         <div class="t-title" style="margin-bottom: 20px;">Get In Touch</div>
-        <p class="t-body" style="margin-bottom: 8px;" data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="Email: hello@rawgrid.studio" data-slot-locked-layout="true"><strong>Email:</strong> hello@rawgrid.studio</p>
-        <p class="t-body" style="margin-bottom: 8px;" data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="Phone: +1 (555) 000-0000" data-slot-locked-layout="true"><strong>Phone:</strong> +1 (555) 000-0000</p>
-        <p class="t-body" style="margin-bottom: 8px;" data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="Location: 123 Innovation Drive, San Francisco" data-slot-locked-layout="true"><strong>Location:</strong> 123 Innovation Drive, San Francisco</p>
-        <p class="t-body" data-edit-slot="s9-slot-6" data-slot-type="text" data-slot-label="Hours: Monday — Friday, 9:00 — 18:00" data-slot-locked-layout="true"><strong>Hours:</strong> Monday — Friday, 9:00 — 18:00</p>
+        <p class="t-body" style="margin-bottom: 8px;" data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="Email: hello@rawgrid.studio" data-slot-locked-layout="true"><strong>Email:</strong> hello@rawgrid.studio</p>
+        <p class="t-body" style="margin-bottom: 8px;" data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="Phone: +1 (555) 000-0000" data-slot-locked-layout="true"><strong>Phone:</strong> +1 (555) 000-0000</p>
+        <p class="t-body" style="margin-bottom: 8px;" data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="Location: 123 Innovation Drive, San Francisco" data-slot-locked-layout="true"><strong>Location:</strong> 123 Innovation Drive, San Francisco</p>
+        <p class="t-body" data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="Hours: Monday — Friday, 9:00 — 18:00" data-slot-locked-layout="true"><strong>Hours:</strong> Monday — Friday, 9:00 — 18:00</p>
       </div>
       <div class="s10-r-bottom">
         <div class="s10-rb-block">Instagram</div>
@@ -2796,6 +2829,15 @@ html, body {
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -2816,7 +2858,7 @@ html, body {
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -2829,7 +2871,7 @@ html, body {
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -3877,12 +3919,12 @@ html, body {
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -3926,7 +3968,6 @@ html, body {
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

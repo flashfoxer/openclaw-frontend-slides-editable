@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-monochrome-ledger" data-template-source="monochrome" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-monochrome-ledger" data-template-source="monochrome" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
     <meta charset="UTF-8" />
@@ -1609,6 +1609,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -2168,7 +2201,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -2251,7 +2284,7 @@
 <div id="deck" class="slides-offset stage" data-ported-template="monochrome">
 <section class="slide slide--cover light" id="slide-0" data-template-slide-index="1">
         <!-- Sidebar: research context above, date below -->
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="Research Synthesis [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s0-slot-5" data-slot-type="text" data-slot-label="Research Synthesis [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">Research Synthesis</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
@@ -2266,9 +2299,9 @@
           "
           data-anim="fade-in"
           data-delay="1"
-         data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="User Research Synthesis / [Month, Year]" data-slot-locked-layout="true">
+        >
           <span class="label muted"
-             data-edit-slot="s0-slot-5" data-slot-type="text" data-slot-label="User Research Synthesis / [Month, Year]" data-slot-locked-layout="true">User Research Synthesis / [Month, Year]</span>
+             data-edit-slot="s0-slot-2" data-slot-type="text" data-slot-label="User Research Synthesis / [Month, Year]" data-slot-locked-layout="true">User Research Synthesis / [Month, Year]</span>
         </div>
 
         <div class="cover-body">
@@ -2291,16 +2324,16 @@
             data-anim="fade-up"
             data-delay="4"
             style="max-width: 55%"
-           data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="What we learned from 24 interviews and what it m" data-slot-locked-layout="true">
+           data-edit-slot="s0-slot-1" data-slot-type="text" data-slot-label="What we learned from 24 interviews and what it m" data-slot-locked-layout="true">
             What we learned from 24 interviews and what it means for the
             product.
           </p>
         </div>
 
         <!-- Bottom meta bar: team left, round right -->
-        <div class="cover-meta" data-anim="fade-in" data-delay="5" data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="Research Team · [Month, Year] Round [N] · Intern" data-slot-locked-layout="true">
-          <span class="label muted" data-edit-slot="s0-slot-6" data-slot-type="text" data-slot-label="Research Team · [Month, Year]" data-slot-locked-layout="true">Research Team · [Month, Year]</span>
-          <span class="label muted" data-edit-slot="s0-slot-7" data-slot-type="text" data-slot-label="Round [N] · Internal" data-slot-locked-layout="true">Round [N] · Internal</span>
+        <div class="cover-meta" data-anim="fade-in" data-delay="5">
+          <span class="label muted" data-edit-slot="s0-slot-3" data-slot-type="text" data-slot-label="Research Team · [Month, Year]" data-slot-locked-layout="true">Research Team · [Month, Year]</span>
+          <span class="label muted" data-edit-slot="s0-slot-4" data-slot-type="text" data-slot-label="Round [N] · Internal" data-slot-locked-layout="true">Round [N] · Internal</span>
         </div>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2308,13 +2341,13 @@
 
 <section class="slide slide--chapter dark" id="slide-1" data-template-slide-index="2">
         <!-- Sidebar on dark: adapts automatically via .dark .sidebar-label -->
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="Context Part One" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s1-slot-2" data-slot-type="text" data-slot-label="Context Part One" data-slot-locked-layout="true">
           <span class="sidebar-label">Context</span>
           <span class="sidebar-label">Part One</span>
         </div>
 
         <!-- Chapter number: small mono, monochrome accent -->
-        <div class="chapter-num" data-anim="fade-in" data-delay="1" data-edit-slot="s1-slot-2" data-slot-type="metric" data-slot-label="01 · Context" data-slot-locked-layout="true">
+        <div class="chapter-num" data-anim="fade-in" data-delay="1" data-edit-slot="s1-slot-3" data-slot-type="metric" data-slot-label="01 · Context" data-slot-locked-layout="true">
           01 · Context
         </div>
 
@@ -2336,7 +2369,7 @@
           "
           data-anim="fade-up"
           data-delay="4"
-         data-edit-slot="s1-slot-3" data-slot-type="text" data-slot-label="Three months after launch, retention numbers tol" data-slot-locked-layout="true">
+         data-edit-slot="s1-slot-1" data-slot-type="text" data-slot-label="Three months after launch, retention numbers tol" data-slot-locked-layout="true">
           Three months after launch, retention numbers told us something the
           metrics couldn't.
         </p>
@@ -2346,7 +2379,7 @@
 
 <section class="slide slide--statement light" id="slide-2" data-template-slide-index="3">
         <!-- Sidebar: three contextual labels -->
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="[Month, Year] Round [N] Objective" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="[Month, Year] Round [N] Objective" data-slot-locked-layout="true">
           <span class="sidebar-label">[Month, Year]</span>
           <span class="sidebar-label">Round [N]</span>
           <span class="sidebar-label">Objective</span>
@@ -2361,7 +2394,7 @@
         <!-- Statement body: centered vertically -->
         <div class="statement-body">
           <!-- Objective label in mono muted at top of content area -->
-          <p class="kicker" data-anim="fade-in" data-delay="1" data-edit-slot="s2-slot-6" data-slot-type="text" data-slot-label="Primary objective · Round [N] synthesis" data-slot-locked-layout="true">
+          <p class="kicker" data-anim="fade-in" data-delay="1" data-edit-slot="s2-slot-1" data-slot-type="text" data-slot-label="Primary objective · Round [N] synthesis" data-slot-locked-layout="true">
             Primary objective · Round [N] synthesis
           </p>
 
@@ -2395,26 +2428,26 @@
   </section>
 
 <section class="slide slide--split light" id="slide-3" data-template-slide-index="4">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="User Behavior [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s3-slot-11" data-slot-type="text" data-slot-label="User Behavior [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">User Behavior</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
 
         <!-- Chrome header -->
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="User Behavior" data-slot-locked-layout="true">User Behavior</span>
-          <span class="label muted" data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="04" data-slot-locked-layout="true">04</span>
+          <span class="label muted" data-edit-slot="s3-slot-7" data-slot-type="text" data-slot-label="User Behavior" data-slot-locked-layout="true">User Behavior</span>
+          <span class="label muted" data-edit-slot="s3-slot-8" data-slot-type="text" data-slot-label="04" data-slot-locked-layout="true">04</span>
         </header>
 
         <!-- Two-column body -->
         <div class="slide-body">
           <!-- Left: text content -->
           <div class="split-text">
-            <p class="kicker" data-anim="fade-in" data-delay="1" data-edit-slot="s3-slot-7" data-slot-type="text" data-slot-label="The Pattern" data-slot-locked-layout="true">The Pattern</p>
+            <p class="kicker" data-anim="fade-in" data-delay="1" data-edit-slot="s3-slot-1" data-slot-type="text" data-slot-label="The Pattern" data-slot-locked-layout="true">The Pattern</p>
             <h2 class="h2" data-anim="fade-up" data-delay="2" data-edit-slot="s3-title-1" data-slot-type="text" data-slot-label="The first 48 hours determine everything" data-slot-locked-layout="true">
               The first 48 hours determine everything
             </h2>
-            <p class="lead muted" data-anim="fade-up" data-delay="3" data-edit-slot="s3-slot-8" data-slot-type="text" data-slot-label="Users who complete three core actions in their f" data-slot-locked-layout="true">
+            <p class="lead muted" data-anim="fade-up" data-delay="3" data-edit-slot="s3-slot-2" data-slot-type="text" data-slot-label="Users who complete three core actions in their f" data-slot-locked-layout="true">
               Users who complete three core actions in their first two days have
               a 4× higher 90-day retention rate. Most never get there.
             </p>
@@ -2425,16 +2458,16 @@
               data-anim="fade-up"
               data-delay="4"
             >
-              <li data-edit-slot="s3-slot-9" data-slot-type="text" data-slot-label="Onboarding drop-off peaks at step 3" data-slot-locked-layout="true">Onboarding drop-off peaks at step 3</li>
-              <li data-edit-slot="s3-slot-10" data-slot-type="text" data-slot-label="&quot;What do I do next?&quot; is the most common exit tri" data-slot-locked-layout="true">"What do I do next?" is the most common exit trigger</li>
-              <li data-edit-slot="s3-slot-11" data-slot-type="text" data-slot-label="Users who invite a teammate retain at 2× the rat" data-slot-locked-layout="true">Users who invite a teammate retain at 2× the rate</li>
+              <li data-edit-slot="s3-slot-3" data-slot-type="text" data-slot-label="Onboarding drop-off peaks at step 3" data-slot-locked-layout="true">Onboarding drop-off peaks at step 3</li>
+              <li data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="&quot;What do I do next?&quot; is the most common exit tri" data-slot-locked-layout="true">"What do I do next?" is the most common exit trigger</li>
+              <li data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="Users who invite a teammate retain at 2× the rat" data-slot-locked-layout="true">Users who invite a teammate retain at 2× the rate</li>
             </ul>
           </div>
 
           <!-- Right: image with caption -->
           <div class="split-image" data-anim="fade-in" data-delay="3">
             <div class="img-placeholder" data-edit-slot="s3-image-1" data-slot-type="image" data-slot-label="Image" data-slot-locked-layout="true">Image placeholder</div>
-            <p class="img-caption" data-edit-slot="s3-slot-4" data-slot-type="text" data-slot-label="Session recording review · [Month of study]" data-slot-locked-layout="true">
+            <p class="img-caption" data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="Session recording review · [Month of study]" data-slot-locked-layout="true">
               Session recording review · [Month of study]
             </p>
           </div>
@@ -2442,23 +2475,23 @@
 
         <!-- Footer -->
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s3-slot-5" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
-          <span class="label muted" data-edit-slot="s3-slot-6" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
+          <span class="label muted" data-edit-slot="s3-slot-9" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
+          <span class="label muted" data-edit-slot="s3-slot-10" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide slide--stats light" id="slide-4" data-template-slide-index="5">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s4-slot-1" data-slot-type="text" data-slot-label="By the Numbers [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s4-slot-11" data-slot-type="text" data-slot-label="By the Numbers [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">By the Numbers</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
 
         <!-- Chrome header -->
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s4-slot-2" data-slot-type="text" data-slot-label="By the Numbers" data-slot-locked-layout="true">By the Numbers</span>
-          <span class="label muted" data-edit-slot="s4-slot-3" data-slot-type="text" data-slot-label="05" data-slot-locked-layout="true">05</span>
+          <span class="label muted" data-edit-slot="s4-slot-7" data-slot-type="text" data-slot-label="By the Numbers" data-slot-locked-layout="true">By the Numbers</span>
+          <span class="label muted" data-edit-slot="s4-slot-8" data-slot-type="text" data-slot-label="05" data-slot-locked-layout="true">05</span>
         </header>
 
         <!-- Stats body: headline + three-col stat grid -->
@@ -2476,61 +2509,61 @@
             <!-- Stat 1: churn rate -->
             <div class="stat-card">
               <div class="stat-value">68%</div>
-              <p class="stat-label muted" data-edit-slot="s4-slot-4" data-slot-type="metric" data-slot-label="of users churned within 14 days — up from 54% in" data-slot-locked-layout="true">
+              <p class="stat-label muted" data-edit-slot="s4-slot-1" data-slot-type="metric" data-slot-label="of users churned within 14 days — up from 54% in" data-slot-locked-layout="true">
                 of users churned within 14 days — up from 54% in cohort 2
               </p>
-              <p class="stat-note" data-edit-slot="s4-slot-5" data-slot-type="metric" data-slot-label="[Analytics tool] · [Launch month]" data-slot-locked-layout="true">[Analytics tool] · [Launch month]</p>
+              <p class="stat-note" data-edit-slot="s4-slot-2" data-slot-type="metric" data-slot-label="[Analytics tool] · [Launch month]" data-slot-locked-layout="true">[Analytics tool] · [Launch month]</p>
             </div>
 
             <!-- Stat 2: time to abandonment -->
             <div class="stat-card">
               <div class="stat-value">3.2min</div>
-              <p class="stat-label muted" data-edit-slot="s4-slot-6" data-slot-type="metric" data-slot-label="Average time before abandonment on the setup flo" data-slot-locked-layout="true">
+              <p class="stat-label muted" data-edit-slot="s4-slot-3" data-slot-type="metric" data-slot-label="Average time before abandonment on the setup flo" data-slot-locked-layout="true">
                 Average time before abandonment on the setup flow
               </p>
-              <p class="stat-note" data-edit-slot="s4-slot-7" data-slot-type="metric" data-slot-label="Session recordings · n=240" data-slot-locked-layout="true">Session recordings · n=240</p>
+              <p class="stat-note" data-edit-slot="s4-slot-4" data-slot-type="metric" data-slot-label="Session recordings · n=240" data-slot-locked-layout="true">Session recordings · n=240</p>
             </div>
 
             <!-- Stat 3: retention multiplier -->
             <div class="stat-card">
               <div class="stat-value">4×</div>
-              <p class="stat-label muted" data-edit-slot="s4-slot-8" data-slot-type="metric" data-slot-label="Higher 90-day retention for users who complete o" data-slot-locked-layout="true">
+              <p class="stat-label muted" data-edit-slot="s4-slot-5" data-slot-type="metric" data-slot-label="Higher 90-day retention for users who complete o" data-slot-locked-layout="true">
                 Higher 90-day retention for users who complete onboarding fully
               </p>
-              <p class="stat-note" data-edit-slot="s4-slot-9" data-slot-type="metric" data-slot-label="Cohort analysis" data-slot-locked-layout="true">Cohort analysis</p>
+              <p class="stat-note" data-edit-slot="s4-slot-6" data-slot-type="metric" data-slot-label="Cohort analysis" data-slot-locked-layout="true">Cohort analysis</p>
             </div>
           </div>
         </div>
 
         <!-- Footer -->
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
-          <span class="label muted" data-edit-slot="s4-slot-11" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
+          <span class="label muted" data-edit-slot="s4-slot-9" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
+          <span class="label muted" data-edit-slot="s4-slot-10" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide slide--list light" id="slide-5" data-template-slide-index="6">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Recommendations [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s5-slot-12" data-slot-type="text" data-slot-label="Recommendations [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">Recommendations</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
 
         <!-- Chrome header -->
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Recommendations" data-slot-locked-layout="true">Recommendations</span>
-          <span class="label muted" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="06" data-slot-locked-layout="true">06</span>
+          <span class="label muted" data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="Recommendations" data-slot-locked-layout="true">Recommendations</span>
+          <span class="label muted" data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="06" data-slot-locked-layout="true">06</span>
         </header>
 
         <!-- List body: left head + right bullets -->
         <div class="slide-body">
           <div class="list-head">
-            <p class="kicker" data-anim="fade-in" data-delay="1" data-edit-slot="s5-slot-11" data-slot-type="text" data-slot-label="What to fix" data-slot-locked-layout="true">What to fix</p>
+            <p class="kicker" data-anim="fade-in" data-delay="1" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="What to fix" data-slot-locked-layout="true">What to fix</p>
             <h2 class="h2" data-anim="fade-up" data-delay="2" data-edit-slot="s5-title-1" data-slot-type="text" data-slot-label="Five changes, ordered by impact" data-slot-locked-layout="true">
               Five changes, ordered by impact
             </h2>
-            <p class="body muted" data-anim="fade-up" data-delay="3" data-edit-slot="s5-slot-12" data-slot-type="text" data-slot-label="We recommend addressing these sequentially — lat" data-slot-locked-layout="true">
+            <p class="body muted" data-anim="fade-up" data-delay="3" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="We recommend addressing these sequentially — lat" data-slot-locked-layout="true">
               We recommend addressing these sequentially — later ones depend on
               the first landing.
             </p>
@@ -2538,13 +2571,13 @@
 
           <!-- Five bullets: weight-300 lead size, em dash markers -->
           <ul class="bullet-list" data-anim="fade-up" data-delay="3">
-            <li data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Redesign the setup flow to three steps maximum" data-slot-locked-layout="true">Redesign the setup flow to three steps maximum</li>
-            <li data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Add a &quot;start here&quot; prompt on day one based on us" data-slot-locked-layout="true">Add a "start here" prompt on day one based on user type</li>
-            <li data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Surface the collaboration invite after first mea" data-slot-locked-layout="true">
+            <li data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Redesign the setup flow to three steps maximum" data-slot-locked-layout="true">Redesign the setup flow to three steps maximum</li>
+            <li data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Add a &quot;start here&quot; prompt on day one based on us" data-slot-locked-layout="true">Add a "start here" prompt on day one based on user type</li>
+            <li data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="Surface the collaboration invite after first mea" data-slot-locked-layout="true">
               Surface the collaboration invite after first meaningful action
             </li>
-            <li data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Replace feature tour with outcome demonstration" data-slot-locked-layout="true">Replace feature tour with outcome demonstration</li>
-            <li data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="Build a 7-day email sequence that mirrors in-pro" data-slot-locked-layout="true">
+            <li data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Replace feature tour with outcome demonstration" data-slot-locked-layout="true">Replace feature tour with outcome demonstration</li>
+            <li data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Build a 7-day email sequence that mirrors in-pro" data-slot-locked-layout="true">
               Build a 7-day email sequence that mirrors in-product progress
             </li>
           </ul>
@@ -2552,23 +2585,23 @@
 
         <!-- Footer -->
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
-          <span class="label muted" data-edit-slot="s5-slot-10" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
+          <span class="label muted" data-edit-slot="s5-slot-10" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
+          <span class="label muted" data-edit-slot="s5-slot-11" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide slide--compare light" id="slide-6" data-template-slide-index="7">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="Current vs Proposed [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s6-slot-13" data-slot-type="text" data-slot-label="Current vs Proposed [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">Current vs Proposed</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
 
         <!-- Chrome header -->
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Current · Proposed" data-slot-locked-layout="true">Current · Proposed</span>
-          <span class="label muted" data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="07" data-slot-locked-layout="true">07</span>
+          <span class="label muted" data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="Current · Proposed" data-slot-locked-layout="true">Current · Proposed</span>
+          <span class="label muted" data-edit-slot="s6-slot-10" data-slot-type="text" data-slot-label="07" data-slot-locked-layout="true">07</span>
         </header>
 
         <!-- Two-panel body -->
@@ -2577,13 +2610,13 @@
           <div class="compare-panel left" data-anim="fade-up" data-delay="1">
             <div class="compare-label">Current Onboarding</div>
             <h3 class="h3" data-edit-slot="s6-title-1" data-slot-type="text" data-slot-label="9-step setup, any order" data-slot-locked-layout="true">9-step setup, any order</h3>
-            <p class="lead muted" data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="Users choose their own path through setup. Most " data-slot-locked-layout="true">
+            <p class="lead muted" data-edit-slot="s6-slot-1" data-slot-type="text" data-slot-label="Users choose their own path through setup. Most " data-slot-locked-layout="true">
               Users choose their own path through setup. Most choose wrong.
             </p>
             <ul class="bullet-list" style="font-size: var(--sz-body)">
-              <li data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="Average 3.2 minutes to first value" data-slot-locked-layout="true">Average 3.2 minutes to first value</li>
-              <li data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="Step 6 is where 41% abandon" data-slot-locked-layout="true">Step 6 is where 41% abandon</li>
-              <li data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="No adaptive logic based on user type" data-slot-locked-layout="true">No adaptive logic based on user type</li>
+              <li data-edit-slot="s6-slot-2" data-slot-type="text" data-slot-label="Average 3.2 minutes to first value" data-slot-locked-layout="true">Average 3.2 minutes to first value</li>
+              <li data-edit-slot="s6-slot-3" data-slot-type="text" data-slot-label="Step 6 is where 41% abandon" data-slot-locked-layout="true">Step 6 is where 41% abandon</li>
+              <li data-edit-slot="s6-slot-4" data-slot-type="text" data-slot-label="No adaptive logic based on user type" data-slot-locked-layout="true">No adaptive logic based on user type</li>
             </ul>
           </div>
 
@@ -2591,51 +2624,51 @@
           <div class="compare-panel right" data-anim="fade-up" data-delay="2">
             <div class="compare-label after">Proposed Flow</div>
             <h3 class="h3" data-edit-slot="s6-title-2" data-slot-type="text" data-slot-label="3-step guided path, adaptive" data-slot-locked-layout="true">3-step guided path, adaptive</h3>
-            <p class="lead muted" data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="User type detected at signup. Path adjusts. Firs" data-slot-locked-layout="true">
+            <p class="lead muted" data-edit-slot="s6-slot-5" data-slot-type="text" data-slot-label="User type detected at signup. Path adjusts. Firs" data-slot-locked-layout="true">
               User type detected at signup. Path adjusts. First value in under
               90 seconds.
             </p>
             <ul class="bullet-list" style="font-size: var(--sz-body)">
-              <li data-edit-slot="s6-slot-9" data-slot-type="text" data-slot-label="Target: 90 seconds to first value" data-slot-locked-layout="true">Target: 90 seconds to first value</li>
-              <li data-edit-slot="s6-slot-10" data-slot-type="text" data-slot-label="Eliminate decision paralysis at step entry" data-slot-locked-layout="true">Eliminate decision paralysis at step entry</li>
-              <li data-edit-slot="s6-slot-11" data-slot-type="text" data-slot-label="Inline help triggered at abandonment signals" data-slot-locked-layout="true">Inline help triggered at abandonment signals</li>
+              <li data-edit-slot="s6-slot-6" data-slot-type="text" data-slot-label="Target: 90 seconds to first value" data-slot-locked-layout="true">Target: 90 seconds to first value</li>
+              <li data-edit-slot="s6-slot-7" data-slot-type="text" data-slot-label="Eliminate decision paralysis at step entry" data-slot-locked-layout="true">Eliminate decision paralysis at step entry</li>
+              <li data-edit-slot="s6-slot-8" data-slot-type="text" data-slot-label="Inline help triggered at abandonment signals" data-slot-locked-layout="true">Inline help triggered at abandonment signals</li>
             </ul>
           </div>
         </div>
 
         <!-- Footer -->
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s6-slot-12" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
-          <span class="label muted" data-edit-slot="s6-slot-13" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
+          <span class="label muted" data-edit-slot="s6-slot-11" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
+          <span class="label muted" data-edit-slot="s6-slot-12" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide slide--quote dark" id="slide-7" data-template-slide-index="8">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="Participant Voice [Month of study]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Participant Voice [Month of study]" data-slot-locked-layout="true">
           <span class="sidebar-label">Participant Voice</span>
           <span class="sidebar-label">[Month of study]</span>
         </div>
 
         <!-- Quote text: Lora italic, large, no decoration -->
-        <p class="quote-text" data-anim="fade-up" data-delay="1" data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="&quot;I kept opening the app and then closing it agai" data-slot-locked-layout="true">
+        <p class="quote-text" data-anim="fade-up" data-delay="1" data-edit-slot="s7-slot-1" data-slot-type="text" data-slot-label="&quot;I kept opening the app and then closing it agai" data-slot-locked-layout="true">
           "I kept opening the app and then closing it again. I didn't know what
           I was supposed to do."
         </p>
 
         <!-- Attribution: two lines of small mono -->
-        <div class="quote-attr" data-anim="fade-in" data-delay="3" data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Participant 14 · 28 years old, Product Designer " data-slot-locked-layout="true">
+        <div class="quote-attr" data-anim="fade-in" data-delay="3">
           <span
             class="label"
             style="color: var(--c-fg-3); letter-spacing: 0.12em"
-           data-edit-slot="s7-slot-4" data-slot-type="text" data-slot-label="Participant 14 · 28 years old, Product Designer" data-slot-locked-layout="true">
+           data-edit-slot="s7-slot-2" data-slot-type="text" data-slot-label="Participant 14 · 28 years old, Product Designer" data-slot-locked-layout="true">
             Participant 14 · 28 years old, Product Designer
           </span>
           <span
             class="label"
             style="color: var(--c-fg-3); letter-spacing: 0.12em"
-           data-edit-slot="s7-slot-5" data-slot-type="text" data-slot-label="Interview · [Month of study]" data-slot-locked-layout="true">
+           data-edit-slot="s7-slot-3" data-slot-type="text" data-slot-label="Interview · [Month of study]" data-slot-locked-layout="true">
             Interview · [Month of study]
           </span>
         </div>
@@ -2644,15 +2677,15 @@
   </section>
 
 <section class="slide slide--dense light" id="slide-8" data-template-slide-index="9">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="Analysis [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s8-slot-11" data-slot-type="text" data-slot-label="Analysis [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">Analysis</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
 
         <!-- Chrome header -->
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="Analysis" data-slot-locked-layout="true">Analysis</span>
-          <span class="label muted" data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="09" data-slot-locked-layout="true">09</span>
+          <span class="label muted" data-edit-slot="s8-slot-7" data-slot-type="text" data-slot-label="Analysis" data-slot-locked-layout="true">Analysis</span>
+          <span class="label muted" data-edit-slot="s8-slot-8" data-slot-type="text" data-slot-label="09" data-slot-locked-layout="true">09</span>
         </header>
 
         <!-- Dense headline -->
@@ -2666,21 +2699,21 @@
             <!-- Left column: The Activation Trap -->
             <div class="dense-col">
               <h4 data-edit-slot="s8-title-2" data-slot-type="text" data-slot-label="The Activation Trap" data-slot-locked-layout="true">The Activation Trap</h4>
-              <p data-edit-slot="s8-slot-6" data-slot-type="text" data-slot-label="Activation is the moment a user experiences the " data-slot-locked-layout="true">
+              <p data-edit-slot="s8-slot-1" data-slot-type="text" data-slot-label="Activation is the moment a user experiences the " data-slot-locked-layout="true">
                 Activation is the moment a user experiences the core value of a
                 product for the first time. When that moment is delayed or never
                 arrives, the user's mental model of the product never fully
                 forms. They carry a vague, unresolved impression into every
                 subsequent session.
               </p>
-              <p data-edit-slot="s8-slot-7" data-slot-type="text" data-slot-label="Each session that ends without activation reinfo" data-slot-locked-layout="true">
+              <p data-edit-slot="s8-slot-2" data-slot-type="text" data-slot-label="Each session that ends without activation reinfo" data-slot-locked-layout="true">
                 Each session that ends without activation reinforces the exit
                 pattern. The user doesn't consciously decide to leave — they
                 simply stop opening the app because it hasn't yet earned a place
                 in their routine. The gap between download and habit is where
                 most products lose users permanently.
               </p>
-              <p data-edit-slot="s8-slot-8" data-slot-type="text" data-slot-label="Retention data confirms this: users who hit acti" data-slot-locked-layout="true">
+              <p data-edit-slot="s8-slot-3" data-slot-type="text" data-slot-label="Retention data confirms this: users who hit acti" data-slot-locked-layout="true">
                 Retention data confirms this: users who hit activation in
                 session one have a 3× higher probability of returning in week
                 two. The window is narrow. Products that front-load value
@@ -2692,20 +2725,20 @@
             <!-- Right column: The Network Effect Delay -->
             <div class="dense-col">
               <h4 data-edit-slot="s8-title-3" data-slot-type="text" data-slot-label="The Network Effect Delay" data-slot-locked-layout="true">The Network Effect Delay</h4>
-              <p data-edit-slot="s8-slot-9" data-slot-type="text" data-slot-label="Collaboration products face a compounding proble" data-slot-locked-layout="true">
+              <p data-edit-slot="s8-slot-4" data-slot-type="text" data-slot-label="Collaboration products face a compounding proble" data-slot-locked-layout="true">
                 Collaboration products face a compounding problem: the value of
                 the product increases with each additional teammate, but users
                 must cross the value threshold alone before they think to invite
                 anyone. Most never reach the threshold.
               </p>
-              <p data-edit-slot="s8-slot-10" data-slot-type="text" data-slot-label="Our data shows that the median user does not dis" data-slot-locked-layout="true">
+              <p data-edit-slot="s8-slot-5" data-slot-type="text" data-slot-label="Our data shows that the median user does not dis" data-slot-locked-layout="true">
                 Our data shows that the median user does not discover the
                 invitation flow until session four — by which point 60% have
                 already churned. The product's most powerful retention mechanism
                 is invisible during the critical first-session window where the
                 keep-or-leave decision is made.
               </p>
-              <p data-edit-slot="s8-slot-11" data-slot-type="text" data-slot-label="The solution is not to surface the invite prompt" data-slot-locked-layout="true">
+              <p data-edit-slot="s8-slot-6" data-slot-type="text" data-slot-label="The solution is not to surface the invite prompt" data-slot-locked-layout="true">
                 The solution is not to surface the invite prompt earlier in a
                 disruptive way, but to design the single-player experience as an
                 explicit bridge to the collaborative one. Every solo action
@@ -2717,8 +2750,8 @@
 
         <!-- Footer -->
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s8-slot-4" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
-          <span class="label muted" data-edit-slot="s8-slot-5" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
+          <span class="label muted" data-edit-slot="s8-slot-9" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
+          <span class="label muted" data-edit-slot="s8-slot-10" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2726,8 +2759,8 @@
 
 <section class="slide slide--chart light" id="slide-9" data-template-slide-index="10">
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="Retention Analysis" data-slot-locked-layout="true">Retention Analysis</span>
-          <span class="label muted" data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="11" data-slot-locked-layout="true">11</span>
+          <span class="label muted" data-edit-slot="s9-slot-2" data-slot-type="text" data-slot-label="Retention Analysis" data-slot-locked-layout="true">Retention Analysis</span>
+          <span class="label muted" data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="11" data-slot-locked-layout="true">11</span>
         </header>
         <div class="slide-body">
           <div class="chart-header">
@@ -2748,34 +2781,34 @@
               <div class="bar-col">
                 <span class="bar-val">34%</span>
                 <div class="bar-fill" style="height: 10vh"></div>
-                <span class="bar-x-label" data-edit-slot="s9-slot-3" data-slot-type="text" data-slot-label="Cohort 1" data-slot-locked-layout="true">Cohort 1</span>
+                <span class="bar-x-label" data-edit-slot="s9-slot-6" data-slot-type="text" data-slot-label="Cohort 1" data-slot-locked-layout="true">Cohort 1</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">41%</span>
                 <div class="bar-fill" style="height: 13vh"></div>
-                <span class="bar-x-label" data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="Cohort 2" data-slot-locked-layout="true">Cohort 2</span>
+                <span class="bar-x-label" data-edit-slot="s9-slot-7" data-slot-type="text" data-slot-label="Cohort 2" data-slot-locked-layout="true">Cohort 2</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val">48%</span>
                 <div class="bar-fill" style="height: 16vh"></div>
-                <span class="bar-x-label" data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="Cohort 3" data-slot-locked-layout="true">Cohort 3</span>
+                <span class="bar-x-label" data-edit-slot="s9-slot-8" data-slot-type="text" data-slot-label="Cohort 3" data-slot-locked-layout="true">Cohort 3</span>
               </div>
               <div class="bar-col">
                 <span class="bar-val hi">67%</span>
                 <div class="bar-fill accent" style="height: 22vh"></div>
-                <span class="bar-x-label" data-edit-slot="s9-slot-6" data-slot-type="text" data-slot-label="Proposed" data-slot-locked-layout="true">Proposed</span>
+                <span class="bar-x-label" data-edit-slot="s9-slot-9" data-slot-type="text" data-slot-label="Proposed" data-slot-locked-layout="true">Proposed</span>
               </div>
             </div>
             <div class="chart-baseline"></div>
           </div>
-          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s9-slot-7" data-slot-type="text" data-slot-label="Source: [Analytics tool] · Cohort analysis · Pro" data-slot-locked-layout="true">
+          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s9-slot-1" data-slot-type="text" data-slot-label="Source: [Analytics tool] · Cohort analysis · Pro" data-slot-locked-layout="true">
             Source: [Analytics tool] · Cohort analysis · Proposed target based
             on redesigned onboarding flow
           </p>
         </div>
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s9-slot-8" data-slot-type="text" data-slot-label="Research Team · [Month, Year]" data-slot-locked-layout="true">Research Team · [Month, Year]</span>
-          <span class="label muted" data-edit-slot="s9-slot-9" data-slot-type="text" data-slot-label="11 / 18" data-slot-locked-layout="true">11 / 18</span>
+          <span class="label muted" data-edit-slot="s9-slot-4" data-slot-type="text" data-slot-label="Research Team · [Month, Year]" data-slot-locked-layout="true">Research Team · [Month, Year]</span>
+          <span class="label muted" data-edit-slot="s9-slot-5" data-slot-type="text" data-slot-label="11 / 18" data-slot-locked-layout="true">11 / 18</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
@@ -2839,14 +2872,14 @@
   </section>
 
 <section class="slide slide--pie light" id="slide-11" data-template-slide-index="12">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s11-slot-1" data-slot-type="text" data-slot-label="Participants [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s11-slot-6" data-slot-type="text" data-slot-label="Participants [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">Participants</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
 
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s11-slot-2" data-slot-type="text" data-slot-label="Participant Breakdown" data-slot-locked-layout="true">Participant Breakdown</span>
-          <span class="label muted" data-edit-slot="s11-slot-3" data-slot-type="text" data-slot-label="13" data-slot-locked-layout="true">13</span>
+          <span class="label muted" data-edit-slot="s11-slot-3" data-slot-type="text" data-slot-label="Participant Breakdown" data-slot-locked-layout="true">Participant Breakdown</span>
+          <span class="label muted" data-edit-slot="s11-slot-4" data-slot-type="text" data-slot-label="13" data-slot-locked-layout="true">13</span>
         </header>
 
         <div class="slide-body">
@@ -2879,8 +2912,8 @@
             <div class="pie-legend">
               <div class="pie-item">
                 <div class="pie-swatch" style="background: var(--c-accent)"></div>
-                <span class="pie-item-label" data-edit-slot="s11-slot-4" data-slot-type="text" data-slot-label="Power Users" data-slot-locked-layout="true">Power Users</span>
-                <span class="pie-item-val" data-edit-slot="s11-slot-5" data-slot-type="text" data-slot-label="38%" data-slot-locked-layout="true">38%</span>
+                <span class="pie-item-label" data-edit-slot="s11-slot-7" data-slot-type="text" data-slot-label="Power Users" data-slot-locked-layout="true">Power Users</span>
+                <span class="pie-item-val" data-edit-slot="s11-slot-8" data-slot-type="text" data-slot-label="38%" data-slot-locked-layout="true">38%</span>
               </div>
               <div class="pie-item">
                 <div
@@ -2893,8 +2926,8 @@
                     );
                   "
                 ></div>
-                <span class="pie-item-label" data-edit-slot="s11-slot-6" data-slot-type="text" data-slot-label="Casual Users" data-slot-locked-layout="true">Casual Users</span>
-                <span class="pie-item-val" data-edit-slot="s11-slot-7" data-slot-type="text" data-slot-label="25%" data-slot-locked-layout="true">25%</span>
+                <span class="pie-item-label" data-edit-slot="s11-slot-9" data-slot-type="text" data-slot-label="Casual Users" data-slot-locked-layout="true">Casual Users</span>
+                <span class="pie-item-val" data-edit-slot="s11-slot-10" data-slot-type="text" data-slot-label="25%" data-slot-locked-layout="true">25%</span>
               </div>
               <div class="pie-item">
                 <div
@@ -2907,42 +2940,42 @@
                     );
                   "
                 ></div>
-                <span class="pie-item-label" data-edit-slot="s11-slot-8" data-slot-type="text" data-slot-label="Churned Users" data-slot-locked-layout="true">Churned Users</span>
-                <span class="pie-item-val" data-edit-slot="s11-slot-9" data-slot-type="text" data-slot-label="22%" data-slot-locked-layout="true">22%</span>
+                <span class="pie-item-label" data-edit-slot="s11-slot-11" data-slot-type="text" data-slot-label="Churned Users" data-slot-locked-layout="true">Churned Users</span>
+                <span class="pie-item-val" data-edit-slot="s11-slot-12" data-slot-type="text" data-slot-label="22%" data-slot-locked-layout="true">22%</span>
               </div>
               <div class="pie-item">
                 <div
                   class="pie-swatch"
                   style="background: var(--c-bg-light-alt)"
                 ></div>
-                <span class="pie-item-label" data-edit-slot="s11-slot-10" data-slot-type="text" data-slot-label="Prospects" data-slot-locked-layout="true">Prospects</span>
-                <span class="pie-item-val" data-edit-slot="s11-slot-11" data-slot-type="text" data-slot-label="15%" data-slot-locked-layout="true">15%</span>
+                <span class="pie-item-label" data-edit-slot="s11-slot-13" data-slot-type="text" data-slot-label="Prospects" data-slot-locked-layout="true">Prospects</span>
+                <span class="pie-item-val" data-edit-slot="s11-slot-14" data-slot-type="text" data-slot-label="15%" data-slot-locked-layout="true">15%</span>
               </div>
-              <p class="pie-total" data-edit-slot="s11-slot-12" data-slot-type="text" data-slot-label="Total participants: [N] · [Study period]" data-slot-locked-layout="true">Total participants: [N] · [Study period]</p>
+              <p class="pie-total" data-edit-slot="s11-slot-1" data-slot-type="text" data-slot-label="Total participants: [N] · [Study period]" data-slot-locked-layout="true">Total participants: [N] · [Study period]</p>
             </div>
           </div>
 
-          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s11-slot-13" data-slot-type="text" data-slot-label="Source: Recruitment screener · [Study period]" data-slot-locked-layout="true">
+          <p class="chart-source" data-anim="fade-in" data-delay="3" data-edit-slot="s11-slot-2" data-slot-type="text" data-slot-label="Source: Recruitment screener · [Study period]" data-slot-locked-layout="true">
             Source: Recruitment screener · [Study period]
           </p>
         </div>
 
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s11-slot-14" data-slot-type="text" data-slot-label="[Research Team] · [Month, Year]" data-slot-locked-layout="true">[Research Team] · [Month, Year]</span>
+          <span class="label muted" data-edit-slot="s11-slot-5" data-slot-type="text" data-slot-label="[Research Team] · [Month, Year]" data-slot-locked-layout="true">[Research Team] · [Month, Year]</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide slide--vtimeline light" id="slide-12" data-template-slide-index="13">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s12-slot-1" data-slot-type="text" data-slot-label="Process [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s12-slot-9" data-slot-type="text" data-slot-label="Process [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">Process</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
 
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s12-slot-2" data-slot-type="text" data-slot-label="Process" data-slot-locked-layout="true">Process</span>
-          <span class="label muted" data-edit-slot="s12-slot-3" data-slot-type="text" data-slot-label="14" data-slot-locked-layout="true">14</span>
+          <span class="label muted" data-edit-slot="s12-slot-5" data-slot-type="text" data-slot-label="Process" data-slot-locked-layout="true">Process</span>
+          <span class="label muted" data-edit-slot="s12-slot-6" data-slot-type="text" data-slot-label="14" data-slot-locked-layout="true">14</span>
         </header>
 
         <h2 class="vt-hl" data-anim="fade-up" data-delay="1" data-edit-slot="s12-title-1" data-slot-type="text" data-slot-label="From research to recommendation" data-slot-locked-layout="true">
@@ -2956,37 +2989,37 @@
             <div class="vt-spine"></div>
             <div class="vt-content">
               <div class="vt-title">Recruitment</div>
-              <p class="vt-body" data-edit-slot="s12-slot-4" data-slot-type="text" data-slot-label="Screened [N]+ applicants, selected [N] participa" data-slot-locked-layout="true">
+              <p class="vt-body" data-edit-slot="s12-slot-1" data-slot-type="text" data-slot-label="Screened [N]+ applicants, selected [N] participa" data-slot-locked-layout="true">
                 Screened [N]+ applicants, selected [N] participants across user
                 segments.
               </p>
             </div>
             <!-- Row 2 -->
-            <div class="vt-date" data-edit-slot="s12-slot-5" data-slot-type="text" data-slot-label="[Week 2–3]" data-slot-locked-layout="true">[Week 2–3]</div>
+            <div class="vt-date" data-edit-slot="s12-slot-10" data-slot-type="text" data-slot-label="[Week 2–3]" data-slot-locked-layout="true">[Week 2–3]</div>
             <div class="vt-spine"></div>
             <div class="vt-content">
               <div class="vt-title">Fieldwork</div>
-              <p class="vt-body" data-edit-slot="s12-slot-6" data-slot-type="text" data-slot-label="[N] moderated sessions. Think-aloud protocol. Al" data-slot-locked-layout="true">
+              <p class="vt-body" data-edit-slot="s12-slot-2" data-slot-type="text" data-slot-label="[N] moderated sessions. Think-aloud protocol. Al" data-slot-locked-layout="true">
                 [N] moderated sessions. Think-aloud protocol. All sessions
                 recorded and transcribed.
               </p>
             </div>
             <!-- Row 3 -->
-            <div class="vt-date" data-edit-slot="s12-slot-7" data-slot-type="text" data-slot-label="[Week 4]" data-slot-locked-layout="true">[Week 4]</div>
+            <div class="vt-date" data-edit-slot="s12-slot-11" data-slot-type="text" data-slot-label="[Week 4]" data-slot-locked-layout="true">[Week 4]</div>
             <div class="vt-spine"></div>
             <div class="vt-content">
               <div class="vt-title">Synthesis</div>
-              <p class="vt-body" data-edit-slot="s12-slot-8" data-slot-type="text" data-slot-label="Affinity mapping across [N]+ observations. Patte" data-slot-locked-layout="true">
+              <p class="vt-body" data-edit-slot="s12-slot-3" data-slot-type="text" data-slot-label="Affinity mapping across [N]+ observations. Patte" data-slot-locked-layout="true">
                 Affinity mapping across [N]+ observations. Pattern clustering by
                 behaviour type.
               </p>
             </div>
             <!-- Row 4 -->
-            <div class="vt-date" data-edit-slot="s12-slot-9" data-slot-type="text" data-slot-label="[Week 5]" data-slot-locked-layout="true">[Week 5]</div>
+            <div class="vt-date" data-edit-slot="s12-slot-12" data-slot-type="text" data-slot-label="[Week 5]" data-slot-locked-layout="true">[Week 5]</div>
             <div class="vt-spine"></div>
             <div class="vt-content">
               <div class="vt-title">Validation</div>
-              <p class="vt-body" data-edit-slot="s12-slot-10" data-slot-type="text" data-slot-label="Findings stress-tested against [analytics tool] " data-slot-locked-layout="true">
+              <p class="vt-body" data-edit-slot="s12-slot-4" data-slot-type="text" data-slot-label="Findings stress-tested against [analytics tool] " data-slot-locked-layout="true">
                 Findings stress-tested against [analytics tool] data and [N]
                 support ticket samples.
               </p>
@@ -2995,22 +3028,22 @@
         </div>
 
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s12-slot-11" data-slot-type="text" data-slot-label="[Research Team] · [Month, Year]" data-slot-locked-layout="true">[Research Team] · [Month, Year]</span>
-          <span class="label muted" data-edit-slot="s12-slot-12" data-slot-type="text" data-slot-label="14" data-slot-locked-layout="true">14</span>
+          <span class="label muted" data-edit-slot="s12-slot-7" data-slot-type="text" data-slot-label="[Research Team] · [Month, Year]" data-slot-locked-layout="true">[Research Team] · [Month, Year]</span>
+          <span class="label muted" data-edit-slot="s12-slot-8" data-slot-type="text" data-slot-label="14" data-slot-locked-layout="true">14</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide slide--cycle light" id="slide-13" data-template-slide-index="14">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s13-slot-1" data-slot-type="text" data-slot-label="Design Process [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s13-slot-9" data-slot-type="text" data-slot-label="Design Process [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">Design Process</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
 
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s13-slot-2" data-slot-type="text" data-slot-label="Design Process" data-slot-locked-layout="true">Design Process</span>
-          <span class="label muted" data-edit-slot="s13-slot-3" data-slot-type="text" data-slot-label="15" data-slot-locked-layout="true">15</span>
+          <span class="label muted" data-edit-slot="s13-slot-5" data-slot-type="text" data-slot-label="Design Process" data-slot-locked-layout="true">Design Process</span>
+          <span class="label muted" data-edit-slot="s13-slot-6" data-slot-type="text" data-slot-label="15" data-slot-locked-layout="true">15</span>
         </header>
 
         <div class="slide-body">
@@ -3027,8 +3060,8 @@
             <!-- Step 01: top-left -->
             <div class="cycle-step">
               <div class="cycle-num">01</div>
-              <div class="cycle-title" data-edit-slot="s13-slot-4" data-slot-type="text" data-slot-label="Empathise" data-slot-locked-layout="true">Empathise</div>
-              <p class="cycle-desc" data-edit-slot="s13-slot-5" data-slot-type="text" data-slot-label="Understand users in their own context. Suspend a" data-slot-locked-layout="true">
+              <div class="cycle-title" data-edit-slot="s13-slot-10" data-slot-type="text" data-slot-label="Empathise" data-slot-locked-layout="true">Empathise</div>
+              <p class="cycle-desc" data-edit-slot="s13-slot-1" data-slot-type="text" data-slot-label="Understand users in their own context. Suspend a" data-slot-locked-layout="true">
                 Understand users in their own context. Suspend assumptions.
                 Observe before interpreting.
               </p>
@@ -3038,8 +3071,8 @@
             <!-- Step 02: top-right -->
             <div class="cycle-step">
               <div class="cycle-num">02</div>
-              <div class="cycle-title" data-edit-slot="s13-slot-6" data-slot-type="text" data-slot-label="Define" data-slot-locked-layout="true">Define</div>
-              <p class="cycle-desc" data-edit-slot="s13-slot-7" data-slot-type="text" data-slot-label="Reframe the problem as a point of view. One sent" data-slot-locked-layout="true">
+              <div class="cycle-title" data-edit-slot="s13-slot-11" data-slot-type="text" data-slot-label="Define" data-slot-locked-layout="true">Define</div>
+              <p class="cycle-desc" data-edit-slot="s13-slot-2" data-slot-type="text" data-slot-label="Reframe the problem as a point of view. One sent" data-slot-locked-layout="true">
                 Reframe the problem as a point of view. One sentence. Testable.
                 Grounded in observation.
               </p>
@@ -3053,8 +3086,8 @@
             <!-- Step 04: bottom-left -->
             <div class="cycle-step">
               <div class="cycle-num">04</div>
-              <div class="cycle-title" data-edit-slot="s13-slot-8" data-slot-type="text" data-slot-label="Test" data-slot-locked-layout="true">Test</div>
-              <p class="cycle-desc" data-edit-slot="s13-slot-9" data-slot-type="text" data-slot-label="Put prototypes in front of real users. Capture w" data-slot-locked-layout="true">
+              <div class="cycle-title" data-edit-slot="s13-slot-12" data-slot-type="text" data-slot-label="Test" data-slot-locked-layout="true">Test</div>
+              <p class="cycle-desc" data-edit-slot="s13-slot-3" data-slot-type="text" data-slot-label="Put prototypes in front of real users. Capture w" data-slot-locked-layout="true">
                 Put prototypes in front of real users. Capture what they do, not
                 what they say.
               </p>
@@ -3064,8 +3097,8 @@
             <!-- Step 03: bottom-right -->
             <div class="cycle-step">
               <div class="cycle-num">03</div>
-              <div class="cycle-title" data-edit-slot="s13-slot-10" data-slot-type="text" data-slot-label="Prototype" data-slot-locked-layout="true">Prototype</div>
-              <p class="cycle-desc" data-edit-slot="s13-slot-11" data-slot-type="text" data-slot-label="Build to think, not to ship. The lowest fidelity" data-slot-locked-layout="true">
+              <div class="cycle-title" data-edit-slot="s13-slot-13" data-slot-type="text" data-slot-label="Prototype" data-slot-locked-layout="true">Prototype</div>
+              <p class="cycle-desc" data-edit-slot="s13-slot-4" data-slot-type="text" data-slot-label="Build to think, not to ship. The lowest fidelity" data-slot-locked-layout="true">
                 Build to think, not to ship. The lowest fidelity that answers
                 the question.
               </p>
@@ -3074,26 +3107,26 @@
         </div>
 
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s13-slot-12" data-slot-type="text" data-slot-label="[Research Team] · [Month, Year]" data-slot-locked-layout="true">[Research Team] · [Month, Year]</span>
-          <span class="label muted" data-edit-slot="s13-slot-13" data-slot-type="text" data-slot-label="15" data-slot-locked-layout="true">15</span>
+          <span class="label muted" data-edit-slot="s13-slot-7" data-slot-type="text" data-slot-label="[Research Team] · [Month, Year]" data-slot-locked-layout="true">[Research Team] · [Month, Year]</span>
+          <span class="label muted" data-edit-slot="s13-slot-8" data-slot-type="text" data-slot-label="15" data-slot-locked-layout="true">15</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide slide--pyramid light" data-slide="17" id="slide-14" data-template-slide-index="15">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s14-slot-1" data-slot-type="text" data-slot-label="Research Framework [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s14-slot-7" data-slot-type="text" data-slot-label="Research Framework [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">Research Framework</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
 
         <header class="slide-chrome">
-          <span class="label muted" data-edit-slot="s14-slot-2" data-slot-type="text" data-slot-label="Research Framework" data-slot-locked-layout="true">Research Framework</span>
-          <span class="label muted" data-edit-slot="s14-slot-3" data-slot-type="text" data-slot-label="17" data-slot-locked-layout="true">17</span>
+          <span class="label muted" data-edit-slot="s14-slot-3" data-slot-type="text" data-slot-label="Research Framework" data-slot-locked-layout="true">Research Framework</span>
+          <span class="label muted" data-edit-slot="s14-slot-4" data-slot-type="text" data-slot-label="17" data-slot-locked-layout="true">17</span>
         </header>
 
         <div class="slide-body">
-          <p class="kicker" data-anim="fade-in" data-delay="1" data-edit-slot="s14-slot-10" data-slot-type="text" data-slot-label="Research Framework" data-slot-locked-layout="true">
+          <p class="kicker" data-anim="fade-in" data-delay="1" data-edit-slot="s14-slot-1" data-slot-type="text" data-slot-label="Research Framework" data-slot-locked-layout="true">
             Research Framework
           </p>
 
@@ -3101,36 +3134,36 @@
             Analysis Hierarchy
           </h2>
 
-          <p class="lead muted" data-anim="fade-up" data-delay="3" data-edit-slot="s14-slot-11" data-slot-type="text" data-slot-label="From raw observations to strategic insight" data-slot-locked-layout="true">
+          <p class="lead muted" data-anim="fade-up" data-delay="3" data-edit-slot="s14-slot-2" data-slot-type="text" data-slot-label="From raw observations to strategic insight" data-slot-locked-layout="true">
             From raw observations to strategic insight
           </p>
 
           <!-- Centered pyramid: narrowest at top, widest at bottom -->
           <div class="pyr-wrap" data-anim="fade-up" data-delay="4">
             <div class="pyr-level">Strategic Insight</div>
-            <div class="pyr-level" data-edit-slot="s14-slot-4" data-slot-type="text" data-slot-label="Behavioral Patterns" data-slot-locked-layout="true">Behavioral Patterns</div>
-            <div class="pyr-level" data-edit-slot="s14-slot-5" data-slot-type="text" data-slot-label="Synthesized Themes" data-slot-locked-layout="true">Synthesized Themes</div>
-            <div class="pyr-level" data-edit-slot="s14-slot-6" data-slot-type="text" data-slot-label="Coded Observations" data-slot-locked-layout="true">Coded Observations</div>
-            <div class="pyr-level" data-edit-slot="s14-slot-7" data-slot-type="text" data-slot-label="Raw Field Notes" data-slot-locked-layout="true">Raw Field Notes</div>
+            <div class="pyr-level" data-edit-slot="s14-slot-8" data-slot-type="text" data-slot-label="Behavioral Patterns" data-slot-locked-layout="true">Behavioral Patterns</div>
+            <div class="pyr-level" data-edit-slot="s14-slot-9" data-slot-type="text" data-slot-label="Synthesized Themes" data-slot-locked-layout="true">Synthesized Themes</div>
+            <div class="pyr-level" data-edit-slot="s14-slot-10" data-slot-type="text" data-slot-label="Coded Observations" data-slot-locked-layout="true">Coded Observations</div>
+            <div class="pyr-level" data-edit-slot="s14-slot-11" data-slot-type="text" data-slot-label="Raw Field Notes" data-slot-locked-layout="true">Raw Field Notes</div>
           </div>
         </div>
 
         <footer class="slide-foot">
-          <span class="label muted" data-edit-slot="s14-slot-8" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
-          <span class="label muted" data-edit-slot="s14-slot-9" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
+          <span class="label muted" data-edit-slot="s14-slot-5" data-slot-type="text" data-slot-label="User Research Synthesis" data-slot-locked-layout="true">User Research Synthesis</span>
+          <span class="label muted" data-edit-slot="s14-slot-6" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</span>
         </footer>
 
     <div class="slide-edit-layer" aria-hidden="true"></div>
   </section>
 
 <section class="slide slide--end light" id="slide-15" data-template-slide-index="16">
-        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s15-slot-1" data-slot-type="text" data-slot-label="Research Team [Month, Year]" data-slot-locked-layout="true">
+        <div class="slide-sidebar" data-anim="fade-in" data-delay="0" data-edit-slot="s15-slot-3" data-slot-type="text" data-slot-label="Research Team [Month, Year]" data-slot-locked-layout="true">
           <span class="sidebar-label">Research Team</span>
           <span class="sidebar-label">[Month, Year]</span>
         </div>
 
         <!-- Kicker: team attribution in muted mono -->
-        <p class="kicker" data-anim="fade-in" data-delay="1" data-edit-slot="s15-slot-2" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</p>
+        <p class="kicker" data-anim="fade-in" data-delay="1" data-edit-slot="s15-slot-1" data-slot-type="text" data-slot-label="Research Team" data-slot-locked-layout="true">Research Team</p>
 
         <!-- Thin rule -->
         <div
@@ -3156,7 +3189,7 @@
           data-anim="fade-up"
           data-delay="4"
           style="max-width: 42%; margin-top: var(--gap-md)"
-         data-edit-slot="s15-slot-3" data-slot-type="text" data-slot-label="[research@org.com] · [Slack #research] · Full re" data-slot-locked-layout="true">
+         data-edit-slot="s15-slot-2" data-slot-type="text" data-slot-label="[research@org.com] · [Slack #research] · Full re" data-slot-locked-layout="true">
           [research@org.com] · [Slack #research] · Full report at [link]
         </p>
 
@@ -4180,6 +4213,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -4200,7 +4242,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -4213,7 +4255,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -5261,12 +5303,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -5310,7 +5352,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;

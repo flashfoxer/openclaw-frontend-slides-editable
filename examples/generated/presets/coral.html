@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-Hans" data-deck-id="ported-coral" data-template-source="coral" data-mobile-adaptation="desktop-default" data-template-edit-mode="slots">
+<html lang="zh-Hans" data-deck-id="ported-coral" data-template-source="coral" data-template-edit-mode="slots" data-mobile-adaptation="desktop-default">
 <head>
 
     <meta charset="UTF-8">
@@ -1121,6 +1121,39 @@
     box-sizing: border-box;
     overflow: hidden !important;
   }
+  /* === VIEWPORT CONTENT CONSTRAINTS === */
+  /* Upstream templates use fixed px font sizes designed for scrollable pages.
+     Inside a 100vh slide, cap the largest text to viewport-relative sizes. */
+  #deck.slides-offset > section.slide h1 {
+    font-size: clamp(1.5rem, 5vw, 4rem) !important;
+    line-height: 1.1 !important;
+  }
+  #deck.slides-offset > section.slide h2 {
+    font-size: clamp(1.2rem, 3.5vw, 2.5rem) !important;
+  }
+  #deck.slides-offset > section.slide h3 {
+    font-size: clamp(1rem, 2.5vw, 1.75rem) !important;
+  }
+  /* Cap oversized display/number classes (upstream uses 200-600px fixed sizes) */
+  #deck.slides-offset > section.slide .num,
+  #deck.slides-offset > section.slide .big,
+  #deck.slides-offset > section.slide .huge,
+  #deck.slides-offset > section.slide .giant,
+  #deck.slides-offset > section.slide [class*="numeral"],
+  #deck.slides-offset > section.slide .title:not(h1):not(h2):not(h3) {
+    font-size: min(var(--title-size, 4rem), 8vw) !important;
+    line-height: 1 !important;
+  }
+  /* Cap decorative oversized marks (quote marks, punctuation) */
+  #deck.slides-offset > section.slide .marks,
+  #deck.slides-offset > section.slide .qmark,
+  #deck.slides-offset > section.slide .script.huge,
+  #deck.slides-offset > section.slide .script.giant {
+    font-size: min(6rem, 10vw) !important;
+  }
+  /* Note: slide overflow: hidden already clips content that exceeds 100vh.
+     We do NOT add max-height on children — it interferes with flex layout
+     and reduces the slide's own computed height below 100vh. */
   body.deck-edit-mode [data-edit-slot] {
     cursor: text;
     outline: 2px dashed color-mix(in srgb, var(--deck-chrome-accent) 72%, transparent);
@@ -1680,7 +1713,7 @@
     <button type="button" class="sidebar-pages-toggle" id="pagesToggle" title="Pages sidebar">Pages</button>
     <button type="button" class="deck-btn-save" id="btnSave" title="Save layout to browser (Ctrl+S)">Save</button>
     <button type="button" class="deck-btn-add" id="btnAddElement" title="Add text, image, or video to current slide">Add element</button>
-    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide&#x27;s editable content into movable components">Unlock layout</button>
+    <button type="button" class="deck-btn-add" id="btnUnlockLayout" title="Convert this slide's editable content into movable components">Unlock layout</button>
   </div>
   <div class="deck-edit-chrome deck-left-row deck-left-row--tools" id="deckEditChrome" data-deck-chrome-surface="" role="toolbar" aria-label="Editing">
     <button type="button" id="btnUndo" aria-label="Undo" title="Undo (Ctrl+Z)">
@@ -1886,24 +1919,24 @@
 
 <section class="slide slide-6" id="slide-5" data-template-slide-index="6">
             <div class="slide-title" data-edit-slot="s5-title-1" data-slot-type="text" data-slot-label="KEY OBJECTIVES" data-slot-locked-layout="true">KEY OBJECTIVES</div>
-            <div class="slide-subtitle" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="Strategic priorities for the upcoming fiscal per" data-slot-locked-layout="true">Strategic priorities for the upcoming fiscal period</div>
+            <div class="slide-subtitle" data-edit-slot="s5-slot-7" data-slot-type="text" data-slot-label="Strategic priorities for the upcoming fiscal per" data-slot-locked-layout="true">Strategic priorities for the upcoming fiscal period</div>
             <div class="columns-grid">
                 <div class="column-card">
                     <div class="card-icon">A</div>
-                    <div class="card-title" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="EXPAND REACH" data-slot-locked-layout="true">EXPAND REACH</div>
-                    <div class="card-text" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="Enter new markets and establish presence in emer" data-slot-locked-layout="true">Enter new markets and establish presence in emerging territories through targeted campaigns.</div>
-                    <div class="card-stat" data-edit-slot="s5-slot-4" data-slot-type="metric" data-slot-label="24" data-slot-locked-layout="true">24</div>
+                    <div class="card-title" data-edit-slot="s5-slot-1" data-slot-type="text" data-slot-label="EXPAND REACH" data-slot-locked-layout="true">EXPAND REACH</div>
+                    <div class="card-text" data-edit-slot="s5-slot-2" data-slot-type="text" data-slot-label="Enter new markets and establish presence in emer" data-slot-locked-layout="true">Enter new markets and establish presence in emerging territories through targeted campaigns.</div>
+                    <div class="card-stat" data-edit-slot="s5-slot-8" data-slot-type="metric" data-slot-label="24" data-slot-locked-layout="true">24</div>
                 </div>
                 <div class="column-card">
                     <div class="card-icon">B</div>
-                    <div class="card-title" data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="DEEPEN ENGAGEMENT" data-slot-locked-layout="true">DEEPEN ENGAGEMENT</div>
-                    <div class="card-text" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Strengthen relationships with existing partners " data-slot-locked-layout="true">Strengthen relationships with existing partners through enhanced service offerings.</div>
-                    <div class="card-stat" data-edit-slot="s5-slot-7" data-slot-type="metric" data-slot-label="+45%" data-slot-locked-layout="true">+45%</div>
+                    <div class="card-title" data-edit-slot="s5-slot-3" data-slot-type="text" data-slot-label="DEEPEN ENGAGEMENT" data-slot-locked-layout="true">DEEPEN ENGAGEMENT</div>
+                    <div class="card-text" data-edit-slot="s5-slot-4" data-slot-type="text" data-slot-label="Strengthen relationships with existing partners " data-slot-locked-layout="true">Strengthen relationships with existing partners through enhanced service offerings.</div>
+                    <div class="card-stat" data-edit-slot="s5-slot-9" data-slot-type="metric" data-slot-label="+45%" data-slot-locked-layout="true">+45%</div>
                 </div>
                 <div class="column-card">
                     <div class="card-icon">C</div>
-                    <div class="card-title" data-edit-slot="s5-slot-8" data-slot-type="text" data-slot-label="OPTIMIZE FLOW" data-slot-locked-layout="true">OPTIMIZE FLOW</div>
-                    <div class="card-text" data-edit-slot="s5-slot-9" data-slot-type="text" data-slot-label="Streamline internal processes to improve deliver" data-slot-locked-layout="true">Streamline internal processes to improve delivery times and resource allocation.</div>
+                    <div class="card-title" data-edit-slot="s5-slot-5" data-slot-type="text" data-slot-label="OPTIMIZE FLOW" data-slot-locked-layout="true">OPTIMIZE FLOW</div>
+                    <div class="card-text" data-edit-slot="s5-slot-6" data-slot-type="text" data-slot-label="Streamline internal processes to improve deliver" data-slot-locked-layout="true">Streamline internal processes to improve delivery times and resource allocation.</div>
                     <div class="card-stat" data-edit-slot="s5-slot-10" data-slot-type="metric" data-slot-label="3.2x" data-slot-locked-layout="true">3.2x</div>
                 </div>
             </div>
@@ -3051,6 +3084,15 @@
       return this._applyInlineStyle(textEl, { fontFamily: fontExpr });
     }
 
+    _deckSlideById(slideId) {
+      const root = document.querySelector('.slides-offset');
+      if (root) {
+        const scoped = Array.from(root.querySelectorAll(':scope > section.slide')).find((slide) => slide.id === slideId);
+        if (scoped) return scoped;
+      }
+      return document.getElementById(slideId);
+    }
+
     removeObjectsWithHistory(objectEls, opts) {
       opts = opts || {};
       const list = (objectEls || []).filter((el) => el && el.isConnected);
@@ -3071,7 +3113,7 @@
       this.history.push({
         undo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec) return;
             const layer = slideSec.querySelector('.slide-edit-layer');
             if (!layer) return;
@@ -3084,7 +3126,7 @@
         },
         redo: () => {
           snapshots.forEach((s) => {
-            const slideSec = document.getElementById(s.slideId);
+            const slideSec = this._deckSlideById(s.slideId);
             if (!slideSec || !s.oid) return;
             const safe = s.oid.replace(/"/g, '');
             const n = slideSec.querySelector('[data-oid="' + safe + '"]');
@@ -4132,12 +4174,12 @@
       move.type = 'button';
       move.className = 'slide-object-move';
       move.setAttribute('aria-label', 'Move object');
-      move.textContent = '\u283f';
+      move.textContent = '⠿';
       const del = document.createElement('button');
       del.type = 'button';
       del.className = 'slide-object-delete';
       del.setAttribute('aria-label', 'Delete object');
-      del.textContent = '\u00d7';
+      del.textContent = '×';
       const body = document.createElement('div');
       if (slot.dataset.slotType === 'image') {
         body.className = 'slide-object-graphic';
@@ -4181,7 +4223,6 @@
   if (btnUnlockLayout) {
     btnUnlockLayout.addEventListener('click', componentizeCurrentSlide);
   }
-
 
   document.addEventListener('focusout', (e) => {
     const t = e.target;
