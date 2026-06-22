@@ -8,4 +8,17 @@ __pycache__/
 .design/
 .claude-design-slide-previews/
 examples/generated/test-artifacts/
-beautiful-html-templates/
+
+# Vendor only the small source files needed for ported template generation.
+# Keep the upstream checkout metadata and gallery screenshots out of this skill.
+beautiful-html-templates/*
+!beautiful-html-templates/
+!beautiful-html-templates/LICENSE
+!beautiful-html-templates/index.json
+!beautiful-html-templates/templates/
+beautiful-html-templates/templates/*
+!beautiful-html-templates/templates/*/
+!beautiful-html-templates/templates/*/template.html
+!beautiful-html-templates/templates/*/template.json
+!beautiful-html-templates/templates/*/deck-stage.js
+!beautiful-html-templates/templates/*/styles.css

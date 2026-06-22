@@ -45,4 +45,4 @@ Naming:
 - Legacy and all-preset cover captures: `<slug>-cover.png`
 - Ported template captures: `<slug>-cover.png`, `<slug>-mid.png`, `<slug>-later.png`
 
-`beautiful-html-templates/` is a local development input and is ignored by git; do not commit the cloned upstream repository into this skill.
+`beautiful-html-templates/` is vendored in a minimal form for generation fidelity: keep `LICENSE`, `index.json`, and the per-template source files needed by `scripts/build-template-port-decks.py`. Do not commit the upstream `.git/` directory or gallery screenshots into this skill.
